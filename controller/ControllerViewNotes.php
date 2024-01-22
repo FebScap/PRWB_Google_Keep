@@ -2,7 +2,9 @@
 require_once "framework/Controller.php";
 
 class ControllerViewNotes extends Controller {
+    //accueil du controlleur.
+    //gère l'affichage des messages et le post
     public function index() : void {
-        echo "<h1>My Notes</h1>";
+        (new View("viewnotes"))->show();
     }
 }
