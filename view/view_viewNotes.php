@@ -5,7 +5,7 @@
         <?php include('head.html'); ?>
     </head>
     <body data-bs-theme="dark">
-        <div class="container-fluid bg-dark text-white d-flex flex-column">
+        <div class="container-fluid d-flex flex-column">
             <?php include('menu.html'); ?>
             <div class="d-flex justify-content-between mt-2">
                 <button class="btn btn-outline-light d-flex ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
@@ -107,8 +107,8 @@
             <!-- BUTTONS BAS DE PAGE -->
             <nav class="navbar fixed-bottom bg-transparent">
                 <div class="container-fluid d-flex justify-content-end">
-                    <a class="nav-link me-4 fs-2" href="#"><i class="bi bi-file-earmark text-warning"></i></a>
-                    <a class="nav-link me-4 fs-2" href="#"><i class="bi bi-card-checklist text-warning"></i></a>
+                    <a class="nav-link me-4 fs-2" href="viewnotes/add_text_note/"><i class="bi bi-file-earmark text-warning"></i></a>
+                    <a class="nav-link me-4 fs-2" href="viewnotes/add_checklist_note/"><i class="bi bi-card-checklist text-warning"></i></a>
                 </div>
             </nav>
         </div>
