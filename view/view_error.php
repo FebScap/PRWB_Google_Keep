@@ -2,10 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
     <title>Error</title>
-    <base href="<?= $web_root ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include('head.html'); ?>
 </head>
 
 <body>
@@ -14,5 +12,4 @@
         <?= $error ?>
     </div>
 </body>
-
 </html>
