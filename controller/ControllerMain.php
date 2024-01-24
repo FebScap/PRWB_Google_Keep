@@ -8,7 +8,7 @@ class ControllerMain extends Controller {
         if ($this->user_logged()) {
             $this->redirect("member", "notes");
         } else {
-            (new View("index"))->show();
+            (new View("login"))->show();
         }
     }
 
