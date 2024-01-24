@@ -7,7 +7,7 @@
     <body data-bs-theme="dark">
         <form class="container-fluid d-flex flex-column">
             <div class="container-fluid d-flex justify-content-between">
-                <a class="nav-link me-4 fs-2" href="viewnotes"><i class="bi bi-box-arrow-left"></i></a>
+                <a class="nav-link me-4 fs-2" href="viewnotes"><i class="bi bi-chevron-left"></i></a>
                 <button type="submit" class="btn"><i class="bi bi-floppy"></i></button>
             </div>
             <div class="mt-3">
