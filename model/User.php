@@ -32,7 +32,7 @@ class User extends Model {
         return $this->mail;
     }
 
-    public function getFullname() {
+    public function getFullName() {
         return $this->full_name;
     }
 
@@ -57,7 +57,7 @@ class User extends Model {
             $errors[] = "Mail length must be between 3.";
         } 
         if (!(preg_match("/^[a-zA-Z0-9][a-zA-Z0-9]*@[a-zA-Z0-9]+\.[a-zA-Z0-9.]+$/", $this->mail))) {
-            $errors[] = "Pseudo must contain one and only one @, at least one dot, and start with a letter or a number.";
+            $errors[] = "Mail must contain one and only one @, at least one dot, and start with a letter or a number.";
         }
         return $errors;
     }
@@ -100,6 +100,16 @@ class User extends Model {
             $errors[] = "Can't find a user with the mail '$mail'. Please sign up.";
         }
         return $errors;
+    }
+
+    public function persist() : User {
+        if (self::getByMail($this->mail))
+            self::execute("UPDATE Users SET hashed_password=:hashed_password, full_name=:full_name WHERE mail=:mail", 
+                            ["mail"=>$this->mail, "hashed_password"=>$this->hashed_password, "full_name"=>$this->full_name]); //Voir si mail ok ou ID auto incr pour le where
+        else
+            self::execute("INSERT INTO Users(mail, hashed_password, full_name) VALUES (:mail, :hashed_password, :full_name)", 
+                            ["mail"=>$this->mail, "hashed_password"=>$this->hashed_password, "full_name"=>$this->full_name]); 
+        return $this;
     }
 }
 ?>
