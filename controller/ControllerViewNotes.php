@@ -16,4 +16,9 @@ class ControllerViewNotes extends Controller {
      public function  add_checklist_note() : void {
         (new View("addchecklistnote"))->show();
     }
+
+     //Button de création d'une nouvelle note
+     public function  tempviewshares() : void {
+        (new View("viewshares"))->show();
+    }
 }

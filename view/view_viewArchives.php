@@ -29,13 +29,6 @@
                     </ul>
                 </div>
             </div>
-            <!-- BUTTONS BAS DE PAGE -->
-            <nav class="navbar fixed-bottom bg-transparent d-block">
-                <div class="container-fluid d-flex justify-content-end">
-                    <a class="nav-link me-4 fs-2" href="viewnotes/add_text_note/"><i class="bi bi-file-earmark text-warning"></i></a>
-                    <a class="nav-link me-4 fs-2" href="viewnotes/add_checklist_note/"><i class="bi bi-card-checklist text-warning"></i></a>
-                </div>
-            </nav>
         </div>
         <?php include('footer.html'); ?>
     </body>
