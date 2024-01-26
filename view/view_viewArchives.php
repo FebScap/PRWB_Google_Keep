@@ -16,18 +16,14 @@
             <!-- CARDS -->
             <h2 class="h2 fs-6 mt-4 ms-2">Archives</h2>
             <div class="d-flex flex-row flex-wrap justify-content-start">
-                <div class="card m-1" style="max-width: 48%;" data-bs-theme="dark">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Titre</li>
-                        <li class="list-group-item list-group-item-secondary">Contenu contenu contenu contenu</li>
-                    </ul>
-                </div>
-                <div class="card m-1" style="max-width: 48%;" data-bs-theme="dark">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Titre</li>
-                        <li class="list-group-item list-group-item-secondary">Contenu contenu contenu contenu</li>
-                    </ul>
-                </div>
+                <?php for ($i = 0; $i < sizeof($notes); $i++): ?>
+                    <div class="card m-1" style="max-width: 48%;" data-bs-theme="dark">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><?= $notes[$i]->title ?></li>
+                            <li class="list-group-item list-group-item-secondary">Contenu contenu contenu contenu</li>
+                        </ul>
+                    </div>
+                <?php endfor; ?>
             </div>
         </div>
         <?php include('footer.html'); ?>

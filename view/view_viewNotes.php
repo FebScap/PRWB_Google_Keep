@@ -11,7 +11,7 @@
                 <button class="btn btn-outline-light d-flex ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
                     <i class="bi bi-list"></i>
                 </button>
-                <h1 class="fs-4 d-flex me-3">My notes<?= $user ?></h1>
+                <h1 class="fs-4 d-flex me-3">My notes</h1>
             </div>
             <!-- CARDS -->
             <h2 class="h2 fs-6 mt-4 ms-2">Pinned</h2>
