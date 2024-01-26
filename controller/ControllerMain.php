@@ -6,9 +6,9 @@ class ControllerMain extends Controller {
     //sinon, produit la vue d'accueil.
     public function index() : void {
         if ($this->user_logged()) {
-            $this->redirect("member", "notes");
+            $this->redirect("viewnotes");
         } else {
-            (new View("index"))->show();
+            (new View("login"))->show();
         }
     }
 

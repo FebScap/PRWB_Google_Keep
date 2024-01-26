@@ -3,10 +3,10 @@
 require_once "framework/Model.php";
 
 class Note extends Model {
-
-    public function __construct(public string $title, public int $owner, public string $edited_at, public int $pinned, public int $archived, public float $weight)
+    
+    public function __construct(public string $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public string $pinned, public string $archived, public string $weight)
     {
-
+        
     }
 
     public static function getAllNotesByUser(int $userId) : array {
@@ -14,9 +14,9 @@ class Note extends Model {
         $notes = [];
         foreach ($data as $row) {
             $notes[] = new Note(
+                $row["id"],
                 $row["title"],
                 $row["owner"],
-                $row["id"],
                 $row["created_at"],
                 $row["edited_at"],
                 $row["pinned"],
@@ -25,15 +25,16 @@ class Note extends Model {
             );
         }
         return $notes;
+    }
 
     public static function getAllPinnedNotesByUser(int $userId) : array {
-        $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 1 ORDER BY weight DESC", ["userId" => $userId])->fetchAll();
+        $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 1 and archived = 0 ORDER BY weight DESC", ["userId" => $userId])->fetchAll();
         $notes = [];
         foreach ($data as $row) {
             $notes[] = new Note(
+                $row["id"],
                 $row["title"],
                 $row["owner"],
-                $row["id"],
                 $row["created_at"],
                 $row["edited_at"],
                 $row["pinned"],
@@ -42,8 +43,28 @@ class Note extends Model {
             );
         }
         return $notes;
-        }
     }
+    
+
+    public static function getAllUnpinnedNotesByUser(int $userId) : array {
+        $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 0 and archived = 0 ORDER BY weight DESC", ["userId" => $userId])->fetchAll();
+        $notes = [];
+        foreach ($data as $row) {
+            $notes[] = new Note(
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
+            );
+        }
+        return $notes;
+    }
+
+
 
     public static function getAllArchivedNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId AND archived = 1", ["userId" => $userId])->fetchAll();
@@ -51,9 +72,9 @@ class Note extends Model {
     
         foreach ($data as $row) {
             $notes[] = new Note(
+                $row["id"],
                 $row["title"],
                 $row["owner"],
-                $row["id"],
                 $row["created_at"],
                 $row["edited_at"],
                 $row["pinned"],
@@ -65,6 +86,41 @@ class Note extends Model {
         return $notes;
     }
     
+    public static function getAllSharedNotesEditorByUserId(int $userId) : array {
+        $data = self::execute(
+            "SELECT notes.id, notes.title, notes.owner, notes.created_at, notes.edited_at, notes.pinned, notes.archived, notes.weight 
+            FROM note_shares JOIN notes on notes.id = note_shares.note 
+            WHERE user = :userId AND editor = 1", 
+            ["userId" => $userId])->fetchAll();
+        $notes = [];
+    
+        foreach ($data as $row) {
+            $notes[] = new Note(
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
+            );
+        }
+    
+        return $notes;
+    }
+
+    public static function getAllSharedBy(int $userId) : array {
+        $data = self::execute(
+            "SELECT DISTINCT owner FROM note_shares JOIN notes on notes.id = note_shares.note WHERE user = :userId", 
+            ["userId" => $userId])->fetchAll();
+        $sharedby = [];
+    
+        foreach ($data as $row) {
+            $sharedby[] = $row["owner"];
+        }
+        return $sharedby;
+    }
 
     public static function getNoteById(int $noteId) : Note|false {
         $query = self::execute("SELECT * FROM notes WHERE id = :noteId", ["noteId" => $noteId]);
@@ -73,14 +129,14 @@ class Note extends Model {
             return false;
         } else {
             return new Note(
-                $data["title"],
-                $data["owner"],
-                $data["id"],
-                $data["created_at"],
-                $data["edited_at"],
-                $data["pinned"],
-                $data["archived"],
-                $data["weight"]
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
             );
         }
     }
