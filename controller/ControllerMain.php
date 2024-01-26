@@ -1,5 +1,8 @@
 <?php
-require_once "framework/Controller.php";
+require_once 'framework/Controller.php';
+require_once 'framework/View.php';
+require_once 'model/User.php';
+
 
 class ControllerMain extends Controller {
     //si l'utilisateur est connecté, redirige vers son view notes.
@@ -14,19 +17,19 @@ class ControllerMain extends Controller {
 
     //gestion de la connexion d'un utilisateur
     public function login() : void {
-        $pseudo = '';
+        $mail = '';
         $password = '';
         $errors = [];
-        if (isset($_POST['pseudo']) && isset($_POST['password'])) { //note : pourraient contenir des chaînes vides
-            $pseudo = $_POST['pseudo'];
+        if (isset($_POST['mail']) && isset($_POST['password'])) { //note : pourraient contenir des chaînes vides
+            $mail = $_POST['mail'];
             $password = $_POST['password'];
 
-            $errors = Member::validate_login($pseudo, $password);
+            $errors = User::validateLogin($mail, $password);
             if (empty($errors)) {
-                $this->log_user(Member::get_member_by_pseudo($pseudo));
+                $this->log_user(User::getByMail($mail));
             }
         }
-        (new View("login"))->show(["pseudo" => $pseudo, "password" => $password, "errors" => $errors]);
+        (new View("login"))->show(["mail" => $mail, "password" => $password, "errors" => $errors]);
     }
 
     //gestion de l'inscription d'un utilisateur

@@ -16,7 +16,7 @@
 
                     <div class="input-group flex-nowrap mt-4 w-100">
                         <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-person"></i></button>
-                        <input type="email" class="form-control" placeholder="exemple@domaine.ect" aria-describedby="basic-addon1">
+                        <input id="mail" type="email" class="form-control" value="<?= $mail ?>" placeholder="exemple@domaine.ect" aria-describedby="basic-addon1">
                     </div>
 
                     <div class="input-group flex-nowrap mt-4 w-100">
