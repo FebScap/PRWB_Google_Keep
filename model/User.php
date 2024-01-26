@@ -28,6 +28,16 @@ class User extends Model {
         }
     }
 
+    public static function getById(string $id) : User|false {
+        $query = self::execute("SELECT * FROM Users WHERE id = :id", ["id" => $id]);
+        $data = $query->fetch();
+        if ($query->rowCount() == 0){
+            return false;
+        } else {
+            return new User($data["mail"], $data["hashed_password"], $data["full_name"], $data["role"]);
+        }
+    }
+
     public function getNotes() : array {
         return Note::getNotes($this); //Implémenter getNotes dans Note.php
     }
