@@ -17,51 +17,55 @@
             <h2 class="h2 fs-6 mt-4 ms-2">Pinned</h2>
             <div class="d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($pinnedNotes); $i++): ?>
-                    <div class="card m-1" style="max-width: 48%;" data-bs-theme="dark">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><?= $pinnedNotes[$i]->title ?></li>
-                            <li class="list-group-item list-group-item-secondary">Contenu contenu contenu contenu</li>
-                            <?php if ($i == 0): ?>
-                                <li class="list-group-item d-flex justify-content-end">
-                                    <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
-                                </li>
-                            <?php elseif ($i == sizeof($pinnedNotes)-1): ?>
-                                <li class="list-group-item d-flex justify-content-start">
-                                    <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
-                                </li>
-                            <?php else: ?>
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
-                                    <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
-                                </li>
-                            <?php endif; ?>
-                        </ul>
-                    </div>
+                    <a class="link-underline link-underline-opacity-0" style="max-width: 48%;" href="opennote/">
+                        <div class="card m-1" data-bs-theme="dark">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><?= $pinnedNotes[$i]->title ?></li>
+                                    <li class="list-group-item list-group-item-secondary">Contenu contenu contenu contenu</li>
+                                    <?php if ($i == 0): ?>
+                                        <li class="list-group-item d-flex justify-content-end">
+                                            <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
+                                        </li>
+                                    <?php elseif ($i == sizeof($pinnedNotes)-1): ?>
+                                        <li class="list-group-item d-flex justify-content-start">
+                                            <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
+                                        </li>
+                                    <?php else: ?>
+                                        <li class="list-group-item d-flex justify-content-between">
+                                            <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
+                                            <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
+                                        </li>
+                                    <?php endif; ?>
+                                </ul>
+                        </div>
+                    </a>
                 <?php endfor; ?>
             </div>
             <h2 class="h2 fs-6 mt-1 ms-2">Other</h2>
             <div class="d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($notPinnedNotes); $i++): ?>
-                    <div class="card m-1" style="max-width: 48%;" data-bs-theme="dark">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><?= $notPinnedNotes[$i]->title ?></li>
-                            <li class="list-group-item list-group-item-secondary">Contenu contenu contenu contenu</li>
-                            <?php if ($i == 0): ?>
-                                <li class="list-group-item d-flex justify-content-end">
-                                    <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
-                                </li>
-                            <?php elseif ($i == sizeof($notPinnedNotes)-1): ?>
-                                <li class="list-group-item d-flex justify-content-start">
-                                    <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
-                                </li>
-                            <?php else: ?>
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
-                                    <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
-                                </li>
-                            <?php endif; ?>
-                        </ul>
-                    </div>
+                    <a class="link-underline link-underline-opacity-0" style="max-width: 48%;" href="opennote/">
+                        <div class="card m-1" data-bs-theme="dark">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><?= $notPinnedNotes[$i]->title ?></li>
+                                <li class="list-group-item list-group-item-secondary">Contenu contenu contenu contenu</li>
+                                <?php if ($i == 0): ?>
+                                    <li class="list-group-item d-flex justify-content-end">
+                                        <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
+                                    </li>
+                                <?php elseif ($i == sizeof($notPinnedNotes)-1): ?>
+                                    <li class="list-group-item d-flex justify-content-start">
+                                        <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
+                                    </li>
+                                <?php else: ?>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
+                                        <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
+                                    </li>
+                                <?php endif; ?>
+                            </ul>
+                        </div>
+                    </a>
                 <?php endfor; ?>
             </div>
             <!-- BUTTONS BAS DE PAGE -->
