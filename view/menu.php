@@ -15,16 +15,13 @@
           <span class="ms-1 text-white">My archives</span>
         </a>
       </li>
-      <li class="nav-item">
-        <a href="viewsharednotes/sharedby/2" class="nav-link">
-          <span class="ms-1 text-white">Shared by Benoît</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="viewsharednotes/sharedby/4" class="nav-link">
-          <span class="ms-1 text-white">Shared by Marc</span>
-        </a>
-      </li>
+      <?php for ($i = 0; $i < sizeof($sharedBy); $i++):?>
+        <li class="nav-item">
+          <a href="viewsharednotes/sharedby/<?= $sharedBy[$i] ?>" class="nav-link">
+            <span class="ms-1 text-white">Shared by <?= $nameSharedBy[$i] ?></span>
+          </a>
+        </li>
+      <?php endfor ?>
       <li class="nav-item">
         <a href="settings" class="nav-link">
           <span class="ms-1 text-white">Settings</span>

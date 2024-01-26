@@ -86,6 +86,41 @@ class Note extends Model {
         return $notes;
     }
     
+    public static function getAllSharedNotesEditorByUserId(int $userId) : array {
+        $data = self::execute(
+            "SELECT notes.id, notes.title, notes.owner, notes.created_at, notes.edited_at, notes.pinned, notes.archived, notes.weight 
+            FROM note_shares JOIN notes on notes.id = note_shares.note 
+            WHERE user = :userId AND editor = 1", 
+            ["userId" => $userId])->fetchAll();
+        $notes = [];
+    
+        foreach ($data as $row) {
+            $notes[] = new Note(
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
+            );
+        }
+    
+        return $notes;
+    }
+
+    public static function getAllSharedBy(int $userId) : array {
+        $data = self::execute(
+            "SELECT DISTINCT owner FROM note_shares JOIN notes on notes.id = note_shares.note WHERE user = :userId", 
+            ["userId" => $userId])->fetchAll();
+        $sharedby = [];
+    
+        foreach ($data as $row) {
+            $sharedby[] = $row["owner"];
+        }
+        return $sharedby;
+    }
 
     public static function getNoteById(int $noteId) : Note|false {
         $query = self::execute("SELECT * FROM notes WHERE id = :noteId", ["noteId" => $noteId]);

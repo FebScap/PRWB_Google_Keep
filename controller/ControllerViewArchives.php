@@ -1,6 +1,7 @@
 <?php
 require_once "framework/Controller.php";
 require_once 'model/Note.php';
+require_once 'model/User.php';
 
 class ControllerViewArchives extends Controller {
     //accueil du controlleur.
@@ -9,7 +10,15 @@ class ControllerViewArchives extends Controller {
         $user = 1;
 
         $notes = Note::getAllArchivedNotesByUser($user);
+        $sharedBy = Note::getAllSharedBy($user);
+        $nameSharedBy = [];
+        foreach ($sharedBy as $id) {
+            $nameSharedBy[] = User::getByID($id)->full_name;
+        }
+
         (new View("viewarchives"))->show(["notes" => $notes,
+                                                "sharedBy" => $sharedBy,
+                                                "nameSharedBy" => $nameSharedBy,
                                                 "user" => $user]);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 require_once "framework/Controller.php";
 require_once 'model/Note.php';
+require_once 'model/User.php';
 
 class ControllerViewNotes extends Controller {
     //accueil du controlleur.
@@ -10,8 +11,15 @@ class ControllerViewNotes extends Controller {
 
         $pinnedNotes = Note::getAllPinnedNotesByUser($user);
         $notPinnedNotes = Note::getAllUnpinnedNotesByUser($user);
+        $sharedBy = Note::getAllSharedBy($user);
+        $nameSharedBy = [];
+        foreach ($sharedBy as $id) {
+            $nameSharedBy[] = User::getByID($id)->full_name;
+        }
         (new View("viewnotes"))->show(["pinnedNotes" => $pinnedNotes,
                                         "notPinnedNotes" => $notPinnedNotes,
+                                        "sharedBy" => $sharedBy,
+                                        "nameSharedBy" => $nameSharedBy,
                                         "user" => $user]);
     }
 

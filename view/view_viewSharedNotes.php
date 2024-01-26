@@ -6,7 +6,7 @@
     </head>
     <body data-bs-theme="dark">
         <div class="container-fluid d-flex flex-column">
-            <?php include('menu.html'); ?>
+            <?php include('menu.php'); ?>
             <div class="d-flex justify-content-between mt-2">
                 <button class="btn btn-outline-light d-flex ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
                     <i class="bi bi-list"></i>

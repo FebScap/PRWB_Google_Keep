@@ -14,11 +14,18 @@ class ControllerViewSharedNotes extends Controller {
         $user = 1;
 
         $notes = Note::getAllArchivedNotesByUser($user);
+        $sharedBy = Note::getAllSharedBy($user);
+        $nameSharedBy = [];
+        foreach ($sharedBy as $id) {
+            $nameSharedBy[] = User::getByID($id)->full_name;
+        }
 
         if (isset($_GET["param1"]) && $_GET["param1"] !== "") {
             $userFrom = User::getById($_GET["param1"]);
         }
         (new View("viewsharednotes"))->show(["notes" => $notes,
+                                                "sharedBy" => $sharedBy,
+                                                "nameSharedBy" => $nameSharedBy,
                                                 "from" => $userFrom]);                                       
     }
 
