@@ -6,7 +6,7 @@
     </head>
     <body data-bs-theme="dark">
         <div class="container-fluid d-flex flex-column">
-            <?php include('menu.html'); ?>
+            <?php include('menu.php'); ?>
             <a class="nav-link me-4 fs-2" href="viewnotes"><i class="bi bi-chevron-left"></i></a>
             <h1 class="fs-4 d-flex mt-3">Shares</h1>
 
