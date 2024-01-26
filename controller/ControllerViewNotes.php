@@ -1,10 +1,18 @@
 <?php
 require_once "framework/Controller.php";
+require_once 'model/Note.php';
 
 class ControllerViewNotes extends Controller {
     //accueil du controlleur.
     public function index() : void {
-        (new View("viewnotes"))->show();
+        //$user = $this->get_user_or_redirect();
+        $user = 1;
+
+        $pinnedNotes = Note::getAllPinnedNotesByUser($user);
+        $notPinnedNotes = Note::getAllUnpinnedNotesByUser($user);
+        (new View("viewnotes"))->show(["pinnedNotes" => $pinnedNotes,
+                                        "notPinnedNotes" => $notPinnedNotes,
+                                        "user" => $user]);
     }
 
     //Button de création d'une nouvelle note
