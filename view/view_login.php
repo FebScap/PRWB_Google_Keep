@@ -32,7 +32,17 @@
                     </form>
 
                     <span class="w-100"><a class="link-underline-primary" href="signup">New here ? Click here to subscribe !</a></span>
-                </div>
+                    <?php if (count($errors) != 0): ?>
+                        <div class='errors'>
+                            <p>Please correct the following error(s) :</p>
+                            <ul>
+                                <?php foreach ($errors as $error): ?>
+                                    <li><?= $error ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+                    </div>
                     </div>
                 </div>
             </div>
