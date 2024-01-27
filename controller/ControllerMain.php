@@ -35,6 +35,7 @@ class ControllerMain extends Controller {
     //gestion de l'inscription d'un utilisateur
     public function signup() : void {
         $mail = '';
+        $fullname = '';
         $password = '';
         $password_confirm = '';
         $errors = [];
@@ -45,7 +46,7 @@ class ControllerMain extends Controller {
             $password = $_POST['password'];
             $password_confirm = $_POST['password_confirm'];
 
-            $user = new User($pseudo, $fullname, Tools::my_hash($password));
+            $user = new User($pseudo, Tools::my_hash($password), $fullname);
             $errors = User::validateUnicity($pseudo);
             $errors = array_merge($errors, $user->validate());
             $errors = array_merge($errors, User::validatePasswords($password, $password_confirm));
@@ -55,7 +56,7 @@ class ControllerMain extends Controller {
                 $this->log_user($user);
             }
         }
-        (new View("signup"))->show(["pseudo" => $pseudo, "password" => $password, 
-                                         "password_confirm" => $password_confirm, "errors" => $errors]);
+        (new View("signup"))->show(["mail" => $mail, "password" => $password, 
+                                         "password_confirm" => $password_confirm, "fullname" => $fullname, "errors" => $errors]);
     }
 }?>
