@@ -11,7 +11,7 @@ class ControllerMain extends Controller {
         if ($this->user_logged()) {
             $this->redirect("viewnotes");
         } else {
-            (new View("login"))->show();
+            (new View("login"))->show(["mail" => $mail='', "password" => $password='', "errors" => $errors=[]]);
         }
     }
 
