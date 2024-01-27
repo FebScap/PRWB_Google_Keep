@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>My notes - Login</title>
+        <base href="<?= $web_root ?>"/>
         <?php include('head.html'); ?>
     </head>
     <body data-bs-theme="dark" class="h-full">
@@ -14,17 +15,22 @@
 
                     <hr class="my-4">
 
-                    <div class="input-group flex-nowrap mt-4 w-100">
-                        <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-person"></i></button>
-                        <input id="mail" type="email" class="form-control" value="<?= $mail ?>" placeholder="exemple@domaine.ect" aria-describedby="basic-addon1">
-                    </div>
+                    <form action="main/login" method="post">
 
-                    <div class="input-group flex-nowrap mt-4 w-100">
-                        <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-key"></i></button>
-                        <input type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
-                    </div>
+                        <div class="input-group flex-nowrap mt-4 w-100">
+                            <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-person"></i></button>
+                            <input id="mail" name="mail" type="email" class="form-control" value="<?= $mail='' ?>" placeholder="exemple@domaine.ect" aria-describedby="basic-addon1">
+                        </div>
 
-                    <button class="btn btn-primary btn-lg btn-block mt-4 mb-4 w-100" type="submit">Login</button>
+                        <div class="input-group flex-nowrap mt-4 w-100">
+                            <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-key"></i></button>
+                            <input id="password" name="password" type="password" class="form-control" value="<? $password='' ?>" placeholder="Password" aria-describedby="basic-addon1">
+                        </div>
+
+                        <button class="btn btn-primary btn-lg btn-block mt-4 mb-4 w-100" type="submit">Login</button>
+
+                    </form>
+
                     <span class="w-100"><a class="link-underline-primary" href="signup">New here ? Click here to subscribe !</a></span>
                 </div>
                     </div>

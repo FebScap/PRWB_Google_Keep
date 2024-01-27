@@ -34,27 +34,28 @@ class ControllerMain extends Controller {
 
     //gestion de l'inscription d'un utilisateur
     public function signup() : void {
-        $pseudo = '';
+        $mail = '';
         $password = '';
         $password_confirm = '';
         $errors = [];
 
-        if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['password_confirm'])) {
-            $pseudo = trim($_POST['pseudo']);
+        if (isset($_POST['mail']) && isset($_POST['fullname']) && isset($_POST['password']) && isset($_POST['password_confirm'])) {
+            $pseudo = trim($_POST['mail']);
+            $fullname = $_POST['fullname'];
             $password = $_POST['password'];
             $password_confirm = $_POST['password_confirm'];
 
-            $member = new Member($pseudo, Tools::my_hash($password));
-            $errors = Member::validate_unicity($pseudo);
-            $errors = array_merge($errors, $member->validate());
-            $errors = array_merge($errors, Member::validate_passwords($password, $password_confirm));
+            $user = new User($pseudo, $fullname, Tools::my_hash($password));
+            $errors = User::validateUnicity($pseudo);
+            $errors = array_merge($errors, $user->validate());
+            $errors = array_merge($errors, User::validatePasswords($password, $password_confirm));
 
             if (count($errors) == 0) { 
-                $member->persist(); //sauve l'utilisateur
-                $this->log_user($member);
+                $user->persist(); //sauve l'utilisateur
+                $this->log_user($user);
             }
         }
         (new View("signup"))->show(["pseudo" => $pseudo, "password" => $password, 
                                          "password_confirm" => $password_confirm, "errors" => $errors]);
     }
-}
+}?>
