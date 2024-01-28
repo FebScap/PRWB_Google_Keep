@@ -64,7 +64,15 @@ class User extends Model {
         return $this->id;
     }
 
-    private static function checkPassword(string $clear_password, string $hash) : bool {
+    public function getPassword() {
+        return $this->hashed_password;
+    }
+
+    private function setPassword(string $password) {
+        $this->hashed_password = Tools::my_hash($password);
+    }
+
+    public static function checkPassword(string $clear_password, string $hash) : bool {
         return $hash === Tools::my_hash($clear_password);
     }
 
@@ -93,7 +101,7 @@ class User extends Model {
     private static function validatePassword(string $password) : array {
         $errors = [];
         if (strlen($password) < 8) {
-            $errors[] = "Password length must be between 8.";
+            $errors[] = "Password length must be at least 8.";
         } if (!((preg_match("/[A-Z]/", $password)) && preg_match("/\d/", $password) && preg_match("/['\";:,.\/?!\\-]/", $password))) {
             $errors[] = "Password must contain one uppercase letter, one number and one punctuation mark.";
         }
@@ -138,6 +146,11 @@ class User extends Model {
             self::execute("INSERT INTO Users(mail, hashed_password, full_name) VALUES (:mail, :hashed_password, :full_name)", 
                             ["mail"=>$this->mail, "hashed_password"=>$this->hashed_password, "full_name"=>$this->full_name]); 
         return $this;
+    }
+
+    public function changePassword(string $password) : void {
+        $this->setPassword($password);
+        $this->persist();
     }
 }
 ?>

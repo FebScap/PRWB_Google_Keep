@@ -19,7 +19,7 @@
             </div>
             <div class="mt-3">
             <i class="bi bi-three-dots"></i>
-            <a href="" for="noteTitle" class="form-label link-light link-underline link-underline-opacity-0">Change password</a>
+            <a href="settings/changePassword" for="noteTitle" class="form-label link-light link-underline link-underline-opacity-0">Change password</a>
             </div>
             <div class="mt-3">
             <i class="bi bi-box-arrow-right"></i>    
