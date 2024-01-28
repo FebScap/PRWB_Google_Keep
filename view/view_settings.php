@@ -15,7 +15,7 @@
             </div>
             <div class="mt-3">
             <i class="bi bi-person-gear"></i>    
-            <a href="" for="noteTitle" class="form-label link-light link-underline link-underline-opacity-0">Edit profile</a>
+            <a href="settings/editProfile" for="noteTitle" class="form-label link-light link-underline link-underline-opacity-0">Edit profile</a>
             </div>
             <div class="mt-3">
             <i class="bi bi-three-dots"></i>

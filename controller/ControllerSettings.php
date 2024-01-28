@@ -34,4 +34,15 @@ class ControllerSettings extends Controller{
                                              "new_password" => $new_password, "errors" => $errors]);
 
     }
+
+    public function editProfile() : void {
+        $user = $this->get_user_or_false();
+        $mail = $user->getMail();
+        $fullname = $user->getFullname();
+        
+
+        
+        
+        (new View("editProfile"))->show();
+    }
 }
