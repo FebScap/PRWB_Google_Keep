@@ -6,7 +6,7 @@ require_once 'model/User.php';
 class ControllerViewNotes extends Controller {
     //accueil du controlleur.
     public function index() : void {
-        //$user = $this->get_user_or_redirect();
+        //$user = $this->get_user_or_redirect()::getId();
         $user = 1;
 
         $pinnedNotes = Note::getAllPinnedNotesByUser($user);

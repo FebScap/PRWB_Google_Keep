@@ -70,17 +70,25 @@ class User extends Model {
         return $hash === Tools::my_hash($clear_password);
     }
 
-    public function validate() : array {
+    public function validateMail() : array {
         $errors = [];
         if (!strlen($this->mail) > 0) {
             $errors[] = "Mail is required.";
         } 
         if (!(strlen($this->mail) >= 3)) {
-            $errors[] = "Mail length must be between 3.";
+            $errors[] = "Mail length must be at least 3.";
         } 
         if (!(preg_match("/^[a-zA-Z0-9][a-zA-Z0-9]*@[a-zA-Z0-9]+\.[a-zA-Z0-9.]+$/", $this->mail))) {
             $errors[] = "Mail must contain one and only one @, at least one dot, and start with a letter or a number.";
         }
+        return $errors;
+    }
+
+    public function validateFullname() : array {
+        $errors = [];
+        if (strlen($this->full_name) < 3) {
+            $errors[] = "Fullname length must be at least 3.";
+        } 
         return $errors;
     }
 
