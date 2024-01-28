@@ -5,6 +5,7 @@ require_once 'model/User.php';
 
 class ControllerSettings extends Controller{
     public function index() : void {
-        $this->logout();;
+        $user = $this->get_user_or_false();
+        (new View("settings"))->show(["user" => $user]);
     }
 }

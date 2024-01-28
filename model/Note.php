@@ -171,5 +171,7 @@ class Note extends Model {
 
     public static function decreaseWeight(int $noteId): void {
         self::execute("UPDATE notes SET weight = weight - 1 WHERE id = :noteId", ["noteId" => $noteId]);
-    }     
+    }
+    
+    //public abstract function persist() : void;
 }
