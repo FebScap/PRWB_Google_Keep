@@ -15,15 +15,15 @@
             </div>
             <div class="mt-3">
             <i class="bi bi-person-gear"></i>    
-            <label for="noteTitle" class="form-label">Edit profile</label>
+            <a href="" for="noteTitle" class="form-label link-light link-underline link-underline-opacity-0">Edit profile</a>
             </div>
             <div class="mt-3">
             <i class="bi bi-three-dots"></i>
-            <label for="noteTitle" class="form-label">Change password</label>
+            <a href="" for="noteTitle" class="form-label link-light link-underline link-underline-opacity-0">Change password</a>
             </div>
             <div class="mt-3">
             <i class="bi bi-box-arrow-right"></i>    
-            <label for="noteTitle" class="form-label">Logout</label>
+            <a href="settings/logout" for="noteTitle" class="form-label link-light link-underline link-underline-opacity-0">Logout</a>
             </div>
         </form>
         <?php include('footer.html'); ?>
