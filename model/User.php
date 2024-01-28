@@ -86,7 +86,7 @@ class User extends Model {
 
     public function validateFullname() : array {
         $errors = [];
-        if (!strlen($this->full_name) > 3) {
+        if (strlen($this->full_name) < 3) {
             $errors[] = "Fullname length must be at least 3.";
         } 
         return $errors;

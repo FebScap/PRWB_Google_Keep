@@ -41,13 +41,13 @@ class ControllerMain extends Controller {
         $errors = [];
 
         if (isset($_POST['mail']) && isset($_POST['fullname']) && isset($_POST['password']) && isset($_POST['password_confirm'])) {
-            $pseudo = trim($_POST['mail']);
+            $mail = trim($_POST['mail']);
             $fullname = $_POST['fullname'];
             $password = $_POST['password'];
             $password_confirm = $_POST['password_confirm'];
 
-            $user = new User($pseudo, Tools::my_hash($password), $fullname);
-            $errors = User::validateUnicity($pseudo);
+            $user = new User($mail, Tools::my_hash($password), $fullname);
+            $errors = User::validateUnicity($mail);
             $errors = array_merge($errors, $user->validateMail());
             $errors = array_merge($errors, $user->validateFullname());
             $errors = array_merge($errors, User::validatePasswords($password, $password_confirm));
