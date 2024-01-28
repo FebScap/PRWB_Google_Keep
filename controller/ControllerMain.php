@@ -48,7 +48,8 @@ class ControllerMain extends Controller {
 
             $user = new User($pseudo, Tools::my_hash($password), $fullname);
             $errors = User::validateUnicity($pseudo);
-            $errors = array_merge($errors, $user->validate());
+            $errors = array_merge($errors, $user->validateMail());
+            $errors = array_merge($errors, $user->validateFullname());
             $errors = array_merge($errors, User::validatePasswords($password, $password_confirm));
 
             if (count($errors) == 0) { 
