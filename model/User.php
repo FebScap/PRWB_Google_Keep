@@ -22,7 +22,7 @@ class User extends Model {
         if ($query->rowCount() == 0){
             return false;
         } else {
-            return new User($data["mail"], $data["hashed_password"], $data["full_name"], $data["role"]);
+            return new User($data["mail"], $data["hashed_password"], $data["full_name"], $data["role"], $data["id"]);
         }
     }
 
@@ -36,7 +36,7 @@ class User extends Model {
         }
     }
 
-    public function getNotes() : array {
+    /*public function getNotes() : array {
         return Note::getNotes($this); //Implémenter getNotes dans Note.php
     }
 
@@ -46,7 +46,7 @@ class User extends Model {
 
     public function createNote(Note $note) : Note|array {
         return $note->persist($this);
-    }
+    }*/
 
     public function getMail() {
         return $this->mail;
