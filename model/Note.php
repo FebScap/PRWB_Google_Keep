@@ -4,9 +4,82 @@ require_once "framework/Model.php";
 
 class Note extends Model {
     
-    public function __construct(public string $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public string $pinned, public string $archived, public string $weight)
-    {
-        
+    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public string $pinned, public string $archived, public int $weight)
+    {}
+
+    // Méthodes GET
+    public function getId(): int {
+        return $this->id;
+    }
+
+    public function getTitle(): string {
+        return $this->title;
+    }
+
+    public function getOwner(): int {
+        return $this->owner;
+    }
+
+    public function getCreatedAt(): string {
+        return $this->created_at;
+    }
+
+    public function getEditedAt(): ?string {
+        return $this->edited_at;
+    }
+
+    public function getPinned(): string {
+        return $this->pinned;
+    }
+
+    public function getArchived(): string {
+        return $this->archived;
+    }
+
+    public function getWeight(): int {
+        return $this->weight;
+    }
+
+    // Méthodes SET
+    public function setId(int $id): void {
+        $this->id = $id;
+    }
+
+    public function setTitle(string $title): void {
+        $this->title = $title;
+    }
+
+    public function setOwner(int $owner): void {
+        $this->owner = $owner;
+    }
+
+    public function setCreatedAt(string $created_at): void {
+        $this->created_at = $created_at;
+    }
+
+    public function setEditedAt(?string $edited_at): void {
+        $this->edited_at = $edited_at;
+    }
+
+    public function setPinned(string $pinned): void {
+        $this->pinned = $pinned;
+    }
+
+    public function setArchived(string $archived): void {
+        $this->archived = $archived;
+    }
+
+    public function setWeight(int $weight): void {
+        $this->weight = $weight;
+    }
+
+    // Méthodes IS
+    public function isPinned(): bool {
+        return $this->pinned == 1;
+    }
+
+    public function isArchived(): bool {
+        return $this->archived == 1;
     }
 
     public static function getAllNotesByUser(int $userId) : array {
