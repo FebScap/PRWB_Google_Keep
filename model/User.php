@@ -52,8 +52,16 @@ class User extends Model {
         return $this->mail;
     }
 
+    public function setMail(string $mail) {
+        $this->mail = $mail;
+    }
+
     public function getFullName() {
         return $this->full_name;
+    }
+
+    public function setFullName(string $fullname) {
+        $this->full_name = $fullname;
     }
 
     public function getRole() {
@@ -137,6 +145,18 @@ class User extends Model {
         }
         return $errors;
     }
+
+    public static function isValidFullname(string $fullname) : bool {
+        return strlen($fullname) >=3 ;
+    }
+
+    public static function isValidMail(string $mail): bool {
+        // Vérifie si la longueur est d'au moins 3 caractères,
+        // contient un @, contient au moins un point,
+        // et commence par une lettre ou un chiffre.
+        return strlen($mail) >= 3 && strpos($mail, '@') !== false && strpos($mail, '.') !== false && ctype_alnum($mail[0]);
+    }
+    
 
     public function persist() : User {
         if (self::getByMail($this->mail))

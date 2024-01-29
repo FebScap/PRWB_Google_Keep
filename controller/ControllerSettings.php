@@ -36,13 +36,22 @@ class ControllerSettings extends Controller{
     }
 
     public function editProfile() : void {
-        $user = $this->get_user_or_false();
-        $mail = $user->getMail();
+        $user = $this->get_user_or_redirect();
         $fullname = $user->getFullname();
-        
+        $errorsFullname = [];
 
-        
-        
-        (new View("editProfile"))->show();
+        if (isset($_POST['fullname'])){
+
+            if (!User::isValidFullname($_POST['fullname'])){
+                $errorsFullname = ["Fullname length must be at least 3."];
+            }
+            
+            if (count($errorsFullname) == 0) {
+                $user->setFullName($_POST['fullname']);
+                $user->persist();
+                $this->redirect("settings");
+            }
+        }
+        (new View("editProfile"))->show(["fullname" => $fullname, "errorsFullname" => $errorsFullname]);
     }
 }

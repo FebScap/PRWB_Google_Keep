@@ -15,16 +15,20 @@
 
                     <hr class="my-4">
 
-                    <form id="signupForm" action="" method="post">
+                    <form id="signupForm" action="settings/editProfile" method="post">
 
                         <div class="input-group flex-nowrap mt-2 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-person"></i></button>
-                            <input id="mail" name="mail" type="email" class="form-control" value="<?= $mail ?>" placeholder="exemple@domaine.ect" aria-describedby="basic-addon1">
-                        </div>
-
-                        <div class="input-group flex-nowrap mt-2 w-100">
-                            <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-person"></i></button>
-                            <input id="fullname" name="fullname" type="text" class="form-control" value="<?= $fullname ?>" placeholder="Full name" aria-describedby="basic-addon1">
+                            <input id="fullname" name="fullname" type="text" class="form-control" value="<?= $fullname ?>" placeholder="Fullname" aria-describedby="basic-addon1">
+                            <?php if (count($errorsFullname) != 0): ?>
+                                <div class='errorsFullname'>
+                                    <ul>
+                                        <?php foreach ($errorsFullname as $error): ?>
+                                            <li><?= $error ?></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            <?php endif; ?>
                         </div>
 
                         <button class="btn btn-primary btn-lg btn-block mt-3 w-100" type="submit">Save</button>
@@ -33,18 +37,7 @@
 
                     </form>
 
-                    <?php if (count($errors) != 0): ?>
-                        <div class='errors'>
-                            <br><br><p>Please correct the following error(s) :</p>
-                            <ul>
-                                <?php foreach ($errors as $error): ?>
-                                    <li><?= $error ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                    <?php endif; ?>
-
-                </div>
+                    </div>
                     </div>
                 </div>
             </div>
