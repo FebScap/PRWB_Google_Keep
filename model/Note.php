@@ -141,7 +141,7 @@ class Note extends Model {
         }
     }
 
-    public static function getTitle(int $noteId) : string {
+    public static function getTitleById(int $noteId) : string {
         $query = self::execute("SELECT title FROM notes WHERE id = :noteId", ["noteId" => $noteId]);
         $data = $query->fetch();
     
@@ -153,7 +153,7 @@ class Note extends Model {
         return $data["title"];
     }
     
-    public static function getWeight(int $noteId) : int {
+    public static function getWeightbyId(int $noteId) : int {
         $query = self::execute("SELECT weight FROM notes WHERE id = :noteId", ["noteId" => $noteId]);
         $data = $query->fetch();
     
@@ -172,5 +172,12 @@ class Note extends Model {
     public static function decreaseWeight(int $noteId): void {
         self::execute("UPDATE notes SET weight = weight - 1 WHERE id = :noteId", ["noteId" => $noteId]);
     }
-     
+    
+    //public abstract function persist() : void;
+
+    public static function validateTitle(string $title) : bool {
+        return (strlen($title) >= 3 && strlen($title) <= 25);
+    }
+
+
 }
