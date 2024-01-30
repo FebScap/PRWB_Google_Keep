@@ -29,5 +29,5 @@
 ...
 
 ## A ajouter 
-- edit profile : changer email 
-- refactor les validations 
+- edit profile : changer email à implémenter
+- refactor les validations de User

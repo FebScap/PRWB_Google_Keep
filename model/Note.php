@@ -202,14 +202,14 @@ class Note extends Model {
             return false;
         } else {
             return new Note(
-                $row["id"],
-                $row["title"],
-                $row["owner"],
-                $row["created_at"],
-                $row["edited_at"],
-                $row["pinned"],
-                $row["archived"],
-                $row["weight"]
+                $data["id"],
+                $data["title"],
+                $data["owner"],
+                $data["created_at"],
+                $data["edited_at"],
+                $data["pinned"],
+                $data["archived"],
+                $data["weight"]
             );
         }
     }
