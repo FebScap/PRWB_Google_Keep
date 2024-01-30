@@ -2,7 +2,7 @@
 
 require_once "framework/Model.php";
 
-class Note extends Model {
+abstract class Note extends Model {
     
     public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public string $pinned, public string $archived, public int $weight)
     {}
@@ -246,11 +246,13 @@ class Note extends Model {
         self::execute("UPDATE notes SET weight = weight - 1 WHERE id = :noteId", ["noteId" => $noteId]);
     }
     
-    //public abstract function persist() : void;
+    public abstract function persist() : object|array;
 
     public static function validateTitle(string $title) : bool {
         return (strlen($title) >= 3 && strlen($title) <= 25);
     }
+
+    public abstract static function delete(int $id) : void;
 
 
 }
