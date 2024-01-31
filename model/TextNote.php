@@ -4,7 +4,7 @@ require_once "framework/Model.php";
 
 class TextNote extends Note {
     
-    public function __construct(public string $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public string $pinned, public string $archived, public string $weight, public string $content)
+    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public string $pinned, public string $archived, public int $weight, public string $content)
     {}
 
     public function persist() : TextNote|array {
