@@ -18,6 +18,7 @@ class ControllerAddTextNote extends Controller{
             $content = $_POST['content'];
             $errors = $note->validate();
             if (count($errors) == 0){
+                Note::increaseAllWeightBy1($user->getId());
                 $note->persist();
                 $this->redirect("viewnotes");
             }

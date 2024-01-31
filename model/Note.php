@@ -248,11 +248,21 @@ class Note extends Model { //should be abstract
     
     //public abstract function persist() : object|array;
 
+    
+
     public static function validateTitle(string $title) : bool {
         return (strlen($title) >= 3 && strlen($title) <= 25);
     }
 
     //public abstract static function delete(int $id) : void;
+
+    public static function increaseAllWeightBy1(int $id) : void { //Augmente le poids de toutes les nutes d'un user afin d'inserer une nouvelle note au poids de 1
+        $notes = Note::getAllNotesByUser($id);
+        foreach ($notes as $note){
+            $note->setWeight($note->getWeight() + 1);
+            $note->persist();
+        }
+    }
 
 
 }
