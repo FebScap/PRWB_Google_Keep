@@ -22,7 +22,19 @@ class TextNote extends Note {
                 return $errors;
             }
         } else {
-            throw new Exception("Pas rdy encore");//Modification
+            //throw new Exception("Pas rdy encore");//Modification
+            $errors = $this->validate();
+            if (empty($errors)){
+                // Mise à jour dans la table 'Notes'
+                self::execute('UPDATE Notes SET title = :title WHERE weight = :weight', ['title' => $this->title, 'weight' => $this->getWeight()]);
+            
+                // Mise à jour dans la table 'Text_Notes'
+                self::execute('UPDATE Text_Notes SET content = :content WHERE id = :id', ['content' => $this->content, 'id' => $this->id]);
+            
+                return $this;
+            } else {
+                return $errors;
+            }
         }
     }
 

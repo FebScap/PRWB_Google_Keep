@@ -248,8 +248,6 @@ class Note extends Model { //should be abstract
     
     //public abstract function persist() : object|array;
 
-    
-
     public static function validateTitle(string $title) : bool {
         return (strlen($title) >= 3 && strlen($title) <= 25);
     }
