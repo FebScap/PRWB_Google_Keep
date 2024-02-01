@@ -33,7 +33,8 @@ class ControllerViewNotes extends Controller {
 
     //Button de création d'une nouvelle note texte
     public function  add_text_note() : void {
-        (new View("addtextnote"))->show();
+        //(new View("addtextnote"))->show();
+        $this->redirect("addTextNote");
     }
 
      //Button de création d'une nouvelle note checklist
