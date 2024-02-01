@@ -7,6 +7,13 @@ class TextNote extends Note {
     public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public string $pinned, public string $archived, public int $weight, public string $content)
     {}
 
+    public function getContent(): string {
+        return $this->content;
+    }
+    public function setContent(string $content): void {
+        $this->content = $content;
+    }
+
     public function persist() : TextNote|array {
         if ($this->id == NULL){
             $errors = $this->validate();
@@ -23,12 +30,13 @@ class TextNote extends Note {
             }
         } else {
             //throw new Exception("Pas rdy encore");//Modification
+            // Mise à jour d'une note existante
             $errors = $this->validate();
             if (empty($errors)){
-                // Mise à jour dans la table 'Notes'
-                self::execute('UPDATE Notes SET title = :title WHERE weight = :weight', ['title' => $this->title, 'weight' => $this->getWeight()]);
+            // Mise à jour dans la table 'Notes'
+                self::execute('UPDATE Notes SET weight = :weight WHERE id = :id', ['weight' => $this->weight, 'id' => $this->id]);
             
-                // Mise à jour dans la table 'Text_Notes'
+            // Mise à jour dans la table 'Text_Notes'
                 self::execute('UPDATE Text_Notes SET content = :content WHERE id = :id', ['content' => $this->content, 'id' => $this->id]);
             
                 return $this;
@@ -49,8 +57,6 @@ class TextNote extends Note {
         self::execute("DELETE FROM notes WHERE id = :id", ["id" => $id]);
     }
     
-    
-
     public function validate() : array {
         $errors = [];
         if (!(strlen($this->title) >= 3 && strlen($this->title) <= 25)) {

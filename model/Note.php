@@ -258,8 +258,56 @@ class Note extends Model { //should be abstract
         $notes = Note::getAllNotesByUser($id);
         foreach ($notes as $note){
             $note->setWeight($note->getWeight() + 1);
+            $note = new Note($note->getId(),
+                                    $note->getTitle(),
+                                    $note->getOwner(),
+                                    $note->getCreatedAt(),
+                                    $note->getEditedAt(),
+                                    $note->getPinned(),
+                                    $note->getArchived(),
+                                    $note->getWeight());
             $note->persist();
         }
+    }
+
+    public function persist() : Note|array {
+        if ($this->id == NULL){
+            $errors = $this->validate();
+            if (empty($errors)){
+                
+                self::execute('INSERT INTO Notes(title, owner, edited_at, pinned, archived, weight) VALUES (:title, :owner, null, 0, 0, 1)', ['title' => $this->title, 'owner' => $this->owner]);
+                $note = self::getNoteById(self::lastInsertId());
+                $this->id = $note->id;
+                $this->created_at = $note->created_at;
+                //self::execute('INSERT INTO Text_Notes(content, id) VALUES (:content, :id)', ['content' => $this->content, 'id' => $this->id]);
+                return $this;
+            } else {
+                return $errors;
+            }
+        } else {
+            //throw new Exception("Pas rdy encore");//Modification
+            // Mise à jour d'une note existante
+            $errors = $this->validate();
+            if (empty($errors)){
+            // Mise à jour dans la table 'Notes'
+                self::execute('UPDATE Notes SET weight = :weight WHERE id = :id', ['weight' => $this->weight, 'id' => $this->id]);
+            
+            // Mise à jour dans la table 'Text_Notes'
+                //self::execute('UPDATE Text_Notes SET content = :content WHERE id = :id', ['content' => $this->content, 'id' => $this->id]);
+            
+                return $this;
+            } else {
+                return $errors;
+            }
+        }
+    }
+
+    public function validate() : array {
+        $errors = [];
+        if (!(strlen($this->title) >= 3 && strlen($this->title) <= 25)) {
+            $errors[] = "Title length must be between 3 and 25.";
+        }
+        return $errors;
     }
 
 
