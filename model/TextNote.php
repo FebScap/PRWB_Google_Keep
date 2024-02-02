@@ -46,7 +46,7 @@ class TextNote extends Note {
         }
     }
 
-    public static function delete(int $id): void {
+    /*public static function delete(int $id): void {
         // Supprimer les enregistrements dans la table note_shares liés à la note
         self::execute("DELETE FROM note_shares WHERE note = :id", ["id" => $id]);
     
@@ -55,7 +55,7 @@ class TextNote extends Note {
     
         // Supprimer la note de la table notes
         self::execute("DELETE FROM notes WHERE id = :id", ["id" => $id]);
-    }
+    }*/
     
     public function validate() : array {
         $errors = [];

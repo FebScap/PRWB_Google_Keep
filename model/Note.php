@@ -311,4 +311,19 @@ class Note extends Model { //should be abstract
     }
 
 
+    public static function delete(int $id): void {
+        // Supprimer les enregistrements dans la table note_shares liés à la note
+        self::execute("DELETE FROM note_shares WHERE note = :id", ["id" => $id]);
+        
+        // Supprimer les enregistrements dans la table note_shares liés à la note
+        self::execute("DELETE FROM note_shares WHERE note = :id", ["id" => $id]);
+    
+        // Supprimer la note de la table text_notes
+        self::execute("DELETE FROM text_notes WHERE id = :id", ["id" => $id]);
+    
+        // Supprimer la note de la table notes
+        self::execute("DELETE FROM notes WHERE id = :id", ["id" => $id]);
+    }
+
+
 }
