@@ -13,7 +13,7 @@
                 <p class="font-italic">Created 1mounth ago...</p>
                 <div class="mb-3">
                 <label for="disabledTextInput" class="form-label">Title</label>
-                <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled title">
+                <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled title" value="">
                 </div>
                 <div class="mb-3">
                 <div class="mb-3">

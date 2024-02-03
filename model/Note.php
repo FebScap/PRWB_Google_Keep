@@ -82,6 +82,12 @@ class Note extends Model { //should be abstract
         return $this->archived == 1;
     }
 
+    public static function isCheckListNote(int $id): bool {
+        $query = self::execute("SELECT * FROM checklist_notes WHERE id = :id", ["id" => $id]);
+        return $query->rowCount() > 0;
+    }
+    
+
     public static function getAllNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId ORDER BY weight DESC", ["userId" => $userId])->fetchAll();
         $notes = [];
