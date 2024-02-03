@@ -16,6 +16,6 @@ class ControllerDeleteNote extends Controller {
     public function delete() : void {
         Note::delete($_GET["param1"]);
         
-        (new View("viewnotes"))->show();
+        $this->redirect("viewnotes");
     }
 }

@@ -174,13 +174,15 @@ class User extends Model {
     }
 
     public function isAllowedToSee(int $idNote): bool {
+        
         $loggedInUserId = $this->getId(); 
         
         $queryOwner = self::execute("SELECT * FROM notes WHERE id = :id AND owner = :userId", ["id" => $idNote, "userId" => $loggedInUserId]);
         
         $queryShares = self::execute("SELECT * FROM note_shares WHERE note = :id AND user = :userId", ["id" => $idNote, "userId" => $loggedInUserId]);
         
-        return ($queryOwner->rowCount() > 0) || ($queryShares->rowCount() > 0);
+        
+        return (($queryShares->rowCount() + $queryOwner->rowCount()) != 0);
     }
     
     

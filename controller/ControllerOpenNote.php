@@ -9,7 +9,7 @@ class ControllerOpenNote extends Controller { //Should be abstract
     public function index() : void {
 
         $user = $this->get_user_or_redirect()->getId();
-        if (isset($_GET["param1"]) && is_numeric($_GET["param1"] )) { //&& $this->get_user_or_false()->isAllowedToSee($_GET["param1"])) Condition à verifier
+        if (isset($_GET["param1"]) && is_numeric($_GET["param1"] ) && $this->get_user_or_false()->isAllowedToSee($_GET["param1"])) {
             if (Note::isCheckListNote($_GET["param1"])) {
                 //instance de note à completer
                 
