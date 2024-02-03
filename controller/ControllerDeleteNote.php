@@ -13,7 +13,7 @@ class ControllerDeleteNote extends Controller {
         if (isset($_GET["param1"]) && is_numeric($_GET["param1"]) && Note::isANote($_GET["param1"])) {
         
             $note = Note::getNoteById($_GET["param1"]);
-            if ($user->isOwner($note->getId())) {
+            if ($user->isOwner($note->getId()) && $note->isArchived()) {
                 (new View("deleteNote"))->show(["noteid" => $_GET["param1"]]);
             }
             

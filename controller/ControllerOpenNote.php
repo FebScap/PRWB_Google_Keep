@@ -16,7 +16,7 @@ class ControllerOpenNote extends Controller { //Should be abstract
                 (new View("openchecklistNote"))->show();
             } else {
                 $textnote = TextNote::getTextNoteById($_GET["param1"]);
-                (new View("opentextNote"))->show(["textnote" => $textnote]);
+                (new View("opentextNote"))->show(["textnote" => $textnote, "user" => $this->get_user_or_false()]);
             }
         } else {
             (new View("error"))->show(["error" => $error = "Oops, looks like you may not be here"]);

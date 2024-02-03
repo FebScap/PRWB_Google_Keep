@@ -82,6 +82,20 @@ class Note extends Model { //should be abstract
         return $this->archived == 1;
     }
 
+    public function isShared(): bool {
+        $query = self::execute("SELECT COUNT(*) as count FROM note_shares WHERE note = :noteId", ["noteId" => $this->id]);
+        $data = $query->fetch();
+    
+        return ($data['count'] > 0);
+    }
+
+    public function isEditable(): bool {
+        $query = self::execute("SELECT COUNT(*) as count FROM note_shares WHERE note = :noteId AND editor = 1", ["noteId" => $this->id]);
+        $data = $query->fetch();
+    
+        return ($data['count'] > 0);
+    }
+
     public static function isANote(int $noteId): bool {
         $query = self::execute("SELECT id FROM notes WHERE id = :noteId", ["noteId" => $noteId]);
         $data = $query->fetch();
@@ -176,6 +190,30 @@ class Note extends Model { //should be abstract
             "SELECT notes.id, notes.title, notes.owner, notes.created_at, notes.edited_at, notes.pinned, notes.archived, notes.weight 
             FROM note_shares JOIN notes on notes.id = note_shares.note 
             WHERE user = :userId AND editor = 1", 
+            ["userId" => $userId])->fetchAll();
+        $notes = [];
+    
+        foreach ($data as $row) {
+            $notes[] = new Note(
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
+            );
+        }
+    
+        return $notes;
+    }
+
+    public static function getAllSharedNotesReaderByUserId(int $userId) : array {
+        $data = self::execute(
+            "SELECT notes.id, notes.title, notes.owner, notes.created_at, notes.edited_at, notes.pinned, notes.archived, notes.weight 
+            FROM note_shares JOIN notes on notes.id = note_shares.note 
+            WHERE user = :userId AND editor = 0", 
             ["userId" => $userId])->fetchAll();
         $notes = [];
     

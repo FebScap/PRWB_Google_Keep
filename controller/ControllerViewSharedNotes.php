@@ -13,7 +13,9 @@ class ControllerViewSharedNotes extends Controller {
         $user = $this->get_user_or_redirect()->getId();
         //$user = 1;
 
-        $notes = Note::getAllArchivedNotesByUser($user);
+        //$notes = Note::getAllArchivedNotesByUser($user);
+        $notesEdit = Note::getAllSharedNotesEditorByUserId($user);
+        $notesRead = Note::getAllSharedNotesReaderByUserId($user);
         $sharedBy = Note::getAllSharedBy($user);
         $nameSharedBy = [];
         foreach ($sharedBy as $id) {
@@ -22,11 +24,28 @@ class ControllerViewSharedNotes extends Controller {
 
         if (isset($_GET["param1"]) && $_GET["param1"] !== "") {
             $userFrom = User::getById($_GET["param1"]);
+
         }
-        (new View("viewsharednotes"))->show(["notes" => $notes,
+        $notesEditSharedBy = [];
+        $notesReadSharedBy = [];
+
+        foreach ($notesEdit as $note) {
+            if ($note->getOwner() == $_GET["param1"]){
+                array_push($notesEditSharedBy, $note);
+            }
+        }
+
+        foreach ($notesRead as $note) {
+            if ($note->getOwner() == $_GET["param1"]) {
+                array_push($notesReadSharedBy, $note);
+            }
+        }
+        
+
+        (new View("viewsharednotes"))->show(["notesEdit" => $notesEditSharedBy, "notesRead" => $notesReadSharedBy, 
                                                 "sharedBy" => $sharedBy,
                                                 "nameSharedBy" => $nameSharedBy,
-                                                "from" => $userFrom]);                                       
+                                                "from" => $userFrom]);                                   
     }
 
 }
