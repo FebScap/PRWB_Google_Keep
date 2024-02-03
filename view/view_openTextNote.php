@@ -18,7 +18,7 @@
                 <div class="mb-3">
                 <div class="mb-3">
                 <label for="disabledTextInput" class="form-label">Text</label>
-                <input type="text"  style="height:600px" id="disabledTextInput" class="form-control" placeholder="Disabled text" value="<?= $textnote->getContent() ?>">
+                <textarea type="text"  style="height:550px" id="disabledTextInput" class="form-control"><?= $textnote->getContent() ?></textarea>
                 </div>
                 <div class="mb-3">
             </fieldset>
