@@ -64,4 +64,25 @@ class TextNote extends Note {
         }
         return $errors;
     }
+
+    public static function getTextNoteById(int $noteId) : Note|false {
+        $query = self::execute("SELECT * FROM notes WHERE id = :noteId", ["noteId" => $noteId]);
+        $querycontent = self::execute("SELECT content FROM text_notes WHERE id = :noteId", ["noteId" => $noteId])->fetch();
+        $data = $query->fetch();
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return new TextNote(
+                $data["id"],
+                $data["title"],
+                $data["owner"],
+                $data["created_at"],
+                $data["edited_at"],
+                $data["pinned"],
+                $data["archived"],
+                $data["weight"],
+                $querycontent[0]
+            );
+        }
+    }
 }
