@@ -184,6 +184,17 @@ class User extends Model {
         
         return (($queryShares->rowCount() + $queryOwner->rowCount()) != 0);
     }
+
+    public function isOwner(int $noteId): bool {
+        
+        $query = self::execute("SELECT owner FROM notes WHERE id = :noteId", ["noteId" => $noteId]);
+        $data = $query->fetch();
+        if ($query->rowCount() === 0 || !$data) {
+            return false;
+        }
+        
+        return $data['owner'] === $this->getId();
+    }
     
     
 }

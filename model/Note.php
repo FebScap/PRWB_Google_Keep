@@ -82,6 +82,12 @@ class Note extends Model { //should be abstract
         return $this->archived == 1;
     }
 
+    public static function isANote(int $noteId): bool {
+        $query = self::execute("SELECT id FROM notes WHERE id = :noteId", ["noteId" => $noteId]);
+        $data = $query->fetch();
+        return $query->rowCount() > 0;
+    }
+
     public static function isCheckListNote(int $id): bool {
         $query = self::execute("SELECT * FROM checklist_notes WHERE id = :id", ["id" => $id]);
         return $query->rowCount() > 0;
@@ -318,21 +324,23 @@ class Note extends Model { //should be abstract
 
 
     public static function delete(int $id): void {
+        
         // Supprimer les enregistrements dans la table checklist_note_items liés à la note
-        self::execute("DELETE FROM checklist_note_items WHERE id = :id", ["id" => $id]);
+        self::execute("DELETE FROM checklist_note_items WHERE checklist_note = :id", ["id" => $id]);
         
         // Supprimer les enregistrements dans la table checklist_notes liés à la note
         self::execute("DELETE FROM checklist_notes WHERE id = :id", ["id" => $id]);
         
         // Supprimer les enregistrements dans la table note_shares liés à la note
         self::execute("DELETE FROM note_shares WHERE note = :id", ["id" => $id]);
-    
+
         // Supprimer la note de la table text_notes
         self::execute("DELETE FROM text_notes WHERE id = :id", ["id" => $id]);
     
         // Supprimer la note de la table notes
         self::execute("DELETE FROM notes WHERE id = :id", ["id" => $id]);
     }
+    
 
     public static function getContentById(int $noteId): string {
         // À utiliser uniquement sur des textNote ! Appeler cette méthode uniquement après vérification avec isCheckListNote()

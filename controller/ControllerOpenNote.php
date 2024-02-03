@@ -19,7 +19,7 @@ class ControllerOpenNote extends Controller { //Should be abstract
                 (new View("opentextNote"))->show(["textnote" => $textnote]);
             }
         } else {
-            (new View("error"))->show(["error" => $error = "Oops, look like you may not be here"]);
+            (new View("error"))->show(["error" => $error = "Oops, looks like you may not be here"]);
         }
     }
 
