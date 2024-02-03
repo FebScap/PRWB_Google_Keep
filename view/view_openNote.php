@@ -16,7 +16,7 @@
                 <button type="button" class="btn btn-dark"><i class="bi bi-arrow-down-square"></i></div></button>
             <div class="p-2 bd-highlight">
                 <button type="button" class="btn btn-dark"><i class="bi bi-pencil"></i></div></button>
-          </div>
+        </div>
           <?php include('footer.html'); ?>
     </body>
 </html>
