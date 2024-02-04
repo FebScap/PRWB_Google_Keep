@@ -14,7 +14,9 @@
                 <h1 class="fs-4 d-flex me-3">Shared by <?= $from->full_name ?></h1>
             </div>
             <!-- CARDS -->
-            <h2 class="d-flex h2 fs-6 mt-4 ms-2">Notes shared to you by <?= $from->full_name ?> as editor</h2>
+            <?php if(!sizeof($notesEdit) == 0): ?>
+                <h2 class="d-flex h2 fs-6 mt-4 ms-2">Notes shared to you by <?= $from->full_name ?> as editor</h2>
+            <?php endif; ?>
             <div class="d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($notesEdit); $i++): ?>
 
@@ -37,7 +39,9 @@
                     </a>
                 <?php endfor; ?>
             </div>
-            <h2 class="d-flex h2 fs-6 mt-1 ms-2">Notes shared to you by <?= $from->full_name ?> as reader</h2>
+            <?php if(!sizeof($notesRead) == 0): ?>
+                <h2 class="d-flex h2 fs-6 mt-1 ms-2">Notes shared to you by <?= $from->full_name ?> as reader</h2>
+                <?php endif; ?>
             <div class="d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($notesRead); $i++): ?>
                     <a class="link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $notesRead[$i]->getId() ?>">
