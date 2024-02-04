@@ -10,7 +10,7 @@
         <p>Created 1 month ago...</p>
         <div class="form-group">
             <label for="title" class ="fw-bold">Title</label>
-            <input type="title" class="form-control" id="exampleInputTitle" value="<?= $textnote->getTitle() ?>">
+            <input type="title" class="form-control" id="exampleInputTitle" disabled="disabled" value="<?= $textnote->getTitle() ?>">
         </div>
         <div class="fw-bold" >Items</div>
         <div class="main">
