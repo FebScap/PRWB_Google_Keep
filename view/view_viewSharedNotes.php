@@ -31,7 +31,17 @@
                                         <?php if(!$notesEdit[$i]->isCheckListNote($notesEdit[$i]->getId())): ?>
                                         <?= $notesEdit[$i]->getContentById($notesEdit[$i]->getId()) ?>
                                         <!-- CONTENU CHECKLIST NOTE -->
-                                        <?php else: ?> gestion des checklistnotes à faire ici
+                                        <?php else: ?>
+                                            <?php foreach($notesEdit[$i]->getItemListById($notesEdit[$i]->getId()) as $item): ?>
+                                                <div>
+                                                    <?php if($item->getChecked() == 1): ?>
+                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox" checked>
+                                                    <?php else: ?>
+                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox">
+                                                    <?php endif ?>
+                                                    <label class="form-check-label"><?= $item->getContent() ?></label>
+                                                </div>
+                                            <?php endforeach; ?>
                                         <?php endif; ?>
                                     </li>
                                 </ul>
@@ -55,7 +65,17 @@
                                         <?php if(!$notesRead[$i]->isCheckListNote($notesRead[$i]->getId())): ?>
                                         <?= $notesRead[$i]->getContentById($notesRead[$i]->getId()) ?>
                                         <!-- CONTENU CHECKLIST NOTE -->
-                                        <?php else: ?> gestion des checklistnotes à faire ici
+                                        <?php else: ?>
+                                            <?php foreach($notesRead[$i]->getItemListById($notesRead[$i]->getId()) as $item): ?>
+                                                <div>
+                                                    <?php if($item->getChecked() == 1): ?>
+                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox" checked>
+                                                    <?php else: ?>
+                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox">
+                                                    <?php endif ?>
+                                                    <label class="form-check-label"><?= $item->getContent() ?></label>
+                                                </div>
+                                            <?php endforeach; ?>
                                         <?php endif; ?>
                                     </li>
                                 </ul>

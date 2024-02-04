@@ -28,7 +28,17 @@
                                         <?php if(!$pinnedNotes[$i]->isCheckListNote($pinnedNotes[$i]->getId())): ?>
                                         <?= $pinnedNotes[$i]->getContentById($pinnedNotes[$i]->getId()) ?>
                                         <!-- CONTENU CHECKLIST NOTE -->
-                                        <?php else: ?> gestion des checklistnotes à faire ici
+                                        <?php else: ?>
+                                            <?php foreach($pinnedNotes[$i]->getItemListById($pinnedNotes[$i]->getId()) as $item): ?>
+                                                <div>
+                                                    <?php if($item->getChecked() == 1): ?>
+                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox" checked>
+                                                    <?php else: ?>
+                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox">
+                                                    <?php endif ?>
+                                                    <label class="form-check-label"><?= $item->getContent() ?></label>
+                                                </div>
+                                            <?php endforeach; ?>
                                         <?php endif; ?>
                                     </li>
                                     
