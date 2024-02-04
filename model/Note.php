@@ -82,6 +82,32 @@ class Note extends Model { //should be abstract
         return $this->archived == 1;
     }
 
+    public function isShared(): bool {
+        $query = self::execute("SELECT COUNT(*) as count FROM note_shares WHERE note = :noteId", ["noteId" => $this->id]);
+        $data = $query->fetch();
+    
+        return ($data['count'] > 0);
+    }
+
+    public function isEditable(): bool {
+        $query = self::execute("SELECT COUNT(*) as count FROM note_shares WHERE note = :noteId AND editor = 1", ["noteId" => $this->id]);
+        $data = $query->fetch();
+    
+        return ($data['count'] > 0);
+    }
+
+    public static function isANote(int $noteId): bool {
+        $query = self::execute("SELECT id FROM notes WHERE id = :noteId", ["noteId" => $noteId]);
+        $data = $query->fetch();
+        return $query->rowCount() > 0;
+    }
+
+    public static function isCheckListNote(int $id): bool {
+        $query = self::execute("SELECT * FROM checklist_notes WHERE id = :id", ["id" => $id]);
+        return $query->rowCount() > 0;
+    }
+    
+
     public static function getAllNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId ORDER BY weight DESC", ["userId" => $userId])->fetchAll();
         $notes = [];
@@ -164,6 +190,30 @@ class Note extends Model { //should be abstract
             "SELECT notes.id, notes.title, notes.owner, notes.created_at, notes.edited_at, notes.pinned, notes.archived, notes.weight 
             FROM note_shares JOIN notes on notes.id = note_shares.note 
             WHERE user = :userId AND editor = 1", 
+            ["userId" => $userId])->fetchAll();
+        $notes = [];
+    
+        foreach ($data as $row) {
+            $notes[] = new Note(
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
+            );
+        }
+    
+        return $notes;
+    }
+
+    public static function getAllSharedNotesReaderByUserId(int $userId) : array {
+        $data = self::execute(
+            "SELECT notes.id, notes.title, notes.owner, notes.created_at, notes.edited_at, notes.pinned, notes.archived, notes.weight 
+            FROM note_shares JOIN notes on notes.id = note_shares.note 
+            WHERE user = :userId AND editor = 0", 
             ["userId" => $userId])->fetchAll();
         $notes = [];
     
@@ -309,6 +359,40 @@ class Note extends Model { //should be abstract
         }
         return $errors;
     }
+
+
+    public static function delete(int $id): void {
+        
+        // Supprimer les enregistrements dans la table checklist_note_items liés à la note
+        self::execute("DELETE FROM checklist_note_items WHERE checklist_note = :id", ["id" => $id]);
+        
+        // Supprimer les enregistrements dans la table checklist_notes liés à la note
+        self::execute("DELETE FROM checklist_notes WHERE id = :id", ["id" => $id]);
+        
+        // Supprimer les enregistrements dans la table note_shares liés à la note
+        self::execute("DELETE FROM note_shares WHERE note = :id", ["id" => $id]);
+
+        // Supprimer la note de la table text_notes
+        self::execute("DELETE FROM text_notes WHERE id = :id", ["id" => $id]);
+    
+        // Supprimer la note de la table notes
+        self::execute("DELETE FROM notes WHERE id = :id", ["id" => $id]);
+    }
+    
+
+    public static function getContentById(int $noteId): string {
+        // À utiliser uniquement sur des textNote ! Appeler cette méthode uniquement après vérification avec isCheckListNote()
+        $query = self::execute("SELECT content FROM text_notes WHERE id = :noteId", ["noteId" => $noteId]);
+        $data = $query->fetch();
+    
+        if ($query->rowCount() === 0 || !$data || !isset($data['content'])) {
+            return "";
+        }
+    
+        return $data['content'];
+    }
+    
+    
 
 
 }

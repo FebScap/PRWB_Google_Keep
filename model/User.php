@@ -172,5 +172,30 @@ class User extends Model {
         $this->setPassword($password);
         $this->persist();
     }
+
+    public function isAllowedToSee(int $idNote): bool {
+        
+        $loggedInUserId = $this->getId(); 
+        
+        $queryOwner = self::execute("SELECT * FROM notes WHERE id = :id AND owner = :userId", ["id" => $idNote, "userId" => $loggedInUserId]);
+        
+        $queryShares = self::execute("SELECT * FROM note_shares WHERE note = :id AND user = :userId", ["id" => $idNote, "userId" => $loggedInUserId]);
+        
+        
+        return (($queryShares->rowCount() + $queryOwner->rowCount()) != 0);
+    }
+
+    public function isOwner(int $noteId): bool {
+        
+        $query = self::execute("SELECT owner FROM notes WHERE id = :noteId", ["noteId" => $noteId]);
+        $data = $query->fetch();
+        if ($query->rowCount() === 0 || !$data) {
+            return false;
+        }
+        
+        return $data['owner'] === $this->getId();
+    }
+    
+    
 }
 ?>

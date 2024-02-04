@@ -4,8 +4,10 @@ require_once "framework/Model.php";
 
 class TextNote extends Note {
     
-    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public string $pinned, public string $archived, public int $weight, public string $content)
-    {}
+    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public string $pinned, public string $archived, public int $weight, public ?string $content = null)
+    {
+        $this->content = $content ?? "";
+    } //Modifier constructeur avec seulement 2 attributs : Note $note et string $content
 
     public function getContent(): string {
         return $this->content;
@@ -46,7 +48,7 @@ class TextNote extends Note {
         }
     }
 
-    public static function delete(int $id): void {
+    /*public static function delete(int $id): void {
         // Supprimer les enregistrements dans la table note_shares liés à la note
         self::execute("DELETE FROM note_shares WHERE note = :id", ["id" => $id]);
     
@@ -55,7 +57,7 @@ class TextNote extends Note {
     
         // Supprimer la note de la table notes
         self::execute("DELETE FROM notes WHERE id = :id", ["id" => $id]);
-    }
+    }*/
     
     public function validate() : array {
         $errors = [];
@@ -63,5 +65,26 @@ class TextNote extends Note {
             $errors[] = "Title length must be between 3 and 25.";
         }
         return $errors;
+    }
+
+    public static function getTextNoteById(int $noteId) : Note|false {
+        $query = self::execute("SELECT * FROM notes WHERE id = :noteId", ["noteId" => $noteId]);
+        $querycontent = self::execute("SELECT content FROM text_notes WHERE id = :noteId", ["noteId" => $noteId])->fetch();
+        $data = $query->fetch();
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return new TextNote(
+                $data["id"],
+                $data["title"],
+                $data["owner"],
+                $data["created_at"],
+                $data["edited_at"],
+                $data["pinned"],
+                $data["archived"],
+                $data["weight"],
+                $querycontent[0]
+            );
+        }
     }
 }

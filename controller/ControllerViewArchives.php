@@ -6,8 +6,8 @@ require_once 'model/User.php';
 class ControllerViewArchives extends Controller {
     //accueil du controlleur.
     public function index() : void {
-        //$user = $this->get_user_or_redirect();
-        $user = 1;
+        $user = $this->get_user_or_redirect()->getId();
+        //$user = 1;
 
         $notes = Note::getAllArchivedNotesByUser($user);
         $sharedBy = Note::getAllSharedBy($user);

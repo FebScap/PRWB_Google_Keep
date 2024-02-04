@@ -10,15 +10,15 @@
     <body data-bs-theme="dark">
         <form>
             <fieldset disabled>
-                <p class="font-italic">Created 1mounth ago...</p>
+                <p class="font-italic">Created <?= $textnote->getCreatedAt() ?></p>
                 <div class="mb-3">
                 <label for="disabledTextInput" class="form-label">Title</label>
-                <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled title">
+                <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled title" value="<?= $textnote->getTitle() ?>">
                 </div>
                 <div class="mb-3">
                 <div class="mb-3">
                 <label for="disabledTextInput" class="form-label">Text</label>
-                <input type="text"  style="height:600px" id="disabledTextInput" class="form-control" placeholder="Disabled text">
+                <textarea type="text"  style="height:550px" id="disabledTextInput" class="form-control"><?= $textnote->getContent() ?></textarea>
                 </div>
                 <div class="mb-3">
             </fieldset>
