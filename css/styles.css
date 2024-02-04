@@ -5,3 +5,11 @@
 .h-full {
    height: 100vh;
 }
+
+.truncate-after {
+   -webkit-line-clamp: 3;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
