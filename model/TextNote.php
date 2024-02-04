@@ -4,7 +4,7 @@ require_once "framework/Model.php";
 
 class TextNote extends Note {
     
-    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public string $pinned, public string $archived, public int $weight, public ?string $content = null)
+    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public int $pinned, public int $archived, public int $weight, public ?string $content = null)
     {
         $this->content = $content ?? "";
     } //Modifier constructeur avec seulement 2 attributs : Note $note et string $content
@@ -31,12 +31,12 @@ class TextNote extends Note {
                 return $errors;
             }
         } else {
-            //throw new Exception("Pas rdy encore");//Modification
             // Mise à jour d'une note existante
             $errors = $this->validate();
             if (empty($errors)){
             // Mise à jour dans la table 'Notes'
                 self::execute('UPDATE Notes SET weight = :weight WHERE id = :id', ['weight' => $this->weight, 'id' => $this->id]);
+                self::execute('UPDATE Notes SET title = :title WHERE id = :id', ['title' => $this->title, 'id' => $this->id]);
             
             // Mise à jour dans la table 'Text_Notes'
                 self::execute('UPDATE Text_Notes SET content = :content WHERE id = :id', ['content' => $this->content, 'id' => $this->id]);

@@ -19,12 +19,12 @@
                 </div>
 
                 <div class="p-2 bd-highlight">
-                    <form action="" method="get"> 
-                        <button type="submit" class="btn btn-dark"><i class="bi bi-box-arrow-in-up"></i></button>
+                    <form action="opennote/unarchive" method="post"> 
+                        <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-box-arrow-in-up"></i></button>
                     </form>
                 </div>
             
-                <?php elseif ($textnote->isEditable() && !$user->isOwner($textnote->getId())) : ?>
+            <?php elseif ($textnote->isEditable() && !$user->isOwner($textnote->getId())) : ?>
                 <div class="me-auto p-2 bd-highlight">
                     <a type="button" href="viewSharedNotes/sharedby/<?= $textnote->getOwner() ?>" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
                 </div>
@@ -32,29 +32,42 @@
                     <a type="button" href="viewSharedNotes" class="btn btn-dark"><i class="bi bi-pencil"></i></a>
                 </div>
             
-                <?php elseif ($textnote->isShared() && !$user->isOwner($textnote->getId())) : ?>
+            <?php elseif ($textnote->isShared() && !$user->isOwner($textnote->getId())) : ?>
                 <div class="me-auto p-2 bd-highlight">
                     <a type="button" href="viewSharedNotes/sharedby/<?= $textnote->getOwner() ?>" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
                 </div>
-
-
 
             <?php else : ?>
                 <div class="me-auto p-2 bd-highlight">
                     <a type="button" href="viewnotes" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
                 </div>
+                    <div class="p-2 bd-highlight">
+                        <form action="" method="post">
+                            <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-share"></i></button>
+                        </form>
+                    </div>
+                <?php if (!$textnote->isPinned()) : ?>  
+                    <div class="p-2 bd-highlight">
+                        <form action="opennote/pin" method="post">
+                            <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pin-fill"></i></button>
+                        </form>
+                    </div>
+                <?php else : ?>
+                    <div class="p-2 bd-highlight">
+                        <form action="opennote/unpin" method="post">
+                            <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pin"></i></button>
+                        </form>
+                    </div>
+                <?php endif ?>
+
                 <div class="p-2 bd-highlight">
-                    <button type="button" class="btn btn-dark"><i class="bi bi-share"></i></button>
+                    <form action="opennote/archive" method="post">
+                        <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-box-arrow-in-down"></i></button>
+                    </form>
                 </div>
                 <div class="p-2 bd-highlight">
-                    <button type="button" class="btn btn-dark"><i class="bi bi-pin-fill"></i></button>
-                </div>
-                <div class="p-2 bd-highlight">
-                    <button type="button" class="btn btn-dark"><i class="bi bi-box-arrow-in-down"></i></button>
-                </div>
-                <div class="p-2 bd-highlight">
-                    <form action="deletenote/index/<?= $textnote->getId() ?>" method="get"> 
-                        <button type="submit" class="btn btn-dark"><i class="bi bi-pencil"></i></button>
+                    <form action="opennote/editnote/<?= $textnote->getId() ?>" method="get"> 
+                        <button type="submit" name="idnote" value="<?= $textnote->getId() ?> class="btn btn-dark"><i class="bi bi-pencil"></i></button>
                     </form>
                 </div>
             <?php endif ?> 

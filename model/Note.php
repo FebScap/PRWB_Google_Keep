@@ -4,7 +4,7 @@ require_once "framework/Model.php";
 
 class Note extends Model { //should be abstract
     
-    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public string $pinned, public string $archived, public int $weight)
+    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public int $pinned, public int $archived, public int $weight)
     {}
 
     // Méthodes GET
@@ -28,11 +28,11 @@ class Note extends Model { //should be abstract
         return $this->edited_at;
     }
 
-    public function getPinned(): string {
+    public function getPinned(): int {
         return $this->pinned;
     }
 
-    public function getArchived(): string {
+    public function getArchived(): int {
         return $this->archived;
     }
 
@@ -61,11 +61,11 @@ class Note extends Model { //should be abstract
         $this->edited_at = $edited_at;
     }
 
-    public function setPinned(string $pinned): void {
+    public function setPinned(int $pinned): void {
         $this->pinned = $pinned;
     }
 
-    public function setArchived(string $archived): void {
+    public function setArchived(int $archived): void {
         $this->archived = $archived;
     }
 
@@ -341,6 +341,8 @@ class Note extends Model { //should be abstract
             if (empty($errors)){
             // Mise à jour dans la table 'Notes'
                 self::execute('UPDATE Notes SET weight = :weight WHERE id = :id', ['weight' => $this->weight, 'id' => $this->id]);
+                self::execute('UPDATE Notes SET archived = :archived WHERE id = :id', ['archived' => $this->archived, 'id' => $this->id]);
+                self::execute('UPDATE Notes SET pinned = :pinned WHERE id = :id', ['pinned' => $this->pinned, 'id' => $this->id]);
             
             // Mise à jour dans la table 'Text_Notes'
                 //self::execute('UPDATE Text_Notes SET content = :content WHERE id = :id', ['content' => $this->content, 'id' => $this->id]);
@@ -391,6 +393,8 @@ class Note extends Model { //should be abstract
     
         return $data['content'];
     }
+
+
     
     
 
