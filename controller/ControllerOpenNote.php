@@ -23,5 +23,32 @@ class ControllerOpenNote extends Controller { //Should be abstract
         }
     }
 
-    
+    public function archive() : void {
+        $note = Note::getNoteById($_POST["idnote"]);
+        $note->setArchived(1);
+        $note->persist();
+        $this->redirect("opennote", "index", $note->getId());
+    }
+
+    public function unarchive() : void {
+        $note = Note::getNoteById($_POST["idnote"]);
+        $note->setArchived(0);
+        $note->persist();
+        $this->redirect("opennote", "index", $note->getId());
+    }
+
+    public function pin() : void {
+        $note = Note::getNoteById($_POST["idnote"]);
+        $note->setPinned(1);
+        $note->persist();
+        $this->redirect("opennote", "index", $note->getId());
+    }
+
+    public function unpin() : void {
+        $note = Note::getNoteById($_POST["idnote"]);
+        $note->setPinned(0);
+        $note->persist();
+        $this->redirect("opennote", "index", $note->getId());
+    }
+
 }
