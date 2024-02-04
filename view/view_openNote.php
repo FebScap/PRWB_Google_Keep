@@ -66,8 +66,8 @@
                     </form>
                 </div>
                 <div class="p-2 bd-highlight">
-                    <form action="" method="get"> 
-                        <button type="submit" class="btn btn-dark"><i class="bi bi-pencil"></i></button>
+                    <form action="opennote/editnote/<?= $textnote->getId() ?>" method="get"> 
+                        <button type="submit" name="idnote" value="<?= $textnote->getId() ?> class="btn btn-dark"><i class="bi bi-pencil"></i></button>
                     </form>
                 </div>
             <?php endif ?> 

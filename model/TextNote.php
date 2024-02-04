@@ -31,12 +31,12 @@ class TextNote extends Note {
                 return $errors;
             }
         } else {
-            //throw new Exception("Pas rdy encore");//Modification
             // Mise à jour d'une note existante
             $errors = $this->validate();
             if (empty($errors)){
             // Mise à jour dans la table 'Notes'
                 self::execute('UPDATE Notes SET weight = :weight WHERE id = :id', ['weight' => $this->weight, 'id' => $this->id]);
+                self::execute('UPDATE Notes SET title = :title WHERE id = :id', ['title' => $this->title, 'id' => $this->id]);
             
             // Mise à jour dans la table 'Text_Notes'
                 self::execute('UPDATE Text_Notes SET content = :content WHERE id = :id', ['content' => $this->content, 'id' => $this->id]);
