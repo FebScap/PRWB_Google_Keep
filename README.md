@@ -27,3 +27,7 @@
 ## Notes de version itération 3 
 
 ...
+
+## A ajouter 
+- edit profile : changer email à implémenter
+- refactor les validations de User

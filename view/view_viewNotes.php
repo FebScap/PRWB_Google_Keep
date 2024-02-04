@@ -17,11 +17,16 @@
             <h2 class="h2 fs-6 mt-4 ms-2">Pinned</h2>
             <div class="d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($pinnedNotes); $i++): ?>
-                    <a class="link-underline link-underline-opacity-0" style="max-width: 48%;" href="opennote/">
+                    <form action="opennote/index/<?= $pinnedNotes[$i]->getId() ?>" method="get">
+                    <button class="link-underline link-underline-opacity-0" style="max-width: 48%;">
                         <div class="card m-1" data-bs-theme="dark">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item"><?= $pinnedNotes[$i]->title ?></li>
-                                    <li class="list-group-item list-group-item-secondary">Contenu contenu contenu contenu</li>
+                                    <li class="list-group-item list-group-item-secondary">
+                                        <?php if(!$pinnedNotes[$i]->isCheckListNote($pinnedNotes[$i]->getId())): ?>
+                                        <?= $pinnedNotes[$i]->getContentById($pinnedNotes[$i]->getId()) ?></li>
+                                        <?php else: ?> gestion des checklistnotes à faire ici
+                                        <?php endif; ?>
                                     <?php if ($i == 0): ?>
                                         <li class="list-group-item d-flex justify-content-end">
                                             <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
@@ -39,16 +44,22 @@
                                 </ul>
                         </div>
                     </a>
+                    </form>
                 <?php endfor; ?>
             </div>
             <h2 class="h2 fs-6 mt-1 ms-2">Other</h2>
             <div class="d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($notPinnedNotes); $i++): ?>
-                    <a class="link-underline link-underline-opacity-0" style="max-width: 48%;" href="opennote/">
+                    <form action="opennote/index/<?= $notPinnedNotes[$i]->getId() ?>" method="get">
+                    <button class="link-underline link-underline-opacity-0 border-0" style="max-width: 48%;">
                         <div class="card m-1" data-bs-theme="dark">
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><?= $notPinnedNotes[$i]->title ?></li>
-                                <li class="list-group-item list-group-item-secondary">Contenu contenu contenu contenu</li>
+                                <li class="list-group-item"><?= $notPinnedNotes[$i]->getTitle() ?></li>
+                                <li class="list-group-item list-group-item-secondary">
+                                    <?php if(!$notPinnedNotes[$i]->isCheckListNote($notPinnedNotes[$i]->getId())): ?>
+                                    <?= $notPinnedNotes[$i]->getContentById($notPinnedNotes[$i]->getId()) ?></li>
+                                    <?php else: ?> gestion des checklistnotes à faire ici
+                                    <?php endif; ?>
                                 <?php if ($i == 0): ?>
                                     <li class="list-group-item d-flex justify-content-end">
                                         <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
@@ -65,7 +76,8 @@
                                 <?php endif; ?>
                             </ul>
                         </div>
-                    </a>
+                    </button>
+                    </form>
                 <?php endfor; ?>
             </div>
             <!-- BUTTONS BAS DE PAGE -->
