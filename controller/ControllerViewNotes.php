@@ -46,4 +46,38 @@ class ControllerViewNotes extends Controller {
      public function  tempviewshares() : void {
         (new View("viewshares"))->show();
     }
+
+    public function moveUp() : void {
+        if ($_POST["pinned"] == "pinned") {
+            $list = Note::getAllPinnedNotesByUser($this->get_user_or_false()->getId());
+        } else {
+            $list = Note::getAllUnpinnedNotesByUser($this->get_user_or_false()->getId());
+        }
+        $current_note = $list[$_POST["pos"]];
+        $swap_note = $list[$_POST["pos"]-1];
+        $tmp = $current_note->getWeight();
+        $current_note->setWeight($swap_note->getWeight());
+        $swap_note->setWeight($tmp);
+        $current_note->persist();
+        $swap_note->persist();
+
+        $this->redirect("viewnotes");
+    }
+
+    public function moveDown () : void {
+        if ($_POST["pinned"] == "pinned") {
+            $list = Note::getAllPinnedNotesByUser($this->get_user_or_false()->getId());
+        } else {
+            $list = Note::getAllUnpinnedNotesByUser($this->get_user_or_false()->getId());
+        }
+        $current_note = $list[$_POST["pos"]];
+        $swap_note = $list[$_POST["pos"]+1];
+        $tmp = $current_note->getWeight();
+        $current_note->setWeight($swap_note->getWeight());
+        $swap_note->setWeight($tmp);
+        $current_note->persist();
+        $swap_note->persist();
+
+        $this->redirect("viewnotes");
+    }
 }
