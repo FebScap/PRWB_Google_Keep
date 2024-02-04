@@ -49,13 +49,13 @@
                 <?php if (!$textnote->isPinned()) : ?>  
                     <div class="p-2 bd-highlight">
                         <form action="opennote/pin" method="post">
-                            <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pin-fill"></i></button>
+                            <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pin"></i></button>
                         </form>
                     </div>
                 <?php else : ?>
                     <div class="p-2 bd-highlight">
                         <form action="opennote/unpin" method="post">
-                            <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pin"></i></button>
+                            <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pin-fill"></i></button>
                         </form>
                     </div>
                 <?php endif ?>
@@ -67,7 +67,7 @@
                 </div>
                 <div class="p-2 bd-highlight">
                     <form action="opennote/editnote/<?= $textnote->getId() ?>" method="get"> 
-                        <button type="submit" name="idnote" value="<?= $textnote->getId() ?> class="btn btn-dark"><i class="bi bi-pencil"></i></button>
+                        <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pencil"></i></button>
                     </form>
                 </div>
             <?php endif ?> 
