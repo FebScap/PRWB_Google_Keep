@@ -27,7 +27,6 @@ class ControllerSettings extends Controller{
             if (count($errors) == 0) { 
                 $user->changePassword($new_password);
                 $this->redirect("settings");
-                //(new View("settings"))->show(["user" => $user]);
             }
         }
         (new View("changePassword"))->show(["old_password" => $old_password, "new_password_confirm" => $new_password_confirm,

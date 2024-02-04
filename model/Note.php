@@ -297,13 +297,9 @@ class Note extends Model { //should be abstract
         self::execute("UPDATE notes SET weight = weight - 1 WHERE id = :noteId", ["noteId" => $noteId]);
     }
     
-    //public abstract function persist() : object|array;
-
     public static function validateTitle(string $title) : bool {
         return (strlen($title) >= 3 && strlen($title) <= 25);
     }
-
-    //public abstract static function delete(int $id) : void;
 
     public static function increaseAllWeightBy1(int $id) : void { //Augmente le poids de toutes les nutes d'un user afin d'inserer une nouvelle note au poids de 1
         $notes = Note::getAllNotesByUser($id);
@@ -330,13 +326,11 @@ class Note extends Model { //should be abstract
                 $note = self::getNoteById(self::lastInsertId());
                 $this->id = $note->id;
                 $this->created_at = $note->created_at;
-                //self::execute('INSERT INTO Text_Notes(content, id) VALUES (:content, :id)', ['content' => $this->content, 'id' => $this->id]);
                 return $this;
             } else {
                 return $errors;
             }
         } else {
-            //throw new Exception("Pas rdy encore");//Modification
             // Mise à jour d'une note existante
             $errors = $this->validate();
             if (empty($errors)){
@@ -346,8 +340,7 @@ class Note extends Model { //should be abstract
                 self::execute('UPDATE Notes SET pinned = :pinned WHERE id = :id', ['pinned' => $this->pinned, 'id' => $this->id]);
                 self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->id]);
             
-            // Mise à jour dans la table 'Text_Notes'
-                //self::execute('UPDATE Text_Notes SET content = :content WHERE id = :id', ['content' => $this->content, 'id' => $this->id]);
+            
             
                 return $this;
             } else {

@@ -36,18 +36,6 @@ class User extends Model {
         }
     }
 
-    /*public function getNotes() : array {
-        return Note::getNotes($this); //Implémenter getNotes dans Note.php
-    }
-
-    public function deleteNote(Note $note) : Note|false {
-        return $note->delete($this); // Implémenter deleteNote dans Note.php
-    }
-
-    public function createNote(Note $note) : Note|array {
-        return $note->persist($this);
-    }*/
-
     public function getMail() {
         return $this->mail;
     }

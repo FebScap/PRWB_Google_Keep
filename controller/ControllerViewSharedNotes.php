@@ -12,9 +12,7 @@ class ControllerViewSharedNotes extends Controller {
     //profil de l'utilisateur connecté ou donné
     public function sharedby() : void {
         $user = $this->get_user_or_redirect()->getId();
-        //$user = 1;
 
-        //$notes = Note::getAllArchivedNotesByUser($user);
         $notesEdit = Note::getAllSharedNotesEditorByUserId($user);
         $notesRead = Note::getAllSharedNotesReaderByUserId($user);
         $sharedBy = Note::getAllSharedBy($user);

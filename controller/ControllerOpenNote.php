@@ -59,7 +59,6 @@ class ControllerOpenNote extends Controller { //Should be abstract
             
             $textnote = TextNote::getTextNoteById($_GET["param1"]); 
             (new View("edittextnote"))->show(["textnote" => $textnote, "errors" => $errors]);
-            //$this->redirect("opennote", "saveNote", $textnote);
         }
 
         (new View("error"))->show(["error" => $error = "Oops, looks like you may not edit this note"]);        
@@ -67,7 +66,6 @@ class ControllerOpenNote extends Controller { //Should be abstract
 
     public function saveNote() : void {
         
-        //$title = $_POST['title'];
         $errors = [];
         $textnote = TextNote::getTextNoteById($_POST["id"]);
 

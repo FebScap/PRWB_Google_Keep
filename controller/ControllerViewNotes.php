@@ -8,16 +8,8 @@ class ControllerViewNotes extends Controller {
     //accueil du controlleur.
     public function index() : void {
         
-        /*$user = $this->get_user_or_redirect()->getId(); Appel à faire mais l'object user recu via get_user_or_redirect n'est pas complet, il manque l'id
-        $user = 1; Forcer l'affichage d'un user via son id
-        echo gettype($user);
-        echo print_r($user);
-        $mail=$user->getMail();
-        echo print_r(User::getByMail($mail)->getId());
-        $id = User::getByMail($mail)->getId();
-        echo print_r($id);*/
 
-        $user = User::getByMail($this->get_user_or_redirect()->getMail())->getId(); //Modifier cet appel si possible, voir commentaires au dessus
+        $user = User::getByMail($this->get_user_or_redirect()->getMail())->getId(); //Modifier cet appel
         $pinnedNotes = Note::getAllPinnedNotesByUser($user);
         $notPinnedNotes = Note::getAllUnpinnedNotesByUser($user);
         $sharedBy = Note::getAllSharedBy($user);
