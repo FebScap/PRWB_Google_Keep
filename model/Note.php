@@ -1,6 +1,7 @@
 <?php
 
 require_once "framework/Model.php";
+require_once "model/ChecklistItem.php";
 
 class Note extends Model { //should be abstract
     
