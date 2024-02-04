@@ -17,31 +17,46 @@
             <h2 class="d-flex h2 fs-6 mt-4 ms-2">Notes shared to you by <?= $from->full_name ?> as editor</h2>
             <div class="d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($notesEdit); $i++): ?>
-                    <form action="opennote/index/<?= $notesEdit[$i]->getId() ?>" method="get">
-                    <button class="link-underline link-underline-opacity-0" style="max-width: 48%;">
-                        <div class="card m-1" data-bs-theme="dark">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><?= $notesEdit[$i]->title ?></li>
-                                <li class="list-group-item list-group-item-secondary">Contenu contenu contenu contenu</li>
-                            </ul>
+
+                    <a class="link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $notesEdit[$i]->getId() ?>">
+                        <div class="card h-100">
+                                <ul class="list-group list-group-flush h-100">
+                                    <!-- TITRE -->
+                                    <li class="list-group-item"><?= $notesEdit[$i]->title ?></li>
+
+                                    <li class="list-group-item list-group-item-secondary h-100 truncate-after">
+                                        <!-- CONTENU TEXT NOTE -->
+                                        <?php if(!$notesEdit[$i]->isCheckListNote($notesEdit[$i]->getId())): ?>
+                                        <?= $notesEdit[$i]->getContentById($notesEdit[$i]->getId()) ?>
+                                        <!-- CONTENU CHECKLIST NOTE -->
+                                        <?php else: ?> gestion des checklistnotes à faire ici
+                                        <?php endif; ?>
+                                    </li>
+                                </ul>
                         </div>
-                    </button>
-                    </form>
+                    </a>
                 <?php endfor; ?>
             </div>
             <h2 class="d-flex h2 fs-6 mt-1 ms-2">Notes shared to you by <?= $from->full_name ?> as reader</h2>
             <div class="d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($notesRead); $i++): ?>
-                    <form action="opennote/index/<?= $notesRead[$i]->getId() ?>" method="get">
-                    <button class="link-underline link-underline-opacity-0" style="max-width: 48%;">
-                        <div class="card m-1" data-bs-theme="dark">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><?= $notesRead[$i]->title ?></li>
-                                <li class="list-group-item list-group-item-secondary">Contenu contenu contenu contenu</li>
-                            </ul>
+                    <a class="link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $notesRead[$i]->getId() ?>">
+                        <div class="card h-100">
+                                <ul class="list-group list-group-flush h-100">
+                                    <!-- TITRE -->
+                                    <li class="list-group-item"><?= $notesRead[$i]->title ?></li>
+
+                                    <li class="list-group-item list-group-item-secondary h-100 truncate-after">
+                                        <!-- CONTENU TEXT NOTE -->
+                                        <?php if(!$notesRead[$i]->isCheckListNote($notesRead[$i]->getId())): ?>
+                                        <?= $notesRead[$i]->getContentById($notesRead[$i]->getId()) ?>
+                                        <!-- CONTENU CHECKLIST NOTE -->
+                                        <?php else: ?> gestion des checklistnotes à faire ici
+                                        <?php endif; ?>
+                                    </li>
+                                </ul>
                         </div>
-                    </button>
-                    </form>
+                    </a>
                 <?php endfor; ?>
             </div>
         <?php include('footer.html'); ?>
