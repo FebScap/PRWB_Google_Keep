@@ -195,6 +195,17 @@ class User extends Model {
         
         return $data['owner'] === $this->getId();
     }
+
+    public function isAllowedToEdit(int $noteId): bool {
+        if ($this->isOwner($noteId)) {
+            return true;
+        }    
+        $query = self::execute("SELECT * FROM note_shares WHERE note = :noteId AND user = :userId AND editor = 1", 
+                                        ["noteId" => $noteId, "userId" => $this->getId()]);
+    
+        return $query->rowCount() > 0;
+    }
+    
     
     
 }

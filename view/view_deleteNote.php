@@ -23,12 +23,12 @@
 
 
                             <form action="deletenote/delete/<?= $noteid ?>" method="get">
-                            <button class="btn btn-danger" type="submit">Delete</button>
+                                <button class="btn btn-danger" type="submit">Delete</button>
                             </form>
 
 
                             <form action="opennote/index/<?= $noteid ?>" method="get">
-                            <button class="btn btn-success" type="submit" >Cancel</button>
+                                <button class="btn btn-success" type="submit" >Cancel</button>
                             </form>
                         </div>
                     </div>
