@@ -8,14 +8,16 @@
   * bepenelle@epfc.eu, password "Password1,", utilisateur
   * xapigeolet@epfc.eu, password "Password1,", utilisateur
   * mamichel@epfc.eu, password "Password1,", utilisateur
-  * A compléter...
 
 ### Liste des bugs connus
 
-  * bug 1
-  * bug 2
-  * ...
+  * Troncage des notes parfois compliqué
 
+## Fonctionnalités manquantes 
+  * Ajout, ouverture et modification de checklist note
+  * Ajout et modification des partages
+  * Refactor des validations de User
+  
 ### Liste des fonctionnalités supplémentaires
 
 ### Divers
@@ -27,7 +29,3 @@
 ## Notes de version itération 3 
 
 ...
-
-## A ajouter 
-- edit profile : changer email à implémenter
-- refactor les validations de User
