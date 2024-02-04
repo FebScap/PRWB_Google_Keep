@@ -1,6 +1,7 @@
 <?php
 require_once "framework/Controller.php";
 require_once 'model/Note.php';
+require_once 'model/ChecklistItem.php';
 require_once 'model/User.php';
 
 class ControllerViewNotes extends Controller {
