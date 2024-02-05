@@ -64,6 +64,10 @@ class ControllerOpenNote extends Controller { //Should be abstract
         (new View("error"))->show(["error" => $error = "Oops, looks like you may not edit this note"]);        
     }
 
+    public function checkUncheck () : void {
+        
+    }
+
     public function saveNote() : void {
         
         $errors = [];

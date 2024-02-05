@@ -4,7 +4,7 @@ require_once "framework/Model.php";
 
 class ChecklistNote extends Note {
     
-    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public int $pinned, public int $archived, public int $weight, public ?string $content = null)
+    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public int $pinned, public int $archived, public int $weight, public array $content)
     {
         $this->content = $content ?? "";
     }
@@ -30,7 +30,8 @@ class ChecklistNote extends Note {
             $data["edited_at"],
             $data["pinned"],
             $data["archived"],
-            $data["weight"])
+            $data["weight"], 
+            [])
             ;
         }
     }
