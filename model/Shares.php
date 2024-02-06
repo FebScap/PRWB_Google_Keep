@@ -20,22 +20,37 @@ class Shares extends Model {
         return $this->editor == 1;
     }
 
+    // Méthodes SET
+    public function setEditor(int $editor): void {
+        $this->editor = $editor;
+    }
+
     public static function getAllSharesByNoteId(int $noteId) : array {
         $data = self::execute("SELECT * FROM `note_shares` WHERE note = :id", ["id" => $noteId])->fetchAll();
-        $notes = [];
+        $share = [];
         foreach ($data as $row) {
-            $notes[] = new Shares(
+            $share[] = new Shares(
                 $row["note"], 
                 $row["user"],
                 $row["editor"]
                 );
         }
-        return $notes;
+        return $share;
+    }
+
+    public static function getSharesByNoteIdAndUser(int $noteId, int $userid) : Shares {
+        $data = self::execute("SELECT * FROM `note_shares` WHERE note = :id AND user = :user", ["id" => $noteId, "user" => $userid])->fetch();
+        return new Shares($data["note"], $data["user"], $data["editor"]);
     }
 
     public static function isSharedBy(int $noteId, int $userId): bool {
         $query = self::execute("SELECT user, editor FROM `note_shares` WHERE note = :id AND user = :userId", ["id" => $noteId, "userId" => $userId]);
-        echo($query->rowCount());
         return $query->rowCount() > 0;
+    }
+
+    public function persist() : Shares {
+        self::execute("UPDATE note_shares SET editor=:editor WHERE note=:note AND user=:user", 
+                        ["note"=>$this->note, "user"=>$this->user, "editor"=>$this->editor]);
+        return $this;
     }
 }

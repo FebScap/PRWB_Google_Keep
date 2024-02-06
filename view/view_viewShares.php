@@ -16,7 +16,7 @@
             <!-- FOR POUR CHAQUES PARTAGES DE LA NOTES -->
             <?php else: ?>
                 <?php for ($i = 0; $i < sizeof($shares); $i++): ?>
-                    <form class="container-fluid p-0 pt-1">
+                    <form class="container-fluid p-0 pt-1" action="viewshares/swapRole/<?= $_GET["param1"] ?>" method="post">
                         <div class="container-fluid input-group flex-nowrap p-0">
                             <!-- PARTAGE READER -->
                             <?php if ($shares[$i]->isEditor()): ?>
@@ -25,7 +25,7 @@
                             <?php else: ?>
                                 <span class="form-control"><?= User::getByID($shares[$i]->getUser())->full_name ?> <i>(editor)</i></span>
                             <?php endif; ?>
-                            <button class="btn btn-primary" type="button"><i class="bi bi-arrow-repeat"></i></button>
+                            <button class="btn btn-primary" type="submit" name="iduser" value="<?= $shares[$i]->getUser() ?>" class="btn btn-dark"><i class="bi bi-arrow-repeat"></i></button>
                             <button class="btn btn-danger" type="button"><i class="bi bi-dash"></i></button>
                         </div>
                     </form>
@@ -38,10 +38,8 @@
                     <select class="form-select" id="inlineFormCustomSelect">
                         <option selected>-User-</option>
                         <?php for ($i = 0; $i < sizeof($users); $i++): ?>
-                            <?php $x = 1; ?>
                             <?php if (!Shares::isSharedBy($_GET["param1"], $users[$i]->getId())): ?>
-                                <option value="<?= $x ?>"><?= $users[$i]->full_name ?></option>
-                                <?php $x++; ?>
+                                <option value="<?= $users[$i]->getId() ?>"><?= $users[$i]->full_name ?></option>
                             <?php endif; ?>
                         <?php endfor; ?>
                     </select>

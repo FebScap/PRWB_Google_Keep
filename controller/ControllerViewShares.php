@@ -24,4 +24,15 @@ class ControllerViewShares extends Controller {
         }
        
     }
+
+    public function swapRole () : void {
+        $share = Shares::getSharesByNoteIdAndUser($_GET["param1"], $_POST["iduser"]);
+        if ($share->isEditor()) {
+            $share->setEditor(0);
+        } else {
+            $share->setEditor(1);
+        }
+        $share->persist();
+        $this->redirect("viewshares", "index", $_GET["param1"]);
+    }
 }
