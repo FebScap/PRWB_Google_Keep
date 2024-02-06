@@ -42,8 +42,8 @@
                     <a type="button" href="viewnotes" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
                 </div>
                     <div class="p-2 bd-highlight">
-                        <form action="" method="post">
-                            <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-share"></i></button>
+                        <form action="viewshares/index/<?= $textnote->getId() ?>" method="get">
+                            <button type="submit" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-share"></i></button>
                         </form>
                     </div>
                 <?php if (!$textnote->isPinned()) : ?>  
