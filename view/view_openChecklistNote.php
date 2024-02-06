@@ -6,7 +6,10 @@
         include 'view_openNote.php';?>
     </head>
     <body>
-        <p>Created 1 month ago...</p>
+        <p class="font-italic">Created <?= $textnote->getCreatedAt() ?></p>
+        <?php if (!is_null($textnote->getEditedAt())) : ?>
+                <p class="font-italic">Edited <?= $textnote->getEditedAt() ?></p>
+        <?php endif ?>
         <div class="form-group">
             <label for="title" class ="fw-bold">Title</label>
             <input type="title" class="form-control" id="exampleInputTitle" disabled="disabled" value="<?= $textnote->getTitle() ?>">
