@@ -11,7 +11,9 @@
         <form>
             <fieldset disabled>
                 <p class="font-italic">Created <?= $textnote->getCreatedAt() ?></p>
-                <p class="font-italic">Edited <?= $textnote->getEditedAt() ?></p>
+                <?php if (!is_null($textnote->getEditedAt())) : ?>
+                    <p class="font-italic">Edited <?= $textnote->getEditedAt() ?></p>
+                <?php endif ?>
                 <div class="mb-3">
                 <label for="disabledTextInput" class="form-label">Title</label>
                 <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled title" value="<?= $textnote->getTitle() ?>">
