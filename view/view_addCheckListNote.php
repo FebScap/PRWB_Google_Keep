@@ -12,7 +12,7 @@
             </div>
             <div class="mt-3">
                 <label for="noteTitle" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title">
+                <input type="text" class="form-control" id="title" name="title" value="<?= $title ?>">
                 <?php if (count($errorsTitle) != 0) : ?>
                     <label for="noteTitle" class="form-label">
                         <?php foreach ($errorsTitle as $error): ?>
@@ -26,7 +26,7 @@
                     <?php for ($i=0; $i<6; $i++) {
                         echo"
                         <li class='mb-2'>
-                            <input type='text' class='form-control' id='checklist' name='content[$i]'>
+                            <input type='text' class='form-control' id='checklist' name='content[$i]' value='" . $content[$i] . "'>
                         </li>";
                     }
                     ?>

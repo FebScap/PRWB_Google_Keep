@@ -12,7 +12,7 @@ class ControllerAddChecklistNote extends Controller{
     public function index() : void {
         $user = $this->get_user_or_redirect();
         $title = '';
-        $content = '';
+        $content = ['','','','','',''];
         $errorsTitle = [];
         $errorsContent = [];
         if (isset($_POST['title']) && isset($_POST['content'])) {
