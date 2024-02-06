@@ -32,7 +32,8 @@ class ControllerViewNotes extends Controller {
 
      //Button de création d'une nouvelle note checklist
      public function  add_checklist_note() : void {
-        (new View("addchecklistnote"))->show();
+        //(new View("addchecklistnote"))->show();
+        $this->redirect("addchecklistnote");
     }
 
      //Button de création d'une nouvelle note
