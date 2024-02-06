@@ -45,16 +45,40 @@
                                     <!-- Chevrons -->
                                     <?php if ($i == 0): ?>
                                         <li class="list-group-item d-flex justify-content-end">
-                                            <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
+                                            <form action="viewnotes/moveDown" method="post">
+                                                <button type="submit" class="btn btn-dark btn btn-primary btn-sm"> 
+                                                    <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
+                                                    <input id="pos" name="pos" type="hidden" class="form-control" value="<?= $i ?>">
+                                                    <input id="pinned" name="pinned" type="hidden" class="form-control" value="pinned">
+                                                </button>
+                                            </form>
                                         </li>
                                     <?php elseif ($i == sizeof($pinnedNotes)-1): ?>
                                         <li class="list-group-item d-flex justify-content-start">
-                                            <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
+                                            <form action="viewnotes/moveUp" method="post">
+                                                <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
+                                                    <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
+                                                    <input id="pos" name="pos" type="hidden" class="form-control" value="<?= $i ?>">
+                                                    <input id="pinned" name="pinned" type="hidden" class="form-control" value="pinned">
+                                                </button>
+                                            </form>
                                         </li>
                                     <?php else: ?>
                                         <li class="list-group-item d-flex justify-content-between">
-                                            <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
-                                            <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
+                                            <form action="viewnotes/moveUp" method="post">
+                                                <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
+                                                    <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
+                                                    <input id="pos" name="pos" type="hidden" class="form-control" value="<?= $i ?>">
+                                                    <input id="pinned" name="pinned" type="hidden" class="form-control" value="pinned">
+                                                </button>
+                                            </form>
+                                            <form action="viewnotes/moveDown" method="post">
+                                                <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
+                                                    <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
+                                                    <input id="pos" name="pos" type="hidden" class="form-control" value="<?= $i ?>">
+                                                    <input id="pinned" name="pinned" type="hidden" class="form-control" value="pinned">
+                                                </button>
+                                            </form>
                                         </li>
                                     <?php endif; ?>
                                 </ul>
@@ -83,16 +107,40 @@
                                     <!-- Chevrons -->
                                     <?php if ($i == 0): ?>
                                         <li class="list-group-item d-flex justify-content-end">
-                                            <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
+                                            <form action="viewnotes/moveDown" method="post">
+                                                <button type="submit" class="btn btn-dark btn btn-primary btn-sm"> 
+                                                    <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
+                                                    <input id="pos" name="pos" type="hidden" class="form-control" value="<?= $i ?>">
+                                                    <input id="pinned" name="pinned" type="hidden" class="form-control" value="unpinned">
+                                                </button>
+                                            </form>
                                         </li>
                                     <?php elseif ($i == sizeof($notPinnedNotes)-1): ?>
                                         <li class="list-group-item d-flex justify-content-start">
-                                            <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
+                                            <form action="viewnotes/moveUp" method="post">
+                                                <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
+                                                    <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
+                                                    <input id="pos" name="pos" type="hidden" class="form-control" value="<?= $i ?>">
+                                                    <input id="pinned" name="pinned" type="hidden" class="form-control" value="unpinned">
+                                                </button>
+                                            </form>
                                         </li>
                                     <?php else: ?>
                                         <li class="list-group-item d-flex justify-content-between">
-                                            <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
-                                            <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
+                                            <form action="viewnotes/moveUp" method="post">
+                                                <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
+                                                    <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
+                                                    <input id="pos" name="pos" type="hidden" class="form-control" value="<?= $i ?>">
+                                                    <input id="pinned" name="pinned" type="hidden" class="form-control" value="unpinned">
+                                                </button>
+                                            </form>
+                                            <form action="viewnotes/moveDown" method="post">
+                                                <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
+                                                    <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
+                                                    <input id="pos" name="pos" type="hidden" class="form-control" value="<?= $i ?>">
+                                                    <input id="pinned" name="pinned" type="hidden" class="form-control" value="unpinned">
+                                                </button>
+                                            </form>
                                         </li>
                                     <?php endif; ?>
                                 </ul>

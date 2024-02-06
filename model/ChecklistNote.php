@@ -4,7 +4,8 @@ require_once "framework/Model.php";
 
 class ChecklistNote extends Note {
     
-    public function __construct(private Note $note, private array $content){
+    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public int $pinned, public int $archived, public int $weight, public array $content)
+    {
         $this->content = $content ?? "";
     }
 
@@ -22,17 +23,16 @@ class ChecklistNote extends Note {
         if ($query->rowCount() == 0) {
             return false;
         } else {
-            return new TextNote(
-                $data["id"],
-                $data["title"],
-                $data["owner"],
-                $data["created_at"],
-                $data["edited_at"],
-                $data["pinned"],
-                $data["archived"],
-                $data["weight"],
-                $querycontent[]
-            );
+            return new ChecklistNote($data["id"],
+            $data["title"],
+            $data["owner"],
+            $data["created_at"],
+            $data["edited_at"],
+            $data["pinned"],
+            $data["archived"],
+            $data["weight"], 
+            [])
+            ;
         }
     }
 }
