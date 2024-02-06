@@ -21,15 +21,15 @@
                 <li class="list-group-item">
                   <div>
                     <form action="opennote/checkUncheck" method="post">
-                        <?php if($item->getChecked() == 1): ?>
-                                <button class="btn btn-dark bi bi-check-square" type="submit" name="itemid" value="<?= $item->getId() ?>"></button>
-                                <input type="hidden" name="idnote" value="<?= $textnote->getId() ?>">
-                                <label class="form-check-label text-decoration-line-through"><?= $item->getContent() ?></label>
-                        <?php else: ?>
-                                <button class="btn btn-dark bi bi-square" type="submit" name="itemid" value="<?= $item->getId() ?>"></button>
-                                <input type="hidden" name="idnote" value="<?= $textnote->getId() ?>">
-                                <label class="form-check-label"><?= $item->getContent() ?></label>
-                        <?php endif ?>
+                      <?php if ($item->getChecked() == 1) : ?>
+                        <button class="btn btn-dark bi bi-check-square" type="submit" name="itemid" value="<?= $item->getId() ?>" <?= $user->isAllowedToEdit($textnote->getId()) ? '' : 'disabled' ?>></button>
+                        <input type="hidden" name="idnote" value="<?= $textnote->getId() ?>">
+                        <label class="form-check-label text-decoration-line-through"><?= $item->getContent() ?></label>
+                      <?php else : ?>
+                        <button class="btn btn-dark bi bi-square" type="submit" name="itemid" value="<?= $item->getId() ?>" <?= $user->isAllowedToEdit($textnote->getId()) ? '' : 'disabled' ?>></button>
+                        <input type="hidden" name="idnote" value="<?= $textnote->getId() ?>">
+                        <label class="form-check-label"><?= $item->getContent() ?></label>
+                      <?php endif ?>
                     </form>
                   </div>
                 </li>
