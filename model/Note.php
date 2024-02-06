@@ -391,13 +391,14 @@ class Note extends Model { //should be abstract
 
     public static function getItemListById(int $noteId): array {
         // À utiliser uniquement sur des textNote ! Appeler cette méthode uniquement après vérification avec isCheckListNote()
-        $data = self::execute("SELECT id, content, checked FROM checklist_note_items WHERE checklist_note = :noteId", ["noteId" => $noteId])->fetchAll();
+        $data = self::execute("SELECT id, content, checked FROM checklist_note_items WHERE checklist_note = :noteId ORDER BY checked", ["noteId" => $noteId])->fetchAll();
     
         $content = [];
     
         foreach ($data as $row) {
             $content[] = new ChecklistItem(
                 $row['id'],
+                $noteId,
                 $row['content'],
                 $row['checked']
             );

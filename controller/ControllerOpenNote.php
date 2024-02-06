@@ -65,7 +65,19 @@ class ControllerOpenNote extends Controller { //Should be abstract
     }
 
     public function checkUncheck () : void {
-        
+        $note = ChecklistNote::getChecklistNoteById($_POST["idnote"]);
+        $items = Note::getItemListById($_POST["idnote"]);
+        $item = ChecklistItem::getItemById($_POST["itemid"]);
+        print_r($item);
+        if ($item->isChecked()){
+            $item->setChecked(0);
+        } else {
+            $item->setChecked(1);
+        }
+        $item->persist();
+        print_r($item);
+
+        $this->redirect("opennote", "index", $_POST["idnote"]);        
     }
 
     public function saveNote() : void {
@@ -76,10 +88,8 @@ class ControllerOpenNote extends Controller { //Should be abstract
         if (isset($_POST['title'])){
             
             $title = $_POST['title'];
-            echo $title;
 
             if (!Note::validateTitle($_POST['title'])){
-                echo $title;
 
                 $errors = ["Title length must be at least 3 and maximum 25."];
             }

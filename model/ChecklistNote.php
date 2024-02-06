@@ -31,7 +31,7 @@ class ChecklistNote extends Note {
             $data["pinned"],
             $data["archived"],
             $data["weight"], 
-            [])
+            Note::getItemListById($data["id"]))
             ;
         }
     }
