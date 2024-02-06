@@ -38,8 +38,10 @@
                     <select class="form-select" id="inlineFormCustomSelect">
                         <option selected>-User-</option>
                         <?php for ($i = 0; $i < sizeof($users); $i++): ?>
-                            <?php if (Shares::isSharedBy($_GET["param1"], $users[$i]->getId())): ?>
-                                <option value="<?= $i+1 ?>"><?= $users[$i]->full_name ?></option>
+                            <?php $x = 1; ?>
+                            <?php if (!Shares::isSharedBy($_GET["param1"], $users[$i]->getId())): ?>
+                                <option value="<?= $x ?>"><?= $users[$i]->full_name ?></option>
+                                <?php $x++; ?>
                             <?php endif; ?>
                         <?php endfor; ?>
                     </select>

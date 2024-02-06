@@ -35,7 +35,7 @@ class Shares extends Model {
 
     public static function isSharedBy(int $noteId, int $userId): bool {
         $query = self::execute("SELECT user, editor FROM `note_shares` WHERE note = :id AND user = :userId", ["id" => $noteId, "userId" => $userId]);
-        $data = $query->fetchAll();
-        return sizeof($data) > 0;
+        echo($query->rowCount());
+        return $query->rowCount() > 0;
     }
 }
