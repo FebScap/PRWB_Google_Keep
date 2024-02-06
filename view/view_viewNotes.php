@@ -100,7 +100,17 @@
                                         <?php if(!$notPinnedNotes[$i]->isCheckListNote($notPinnedNotes[$i]->getId())): ?>
                                         <?= $notPinnedNotes[$i]->getContentById($notPinnedNotes[$i]->getId()) ?>
                                         <!-- CONTENU CHECKLIST NOTE -->
-                                        <?php else: ?> gestion des checklistnotes à faire ici
+                                        <?php else: ?>
+                                            <?php foreach($notPinnedNotes[$i]->getItemListById($notPinnedNotes[$i]->getId()) as $item): ?>
+                                                <div>
+                                                    <?php if($item->getChecked() == 1): ?>
+                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox" checked>
+                                                    <?php else: ?>
+                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox">
+                                                    <?php endif ?>
+                                                    <label class="form-check-label"><?= $item->getContent() ?></label>
+                                                </div>
+                                            <?php endforeach; ?>
                                         <?php endif; ?>
                                     </li>
                                     
