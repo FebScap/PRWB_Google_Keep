@@ -96,10 +96,12 @@ class ControllerOpenNote extends Controller { //Should be abstract
                 $textnote->setContent($_POST["content"]); //Je ne sais pas pq il me dit que la méthode est undefined alors qu'elle l'est
                 $textnote->persist();
                 $this->redirect("opennote", "index", $textnote->getId());
+            } else {
+                (new View("edittextnote"))->show(["textnote" => $textnote, "errors" => $errors]);
             }
+        } else {
             (new View("edittextnote"))->show(["textnote" => $textnote, "errors" => $errors]);
         }
-        (new View("edittextnote"))->show(["textnote" => $textnote, "errors" => $errors]);
     }
 
     public function editChecklistNote() : void {
@@ -167,7 +169,7 @@ class ControllerOpenNote extends Controller { //Should be abstract
     public function addItem() : void {
         $textnote = ChecklistNote::getChecklistNoteById($_POST["id"]);
         $itemList = ChecklistNote::getItemListById($_POST['id']);
-        $emptyItem = new ChecklistItem(0, $_POST["id"], "New", 0);
+        $emptyItem = new ChecklistItem(0, $_POST["id"], "New Item (Rename&Save before adding another one)", 0);
         $emptyItem->persist();
         array_push($itemList, $emptyItem);
         $this->redirect("opennote", "editchecklistnote", $_POST["id"]);
