@@ -48,8 +48,8 @@
                     </select>
                     <select class="form-select" name="permission">
                         <option selected>-Permission-</option>
-                        <option value="0">Reader</option>
-                        <option value="1">Editor</option>
+                        <option value="1">Reader</option>
+                        <option value="0">Editor</option>
                     </select>
                     <button class="btn btn-primary" type="submit" id="button-addon1"><i class="bi bi-plus align-center"></i></button>
                 </div>
