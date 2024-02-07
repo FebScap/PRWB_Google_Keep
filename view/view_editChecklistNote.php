@@ -5,10 +5,10 @@
         <?php include('head.html'); ?>
     </head>
     <body data-bs-theme="dark">
-        <form class="container-fluid d-flex flex-column" method="post" action="OpenNote/saveChecklistNote">
+        <form class="container-fluid d-flex flex-column" method="post" action="OpenNote/saveChecklistNote" id="save">
             <div class="container-fluid d-flex justify-content-between">
                 <a class="nav-link me-4 fs-2" href="opennote/index/<?= $textnote->getId() ?>"><i class="bi bi-chevron-left"></i></a>
-                <button type="submit" class="btn"><i class="bi bi-floppy"></i></button>
+                <button type="submit" form="save" class="btn"><i class="bi bi-floppy"></i></button>
             </div>
             <div class="mt-3">
                 <label for="noteTitle" class="form-label">Title</label>
@@ -44,6 +44,7 @@
                     <?php endif ?>
                 </ul>
             </div>
+            <input id="id" name="id" type="hidden" class="form-control" placeholder="Title" form="save" value="<?= $textnote->getId() ?>">
         </form>
         <?php include('footer.html'); ?>
     </body>

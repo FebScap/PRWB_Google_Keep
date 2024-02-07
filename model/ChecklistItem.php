@@ -24,7 +24,11 @@ class ChecklistItem extends Model {
 
     public function isChecked(): bool {
         return $this->checked == 1;
-    }    
+    }
+    
+    public function setContent(string $content): void {
+        $this->content = $content;
+    }
 
     public function setChecked(int $checked): void {
         $this->checked = $checked;

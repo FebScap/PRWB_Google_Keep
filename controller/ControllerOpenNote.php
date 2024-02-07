@@ -108,11 +108,8 @@ class ControllerOpenNote extends Controller { //Should be abstract
     public function editChecklistNote() : void {
         $user = $this->get_user_or_redirect()->getId();
         if (isset($_GET["param1"]) && is_numeric($_GET["param1"] ) && $this->get_user_or_false()->isAllowedToEdit($_GET["param1"])) {
-            
             $textnote = ChecklistNote::getChecklistNoteById($_GET["param1"]);
             $itemList = ChecklistNote::getItemListById($_GET['param1']);
-
-            print_r($itemList);
             (new View("editchecklistnote"))->show(["textnote" => $textnote, "itemList" => $itemList, "errorsTitle" => $errorsTitle = [], "errorsContent" => $errorsContent = []]);
         } else {
             (new View("error"))->show(["error" => $error = "Oops, looks like you may not edit this note"]);     
@@ -121,8 +118,10 @@ class ControllerOpenNote extends Controller { //Should be abstract
 
     public function saveChecklistNote() : void {
         
-        $errors = [];
-        $textnote = TextNote::getTextNoteById($_POST["id"]);
+        $errorsTitle = [];
+        $errorsContent = [];
+        $textnote = ChecklistNote::getChecklistNoteById($_POST["id"]);
+        $itemList = ChecklistNote::getItemListById($_POST['id']);
 
         if (isset($_POST['title'])){
             
@@ -130,18 +129,35 @@ class ControllerOpenNote extends Controller { //Should be abstract
 
             if (!Note::validateTitle($_POST['title'])){
 
-                $errors = ["Title length must be at least 3 and maximum 25."];
+                $errorsTitle = ["Title length must be at least 3 and maximum 25."];
+            }
+
+            //Validation Content
+            $content = $_POST['content'];
+            if (count($content) !== count(array_unique($content))) {
+                $errorsContent[] = "All items must be unique.";
             }
             
-            if (count($errors) == 0) {
+            if (count($errorsTitle) == 0 && count($errorsContent) == 0) {
                 $textnote->setTitle($_POST["title"]);
                 $textnote->setContent($_POST["content"]); //Je ne sais pas pq il me dit que la méthode est undefined alors qu'elle l'est
                 $textnote->persist();
+                $itemList = ChecklistNote::getItemListById($_POST["id"]);
+                $i = 0;
+                foreach ($itemList as $item) {
+                    if ($_POST['content'][$i] != $item->getContent()){
+                        $item->setContent($_POST['content'][$i]);
+                        $item->persist();
+                    }
+                    $i++;
+                }
                 $this->redirect("opennote", "index", $textnote->getId());
+            } else {
+                (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList]);
             }
-            (new View("editchecklistnote"))->show(["textnote" => $textnote, "errors" => $errors]);
+        } else {
+            (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList]);
         }
-        (new View("editchecklistnote"))->show(["textnote" => $textnote, "errors" => $errors]);
     }
 
     public function deleteItem() : void {
