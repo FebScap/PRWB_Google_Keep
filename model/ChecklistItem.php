@@ -10,6 +10,10 @@ class ChecklistItem extends Model {
         return $this->id;
     }
 
+    public function getchecklist_note(): int {
+        return $this->checklist_note;
+    }
+
     public function getContent(): string {
         return $this->content;
     }
@@ -66,6 +70,11 @@ class ChecklistItem extends Model {
             $data["content"],
             $data["checked"]
         );
+    }
+
+    public function delete() : void {
+        // Supprimer l'élément de la table checklist_note_items
+        self::execute("DELETE FROM checklist_note_items WHERE id = :id", ["id" => $this->id]);
     }
     
 }

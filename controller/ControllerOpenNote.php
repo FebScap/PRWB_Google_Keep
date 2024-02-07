@@ -59,9 +59,9 @@ class ControllerOpenNote extends Controller { //Should be abstract
             
             $textnote = TextNote::getTextNoteById($_GET["param1"]); 
             (new View("edittextnote"))->show(["textnote" => $textnote, "errors" => $errors]);
-        }
-
-        (new View("error"))->show(["error" => $error = "Oops, looks like you may not edit this note"]);        
+        } else {
+            (new View("error"))->show(["error" => $error = "Oops, looks like you may not edit this note"]);
+        }        
     }
 
     public function checkUncheck () : void {
@@ -107,14 +107,16 @@ class ControllerOpenNote extends Controller { //Should be abstract
 
     public function editChecklistNote() : void {
         $user = $this->get_user_or_redirect()->getId();
-        $errors = [];
         if (isset($_GET["param1"]) && is_numeric($_GET["param1"] ) && $this->get_user_or_false()->isAllowedToEdit($_GET["param1"])) {
             
-            $textnote = TextNote::getTextNoteById($_GET["param1"]); 
-            (new View("edittextnote"))->show(["textnote" => $textnote, "errors" => $errors]);
-        }
+            $textnote = ChecklistNote::getChecklistNoteById($_GET["param1"]);
+            $itemList = ChecklistNote::getItemListById($_GET['param1']);
 
-        (new View("error"))->show(["error" => $error = "Oops, looks like you may not edit this note"]);        
+            print_r($itemList);
+            (new View("editchecklistnote"))->show(["textnote" => $textnote, "itemList" => $itemList, "errorsTitle" => $errorsTitle = [], "errorsContent" => $errorsContent = []]);
+        } else {
+            (new View("error"))->show(["error" => $error = "Oops, looks like you may not edit this note"]);     
+        }   
     }
 
     public function saveChecklistNote() : void {
@@ -137,10 +139,19 @@ class ControllerOpenNote extends Controller { //Should be abstract
                 $textnote->persist();
                 $this->redirect("opennote", "index", $textnote->getId());
             }
-            (new View("edittextnote"))->show(["textnote" => $textnote, "errors" => $errors]);
+            (new View("editchecklistnote"))->show(["textnote" => $textnote, "errors" => $errors]);
         }
-        (new View("edittextnote"))->show(["textnote" => $textnote, "errors" => $errors]);
+        (new View("editchecklistnote"))->show(["textnote" => $textnote, "errors" => $errors]);
     }
+
+    public function deleteItem() : void {
+        $item = ChecklistItem::getItemById($_POST['itemid']);
+        $id = $item->getchecklist_note();
+        $item->delete();
+        $this->redirect("opennote", "editchecklistNote", $id);
+    }
+
+    public function addItem() : void {}
 
 
 }
