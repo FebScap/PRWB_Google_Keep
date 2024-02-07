@@ -167,7 +167,12 @@ class ControllerOpenNote extends Controller { //Should be abstract
         $this->redirect("opennote", "editchecklistNote", $id);
     }
 
-    public function addItem() : void {}
-
-
+    public function addItem() : void {
+        $textnote = ChecklistNote::getChecklistNoteById($_POST["id"]);
+        $itemList = ChecklistNote::getItemListById($_POST['id']);
+        $emptyItem = new ChecklistItem(0, $_POST["id"], "New", 0);
+        $emptyItem->persist();
+        array_push($itemList, $emptyItem);
+        $this->redirect("opennote", "editchecklistnote", $_POST["id"]);
+    }
 }

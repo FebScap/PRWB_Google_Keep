@@ -43,6 +43,9 @@
                         </label>
                     <?php endif ?>
                 </ul>
+                <form method='post' action='OpenNote/addItem' id='formadd'>
+                    <button type='submit' form='formadd' name='id' value='<?= $textnote->getId() ?>' class='btn btn-primary'><i class="bi bi-plus-square"></i></button>
+                </form>
             </div>
             <input id="id" name="id" type="hidden" class="form-control" placeholder="Title" form="save" value="<?= $textnote->getId() ?>">
         </form>

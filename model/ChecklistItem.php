@@ -35,7 +35,7 @@ class ChecklistItem extends Model {
     }
 
     public function persist(): ChecklistItem {
-        if ($this->id === null) {
+        if ($this->id === null || $this->id == 0) {
             // Insérer un nouvel ChecklistItem
             self::execute('INSERT INTO checklist_note_items (checklist_note, content, checked) VALUES (:checklist_note, :content, :checked)', [
                 'checklist_note' => $this->checklist_note,
