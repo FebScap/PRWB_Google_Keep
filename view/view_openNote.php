@@ -28,8 +28,14 @@
                 <div class="me-auto p-2 bd-highlight">
                     <a type="button" href="viewSharedNotes/sharedby/<?= $textnote->getOwner() ?>" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
                 </div>
-                <div class="me-auto p-2 bd-highlight">
-                    <a type="button" href="viewSharedNotes" class="btn btn-dark"><i class="bi bi-pencil"></i></a>
+                <div class="p-2 bd-highlight">
+                    <?php if (Note::isCheckListNote($textnote->getId())) : ?>
+                        <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="get">
+                    <?php else : ?>
+                        <form action="opennote/editnote/<?= $textnote->getId() ?>" method="get"> 
+                    <?php endif; ?>
+                    <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pencil"></i></button>
+                    </form>
                 </div>
             
             <?php elseif ($textnote->isShared() && !$user->isOwner($textnote->getId())) : ?>
@@ -66,8 +72,12 @@
                     </form>
                 </div>
                 <div class="p-2 bd-highlight">
-                    <form action="opennote/editnote/<?= $textnote->getId() ?>" method="get"> 
-                        <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pencil"></i></button>
+                    <?php if (Note::isCheckListNote($textnote->getId())) : ?>
+                        <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="get">
+                    <?php else : ?>
+                        <form action="opennote/editnote/<?= $textnote->getId() ?>" method="get"> 
+                    <?php endif; ?>
+                    <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pencil"></i></button>
                     </form>
                 </div>
             <?php endif ?> 

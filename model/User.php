@@ -158,7 +158,7 @@ class User extends Model {
     public function persist() : User {
         if (self::getByMail($this->mail))
             self::execute("UPDATE Users SET hashed_password=:hashed_password, full_name=:full_name WHERE mail=:mail", 
-                            ["mail"=>$this->mail, "hashed_password"=>$this->hashed_password, "full_name"=>$this->full_name]); //Voir si mail ok ou ID auto incr pour le where
+                            ["mail"=>$this->mail, "hashed_password"=>$this->hashed_password, "full_name"=>$this->full_name]);
         else
             self::execute("INSERT INTO Users(mail, hashed_password, full_name) VALUES (:mail, :hashed_password, :full_name)", 
                             ["mail"=>$this->mail, "hashed_password"=>$this->hashed_password, "full_name"=>$this->full_name]); 
