@@ -35,4 +35,18 @@ class ControllerViewShares extends Controller {
         $share->persist();
         $this->redirect("viewshares", "index", $_GET["param1"]);
     }
+
+    public function delete () : void {
+        $share = Shares::getSharesByNoteIdAndUser($_GET["param1"], $_POST["iduser"]);
+        Shares::delete($share->getNote(), $share->getUser());
+        $share->persist();
+        $this->redirect("viewshares", "index", $_GET["param1"]);
+    }
+
+    public function add () : void {
+        $share = new Shares($_GET["param1"], $_POST["user"], $_POST["permission"]);
+        Shares::add($share);
+        $share->persist();
+        $this->redirect("viewshares", "index", $_GET["param1"]);
+    }
 }

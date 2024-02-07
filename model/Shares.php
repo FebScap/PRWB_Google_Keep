@@ -12,8 +12,12 @@ class Shares extends Model {
         return $this->note;
     }
 
-    public function getUser(): string {
+    public function getUser(): int {
         return $this->user;
+    }
+
+    public function getEditor(): int {
+        return $this->editor;
     }
 
     public function isEditor(): bool {
@@ -46,6 +50,14 @@ class Shares extends Model {
     public static function isSharedBy(int $noteId, int $userId): bool {
         $query = self::execute("SELECT user, editor FROM `note_shares` WHERE note = :id AND user = :userId", ["id" => $noteId, "userId" => $userId]);
         return $query->rowCount() > 0;
+    }
+
+    public final static function delete(int $noteId, int $userId): void {
+        self::execute("DELETE FROM note_shares WHERE note=:note AND user=:user", ["note"=>$noteId, "user"=>$userId]);
+    }
+
+    public final static function add(Shares $share): void {
+        self::execute('INSERT INTO note_shares(note, user, editor) VALUES (:note, :user, :editor)', ['note' => $share->getNote(), 'user' => $share->getUser(), 'editor' => $share->getEditor()]);
     }
 
     public function persist() : Shares {
