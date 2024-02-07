@@ -8,8 +8,7 @@ class ControllerViewNotes extends Controller {
     //accueil du controlleur.
     public function index() : void {
         
-
-        $user = User::getByMail($this->get_user_or_redirect()->getMail())->getId(); //Modifier cet appel
+        $user = $this->get_user_or_redirect()->getId();
         $pinnedNotes = Note::getAllPinnedNotesByUser($user);
         $notPinnedNotes = Note::getAllUnpinnedNotesByUser($user);
         $sharedBy = Note::getAllSharedBy($user);
@@ -26,13 +25,12 @@ class ControllerViewNotes extends Controller {
 
     //Button de création d'une nouvelle note texte
     public function  add_text_note() : void {
-        //(new View("addtextnote"))->show();
         $this->redirect("addTextNote");
     }
 
      //Button de création d'une nouvelle note checklist
      public function  add_checklist_note() : void {
-        (new View("addchecklistnote"))->show();
+        $this->redirect("addchecklistnote");
     }
 
      //Button de création d'une nouvelle note

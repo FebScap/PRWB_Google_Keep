@@ -8,15 +8,17 @@
   * bepenelle@epfc.eu, password "Password1,", utilisateur
   * xapigeolet@epfc.eu, password "Password1,", utilisateur
   * mamichel@epfc.eu, password "Password1,", utilisateur
+  * Signup pour ajouter des comptes
 
 ### Liste des bugs connus
 
   * Troncage des notes parfois compliqué
+  * Lors de l'ajout d'item dans une checklist note: Ajouter un item par un, sinon ça crash. La vérification devrait se faire au moyen d'une input barre à coté de bouton plus et ainsi éviter le fait de mettre un nom unique à chaque fois. Pour le moment la validation nom unique ne se fait que au moment de cliquer sur save et pas sur plus étant donné qu'il n'y a pas d'input.   
+  *  
 
 ## Fonctionnalités manquantes 
-  * Ajout, ouverture et modification de checklist note
   * Ajout et modification des partages
-  * Refactor des validations de User
+  * Refactor Complet du Model + attributs private partout + Note abstract etc
   
 ### Liste des fonctionnalités supplémentaires
 

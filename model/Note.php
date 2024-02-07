@@ -376,7 +376,6 @@ class Note extends Model { //should be abstract
         self::execute("DELETE FROM notes WHERE id = :id", ["id" => $id]);
     }
     
-
     public static function getContentById(int $noteId): string {
         // À utiliser uniquement sur des textNote ! Appeler cette méthode uniquement après vérification avec isCheckListNote()
         $query = self::execute("SELECT content FROM text_notes WHERE id = :noteId", ["noteId" => $noteId]);
@@ -391,18 +390,18 @@ class Note extends Model { //should be abstract
 
     public static function getItemListById(int $noteId): array {
         // À utiliser uniquement sur des textNote ! Appeler cette méthode uniquement après vérification avec isCheckListNote()
-        $data = self::execute("SELECT id, content, checked FROM checklist_note_items WHERE checklist_note = :noteId", ["noteId" => $noteId])->fetchAll();
+        $data = self::execute("SELECT id, content, checked FROM checklist_note_items WHERE checklist_note = :noteId ORDER BY checked", ["noteId" => $noteId])->fetchAll();
     
         $content = [];
     
         foreach ($data as $row) {
             $content[] = new ChecklistItem(
                 $row['id'],
+                $noteId,
                 $row['content'],
                 $row['checked']
             );
         }
-    
         return $content;
     }
 }
