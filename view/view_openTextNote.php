@@ -8,7 +8,7 @@
         
     </head>
     <body data-bs-theme="dark">
-        <form>
+        <form class="m-3">
             <fieldset disabled>
                 <p class="font-italic">Created <?= $textnote->getCreatedAt() ?></p>
                 <?php if (!is_null($textnote->getEditedAt())) : ?>

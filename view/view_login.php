@@ -24,7 +24,7 @@
 
                         <div class="input-group flex-nowrap mt-4 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-key"></i></button>
-                            <input id="password" name="password" type="password" class="form-control" value="<? $password ?>" placeholder="Password" aria-describedby="basic-addon1">
+                            <input id="password" name="password" type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
                         </div>
 
                         <button class="btn btn-primary btn-lg btn-block mt-4 mb-4 w-100" type="submit">Login</button>

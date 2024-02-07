@@ -12,12 +12,11 @@
 
 ### Liste des bugs connus
 
-  * Troncage des notes parfois compliqué
+  * Troncage des notes parfois compliqué dans viewnotes/viewarchives/viewsharednotes
   * Lors de l'ajout d'item dans une checklist note: Ajouter un item par un, sinon ça crash. La vérification devrait se faire au moyen d'une input barre à coté de bouton plus et ainsi éviter le fait de mettre un nom unique à chaque fois. Pour le moment la validation nom unique ne se fait que au moment de cliquer sur save et pas sur plus étant donné qu'il n'y a pas d'input.   
-  *  
+  * Validation pour l'ajout d'un share nécessaire, si aucun user ou permission n'est sélectionné, la page plante.
 
 ## Fonctionnalités manquantes 
-  * Ajout et modification des partages
   * Refactor Complet du Model + attributs private partout + Note abstract etc
   
 ### Liste des fonctionnalités supplémentaires

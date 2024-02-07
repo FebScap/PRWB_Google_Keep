@@ -5,7 +5,7 @@
         <?php include('head.html');
         include 'view_openNote.php';?>
     </head>
-    <body>
+    <body class="m-3">
         <p class="font-italic">Created <?= $textnote->getCreatedAt() ?></p>
         <?php if (!is_null($textnote->getEditedAt())) : ?>
                 <p class="font-italic">Edited <?= $textnote->getEditedAt() ?></p>

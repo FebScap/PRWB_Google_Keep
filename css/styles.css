@@ -13,3 +13,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
+
+.input-field {
+   height: 600px
+}
