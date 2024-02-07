@@ -68,15 +68,12 @@ class ControllerOpenNote extends Controller { //Should be abstract
         $note = ChecklistNote::getChecklistNoteById($_POST["idnote"]);
         $items = Note::getItemListById($_POST["idnote"]);
         $item = ChecklistItem::getItemById($_POST["itemid"]);
-        print_r($item);
         if ($item->isChecked()){
             $item->setChecked(0);
         } else {
             $item->setChecked(1);
         }
         $item->persist();
-        print_r($item);
-
         $this->redirect("opennote", "index", $_POST["idnote"]);        
     }
 
@@ -140,7 +137,7 @@ class ControllerOpenNote extends Controller { //Should be abstract
             
             if (count($errorsTitle) == 0 && count($errorsContent) == 0) {
                 $textnote->setTitle($_POST["title"]);
-                $textnote->setContent($_POST["content"]); //Je ne sais pas pq il me dit que la méthode est undefined alors qu'elle l'est
+                $textnote->setContent($_POST["content"]);
                 $textnote->persist();
                 $itemList = ChecklistNote::getItemListById($_POST["id"]);
                 $i = 0;
