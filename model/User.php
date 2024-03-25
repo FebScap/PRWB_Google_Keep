@@ -11,7 +11,16 @@ class User extends Model {
         $data = self::execute("SELECT * FROM Users", [])->fetchAll();
         $users = [];
         foreach ($data as $row) {
-            $users[] = new User($row["mail"], $row["hashed_password"], $row["full_name"], $row["role"]);
+            $users[] = new User($row["mail"], $row["hashed_password"], $row["full_name"], $row["role"], $row["id"]);
+        }
+        return $users;
+    }
+
+    public static function getAllUsersExeptOne(int $userId) : array {
+        $data = self::execute("SELECT * FROM Users WHERE id != :id", ["id" => $userId])->fetchAll();
+        $users = [];
+        foreach ($data as $row) {
+            $users[] = new User($row["mail"], $row["hashed_password"], $row["full_name"], $row["role"], $row["id"]);
         }
         return $users;
     }
