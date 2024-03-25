@@ -3,7 +3,7 @@
 require_once "framework/Model.php";
 require_once "model/ChecklistItem.php";
 
-class Note extends Model { //should be abstract
+abstract class Note extends Model { //should be abstract
     
     public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public int $pinned, public int $archived, public int $weight)
     {}
@@ -145,7 +145,6 @@ class Note extends Model { //should be abstract
         return $notes;
     }
     
-
     public static function getAllUnpinnedNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 0 and archived = 0 ORDER BY weight DESC", ["userId" => $userId])->fetchAll();
         $notes = [];
@@ -163,8 +162,6 @@ class Note extends Model { //should be abstract
         }
         return $notes;
     }
-
-
 
     public static function getAllArchivedNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId AND archived = 1", ["userId" => $userId])->fetchAll();
