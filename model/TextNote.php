@@ -49,7 +49,6 @@ class TextNote extends Note {
         }
     }
 
-    
     public function validate() : array {
         $errors = [];
         if (!(strlen($this->title) >= 3 && strlen($this->title) <= 25)) {

@@ -4,7 +4,7 @@ require_once "framework/Model.php";
 
 class User extends Model {
 
-    public function __construct(public string $mail, public string $hashed_password, public string $full_name, public ?string $role = "user", public ?int $id = null)
+    public function __construct(public string $mail, public string $hashed_password, public string $full_name, public ?string $role = "user", public ?int $id = 0)
     {}
     
     public static function getAllUsers() : array {
@@ -202,8 +202,5 @@ class User extends Model {
     
         return $query->rowCount() > 0;
     }
-    
-    
-    
 }
 ?>
