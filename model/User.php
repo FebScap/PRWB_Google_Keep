@@ -18,7 +18,7 @@ class User extends Model {
     }
 
     public static function getAllUsersExeptOne(int $userId) : array {
-        $data = self::execute("SELECT * FROM Users WHERE id != :id", ["id" => $userId])->fetchAll();
+        $data = self::execute("SELECT * FROM Users WHERE id != :id ORDER BY full_name", ["id" => $userId])->fetchAll();
         $users = [];
         foreach ($data as $row) {
             $users[] = new User($row["mail"], $row["hashed_password"], $row["full_name"], $row["role"], $row["id"]);
