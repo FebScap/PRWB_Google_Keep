@@ -128,6 +128,7 @@ class ControllerOpenNote extends Controller {
         if (isset($_POST['title'])){
             
             $title = $_POST['title'];
+            $textnote->setTitle($title);
 
             if (!Note::validateTitle($_POST['title'])){
 
@@ -136,6 +137,15 @@ class ControllerOpenNote extends Controller {
 
             //Validation Content
             $content = $_POST['content'];
+            $itemList = ChecklistNote::getItemListById($_POST["id"]);
+                $i = 0;
+                foreach ($itemList as $item) {
+                    if ($_POST['content'][$i] != $item->getContent()){
+                        $item->setContent($_POST['content'][$i]);
+                    }
+                    $i++;
+                }
+
             if (count($content) !== count(array_unique($content))) {
                 $errorsContent[] = "All items must be unique.";
             }
