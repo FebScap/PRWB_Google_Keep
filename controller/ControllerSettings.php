@@ -22,6 +22,9 @@ class ControllerSettings extends Controller{
             if (!User::checkPassword($old_password, $user->getPassword())) {
                 array_push($errors, "Wrong password");
             }
+            if ($old_password == $new_password) {
+                array_push($errors, "Password must be new");
+            }
             $errors = array_merge($errors, User::validatePasswords($new_password, $new_password_confirm));
             
             if (count($errors) == 0) { 
