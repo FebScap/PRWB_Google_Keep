@@ -5,7 +5,7 @@ require_once "model/User.php";
 require_once "model/TextNote.php";
 require_once "model/ChecklistNote.php";
 
-class ControllerOpenNote extends Controller { //Should be abstract
+class ControllerOpenNote extends Controller {
     //accueil du controlleur.
     public function index() : void {
 

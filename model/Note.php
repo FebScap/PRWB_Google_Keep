@@ -3,7 +3,7 @@
 require_once "framework/Model.php";
 require_once "model/ChecklistItem.php";
 
-abstract class Note extends Model {
+ class Note extends Model {
     
     public function __construct(private int $id, private string $title, private int $owner, private string $created_at, private ?string $edited_at, private int $pinned, private int $archived, private int $weight) {
 

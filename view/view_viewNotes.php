@@ -93,7 +93,7 @@
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100">
                                     <!-- TITRE -->
-                                    <li class="list-group-item"><?= $notPinnedNotes[$i]->title ?></li>
+                                    <li class="list-group-item"><?= $notPinnedNotes[$i]->getTitle() ?></li>
 
                                     <li class="list-group-item list-group-item-secondary h-100 truncate-after">
                                         <!-- CONTENU TEXT NOTE -->
