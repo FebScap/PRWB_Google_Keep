@@ -18,7 +18,7 @@ class ControllerViewSharedNotes extends Controller {
         $sharedBy = Note::getAllSharedBy($user);
         $nameSharedBy = [];
         foreach ($sharedBy as $id) {
-            $nameSharedBy[] = User::getByID($id)->full_name;
+            $nameSharedBy[] = User::getByID($id)->getFullName();
         }
 
         if (isset($_GET["param1"]) && $_GET["param1"] !== "") {

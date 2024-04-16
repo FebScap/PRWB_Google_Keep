@@ -60,8 +60,8 @@ class ChecklistNote extends Note {
                 
                 self::execute('INSERT INTO Notes(title, owner, edited_at, pinned, archived, weight) VALUES (:title, :owner, null, 0, 0, 1)', ['title' => $this->title, 'owner' => $this->owner]);
                 $note = self::getNoteById(self::lastInsertId());
-                $this->id = $note->id;
-                $this->created_at = $note->created_at;
+                $this->id = $note->getId();
+                $this->created_at = $note->getCreatedAt();
                 self::execute('INSERT INTO checklist_notes (id) VALUES (:id)', ['id' => $this->id]);
                 return $this;
             } else {
