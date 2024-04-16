@@ -336,12 +336,16 @@ require_once "model/ChecklistItem.php";
                 self::execute('UPDATE Notes SET weight = :weight WHERE id = :id', ['weight' => $this->weight, 'id' => $this->id]);
                 self::execute('UPDATE Notes SET archived = :archived WHERE id = :id', ['archived' => $this->archived, 'id' => $this->id]);
                 self::execute('UPDATE Notes SET pinned = :pinned WHERE id = :id', ['pinned' => $this->pinned, 'id' => $this->id]);
-                self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->id]);
+                //self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->id]);
                 return $this;
             } else {
                 return $errors;
             }
         }
+    }
+
+    public function persist_date() : void {
+        self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->id]);
     }
 
     public function validate() : array {

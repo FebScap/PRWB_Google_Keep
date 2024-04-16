@@ -53,9 +53,13 @@ class ChecklistItem extends Model {
                 'checked' => $this->checked,
                 'id' => $this->id
             ]);
-            self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->checklist_note]);
+            //self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->checklist_note]);
             return $this;
         }
+    }
+
+    public function persist_date(): void {
+        self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->checklist_note]);
     }
     
 

@@ -95,6 +95,7 @@ class ControllerOpenNote extends Controller {
                 $textnote->setTitle($_POST["title"]);
                 $textnote->setContent($_POST["content"]); //Je ne sais pas pq il me dit que la méthode est undefined alors qu'elle l'est
                 $textnote->persist();
+                $textnote->persist_date();
                 $this->redirect("opennote", "index", $textnote->getId());
             } else {
                 (new View("edittextnote"))->show(["textnote" => $textnote, "errors" => $errors]);
@@ -141,6 +142,7 @@ class ControllerOpenNote extends Controller {
                 $textnote->setTitle($_POST["title"]);
                 $textnote->setContent($_POST["content"]);
                 $textnote->persist();
+                $textnote->persist_date();
                 $itemList = ChecklistNote::getItemListById($_POST["id"]);
                 $i = 0;
                 foreach ($itemList as $item) {
