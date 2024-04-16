@@ -42,6 +42,7 @@ class ControllerSettings extends Controller{
         if (isset($_POST['fullname'])){
 
             if (!User::isValidFullname($_POST['fullname'])){
+                $fullname = $_POST['fullname'];
                 $errorsFullname = ["Fullname length must be at least 3."];
             }
             
@@ -50,6 +51,7 @@ class ControllerSettings extends Controller{
                 $user->persist();
                 $this->redirect("settings");
             }
+            (new View("editProfile"))->show(["fullname" => $fullname, "errorsFullname" => $errorsFullname]);
         }
         (new View("editProfile"))->show(["fullname" => $fullname, "errorsFullname" => $errorsFullname]);
     }

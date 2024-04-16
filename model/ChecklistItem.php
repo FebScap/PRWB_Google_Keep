@@ -4,7 +4,7 @@ require_once "framework/Model.php";
 
 class ChecklistItem extends Model {
     
-    public function __construct(private ?int $id, private int $checklist_note, private string $content, private int $checked) {}
+    public function __construct(public ?int $id, public int $checklist_note, public string $content, public int $checked) {}
 
     public function getId(): int {
         return $this->id;
