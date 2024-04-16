@@ -85,6 +85,8 @@ class ControllerOpenNote extends Controller {
         if (isset($_POST['title'])){
             
             $title = $_POST['title'];
+            $textnote->setTitle($title);
+            $textnote->setContent($_POST['content']);
 
             if (!Note::validateTitle($_POST['title'])){
 
