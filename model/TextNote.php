@@ -4,10 +4,10 @@ require_once "framework/Model.php";
 
 class TextNote extends Note {
     
-    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public int $pinned, public int $archived, public int $weight, public ?string $content = null)
+    public function __construct(private int $id, private string $title, private int $owner, private string $created_at, private ?string $edited_at, private int $pinned, private int $archived, private int $weight, private ?string $content = null)
     {
         $this->content = $content ?? "";
-    } //Modifier constructeur avec seulement 2 attributs : Note $note et string $content
+    } 
 
     public function getContent(): string {
         return $this->content;

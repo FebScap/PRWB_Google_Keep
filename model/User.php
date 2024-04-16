@@ -4,8 +4,9 @@ require_once "framework/Model.php";
 
 class User extends Model {
 
-    public function __construct(public string $mail, public string $hashed_password, public string $full_name, public ?string $role = "user", public ?int $id = 0)
-    {}
+    public function __construct(private string $mail, private string $hashed_password, private string $full_name, private ?string $role = "user", private ?int $id = 0) {
+        
+    }
     
     public static function getAllUsers() : array {
         $data = self::execute("SELECT * FROM Users", [])->fetchAll();
