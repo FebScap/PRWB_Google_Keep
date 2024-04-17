@@ -403,4 +403,42 @@ require_once "model/ChecklistItem.php";
         }
         return $content;
     }
+
+    public static function elapsedDate($timestampString): string {
+        $timestamp = strtotime($timestampString);
+        $currentTimestamp = time();
+        $elapsedSeconds = $currentTimestamp - $timestamp;
+
+        if ($elapsedSeconds < 60) {
+            return "just now";
+        } elseif ($elapsedSeconds < 3600) {
+            $minutes = floor($elapsedSeconds / 60);
+            if ($minutes == 1) {
+                return "one minute ago";
+            } else {
+                return "$minutes minutes ago";
+            }
+        } elseif ($elapsedSeconds < 86400) {
+            $hours = floor($elapsedSeconds / 3600);
+            if ($hours == 1) {
+                return "one hour ago";
+            } else {
+                return "$hours hours ago";
+            }
+        } elseif ($elapsedSeconds < 2592000) { // 30 days
+            $days = floor($elapsedSeconds / 86400);
+            if ($days == 1) {
+                return "one day ago";
+            } else {
+                return "$days days ago";
+            }
+        } else {
+            $months = floor($elapsedSeconds / 2592000); // 30 days
+            if ($months == 1) {
+                return "one month ago";
+            } else {
+                return "$months months ago";
+            }
+        }
+    }
 }
