@@ -44,9 +44,12 @@ class ControllerViewShares extends Controller {
     }
 
     public function add () : void {
-        $share = new Shares($_GET["param1"], $_POST["user"], $_POST["permission"]);
-        Shares::add($share);
-        $share->persist();
+        if ($_POST["user"] != "-User-" && $_POST["permission"] != "-Permission-") {
+            $share = new Shares($_GET["param1"], $_POST["user"], $_POST["permission"]);
+            Shares::add($share);
+            $share->persist();
+            $this->redirect("viewshares", "index", $_GET["param1"]);
+        }
         $this->redirect("viewshares", "index", $_GET["param1"]);
     }
 }
