@@ -3,6 +3,14 @@
     <head>
         <title>My notes</title>
         <?php include('head.html'); ?>
+        <!-- Fonction de Drag and Drop -->
+        <script>
+        $( function() {
+            $( "#pinnedNotes, #otherNotes" ).sortable({
+            connectWith: ".connectedSortable"
+            }).disableSelection();
+        } );
+        </script>
     </head>
     <body data-bs-theme="dark">
         <div class="container-fluid d-flex flex-column">
@@ -17,7 +25,7 @@
             <?php if (sizeof($pinnedNotes) > 0): ?>
                 <h2 class="h2 fs-6 mt-4 ms-2">Pinned</h2>
             <?php endif; ?>
-            <div class="d-flex flex-row flex-wrap justify-content-start">
+            <div id="pinnedNotes" class="connectedSortable d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($pinnedNotes); $i++): ?>
                     <a class="link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $pinnedNotes[$i]->getId() ?>">
                         <div class="card h-100">
@@ -46,7 +54,7 @@
                                     
                                     <!-- Chevrons -->
                                     <?php if ($i == 0): ?>
-                                        <li class="list-group-item d-flex justify-content-end">
+                                        <li class="chevron list-group-item d-flex justify-content-end">
                                             <form action="viewnotes/moveDown" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm"> 
                                                     <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
@@ -91,7 +99,7 @@
             <?php if (sizeof($notPinnedNotes) > 0): ?>
                 <h2 class="h2 fs-6 mt-1 ms-2">Other</h2>
             <?php endif; ?>
-            <div class="d-flex flex-row flex-wrap justify-content-start">
+            <div id="otherNotes" class="connectedSortable d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($notPinnedNotes); $i++): ?>
                     <a class="link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $notPinnedNotes[$i]->getId() ?>">
                         <div class="card h-100">
@@ -162,6 +170,7 @@
                     </a>
                 <?php endfor; ?>
             </div>
+            
 
             <!-- BUTTONS BAS DE PAGE -->
             <nav class="navbar fixed-bottom bg-transparent d-block">
