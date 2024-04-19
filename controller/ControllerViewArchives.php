@@ -8,13 +8,12 @@ class ControllerViewArchives extends Controller {
     //accueil du controlleur.
     public function index() : void {
         $user = $this->get_user_or_redirect()->getId();
-        //$user = 1;
 
         $notes = Note::getAllArchivedNotesByUser($user);
         $sharedBy = Note::getAllSharedBy($user);
         $nameSharedBy = [];
         foreach ($sharedBy as $id) {
-            $nameSharedBy[] = User::getByID($id)->full_name;
+            $nameSharedBy[] = User::getByID($id)->getFullName();
         }
 
         (new View("viewarchives"))->show(["notes" => $notes,

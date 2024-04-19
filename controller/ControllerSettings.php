@@ -22,12 +22,14 @@ class ControllerSettings extends Controller{
             if (!User::checkPassword($old_password, $user->getPassword())) {
                 array_push($errors, "Wrong password");
             }
+            if ($old_password == $new_password) {
+                array_push($errors, "Password must be new");
+            }
             $errors = array_merge($errors, User::validatePasswords($new_password, $new_password_confirm));
             
             if (count($errors) == 0) { 
                 $user->changePassword($new_password);
                 $this->redirect("settings");
-                //(new View("settings"))->show(["user" => $user]);
             }
         }
         (new View("changePassword"))->show(["old_password" => $old_password, "new_password_confirm" => $new_password_confirm,
@@ -43,6 +45,7 @@ class ControllerSettings extends Controller{
         if (isset($_POST['fullname'])){
 
             if (!User::isValidFullname($_POST['fullname'])){
+                $fullname = $_POST['fullname'];
                 $errorsFullname = ["Fullname length must be at least 3."];
             }
             
@@ -51,6 +54,7 @@ class ControllerSettings extends Controller{
                 $user->persist();
                 $this->redirect("settings");
             }
+            (new View("editProfile"))->show(["fullname" => $fullname, "errorsFullname" => $errorsFullname]);
         }
         (new View("editProfile"))->show(["fullname" => $fullname, "errorsFullname" => $errorsFullname]);
     }

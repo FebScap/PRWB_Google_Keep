@@ -12,7 +12,7 @@
             </div>
             <div class="mt-3">
                 <label for="noteTitle" class="form-label">Title</label>
-                <input id="title" name="title" type="text" class="form-control" placeholder="Title" aria-describedby="emailHelp" value="<?= $title ?>">
+                <input id="title" name="title" type="text" class="form-control" placeholder="Title" value="<?= $title ?>">
                 <?php if (count($errors) != 0): ?>
                         <div class='errors'>
                             <ul>

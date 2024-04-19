@@ -5,8 +5,9 @@ require_once 'model/User.php';
 
 
 class ControllerMain extends Controller {
-    //si l'utilisateur est connecté, redirige vers son view notes.
-    //sinon, produit la vue d'accueil.
+    
+    //si l'utilisateur est connecté, redirige vers son view notes
+    //sinon, produit la vue d'accueil pour la connexion
     public function index() : void {
         if ($this->user_logged()) {
             $this->redirect("viewnotes");
@@ -20,7 +21,7 @@ class ControllerMain extends Controller {
         $mail = '';
         $password = '';
         $errors = [];
-        if (isset($_POST['mail']) && isset($_POST['password'])) { //note : pourraient contenir des chaînes vides
+        if (isset($_POST['mail']) && isset($_POST['password'])) {
             $mail = $_POST['mail'];
             $password = $_POST['password'];
 
@@ -53,7 +54,7 @@ class ControllerMain extends Controller {
             $errors = array_merge($errors, User::validatePasswords($password, $password_confirm));
 
             if (count($errors) == 0) { 
-                $user->persist(); //sauve l'utilisateur
+                $user->persist();
                 $this->log_user($user);
             }
         }

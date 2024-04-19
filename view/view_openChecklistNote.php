@@ -3,34 +3,38 @@
     <head>
         <title>Checklist</title>
         <?php include('head.html');
-        include 'view_openNote.php';
-         ?>
+        include 'view_openNote.php';?>
     </head>
-    <body>
-        <p>Created 1 month ago...</p>
+    <body class="m-3">
+        <p class="font-italic">Created <?= Note::elapsedDate($textnote->getCreatedAt()) ?></p>
+        <?php if (!is_null($textnote->getEditedAt())) : ?>
+                <p class="font-italic">Edited <?= Note::elapsedDate($textnote->getEditedAt()) ?></p>
+        <?php endif ?>
         <div class="form-group">
             <label for="title" class ="fw-bold">Title</label>
-            <input type="title" class="form-control" id="exampleInputTitle" value="<?= $textnote->getTitle() ?>">
+            <input type="title" class="form-control" id="exampleInputTitle" disabled="disabled" value="<?= $textnote->getTitle() ?>">
         </div>
         <div class="fw-bold" >Items</div>
         <div class="main">
         <ul class="list-group">
-            <li class="list-group-item">
               <?php foreach($items as $item): ?>
+                <li class="list-group-item">
                   <div>
-                      <?php if($item->getChecked() == 1): ?>
-                          <input class="form-check-input me-1" disabled="disabled" type="checkbox" checked>
-                      <?php else: ?>
-                          <input class="form-check-input me-1" disabled="disabled" type="checkbox">
+                    <form action="opennote/checkUncheck" method="post">
+                      <?php if ($item->getChecked() == 1) : ?>
+                        <button class="btn btn-dark bi bi-check-square" type="submit" name="itemid" value="<?= $item->getId() ?>" <?= $user->isAllowedToEdit($textnote->getId()) ? '' : 'disabled' ?>></button>
+                        <input type="hidden" name="idnote" value="<?= $textnote->getId() ?>">
+                        <label class="form-check-label text-decoration-line-through"><?= $item->getContent() ?></label>
+                      <?php else : ?>
+                        <button class="btn btn-dark bi bi-square" type="submit" name="itemid" value="<?= $item->getId() ?>" <?= $user->isAllowedToEdit($textnote->getId()) ? '' : 'disabled' ?>></button>
+                        <input type="hidden" name="idnote" value="<?= $textnote->getId() ?>">
+                        <label class="form-check-label"><?= $item->getContent() ?></label>
                       <?php endif ?>
-                      <label class="form-check-label"><?= $item->getContent() ?></label>
+                    </form>
                   </div>
+                </li>
               <?php endforeach; ?>
-              <div><input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="" aria-label="...">
-
-              </div>
-            </li>
-          </ul>
-          <?php include('footer.html'); ?>
+        </ul>
+        <?php include('footer.html'); ?>
     </body>
 </html>

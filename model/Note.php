@@ -3,10 +3,11 @@
 require_once "framework/Model.php";
 require_once "model/ChecklistItem.php";
 
-class Note extends Model { //should be abstract
+ class Note extends Model {
     
-    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public int $pinned, public int $archived, public int $weight)
-    {}
+    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public int $pinned, public int $archived, public int $weight) {
+
+    }
 
     // Méthodes GET
     public function getId(): int {
@@ -145,7 +146,6 @@ class Note extends Model { //should be abstract
         return $notes;
     }
     
-
     public static function getAllUnpinnedNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 0 and archived = 0 ORDER BY weight DESC", ["userId" => $userId])->fetchAll();
         $notes = [];
@@ -163,8 +163,6 @@ class Note extends Model { //should be abstract
         }
         return $notes;
     }
-
-
 
     public static function getAllArchivedNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId AND archived = 1", ["userId" => $userId])->fetchAll();
@@ -297,13 +295,9 @@ class Note extends Model { //should be abstract
         self::execute("UPDATE notes SET weight = weight - 1 WHERE id = :noteId", ["noteId" => $noteId]);
     }
     
-    //public abstract function persist() : object|array;
-
     public static function validateTitle(string $title) : bool {
         return (strlen($title) >= 3 && strlen($title) <= 25);
     }
-
-    //public abstract static function delete(int $id) : void;
 
     public static function increaseAllWeightBy1(int $id) : void { //Augmente le poids de toutes les nutes d'un user afin d'inserer une nouvelle note au poids de 1
         $notes = Note::getAllNotesByUser($id);
@@ -330,13 +324,11 @@ class Note extends Model { //should be abstract
                 $note = self::getNoteById(self::lastInsertId());
                 $this->id = $note->id;
                 $this->created_at = $note->created_at;
-                //self::execute('INSERT INTO Text_Notes(content, id) VALUES (:content, :id)', ['content' => $this->content, 'id' => $this->id]);
                 return $this;
             } else {
                 return $errors;
             }
         } else {
-            //throw new Exception("Pas rdy encore");//Modification
             // Mise à jour d'une note existante
             $errors = $this->validate();
             if (empty($errors)){
@@ -344,16 +336,16 @@ class Note extends Model { //should be abstract
                 self::execute('UPDATE Notes SET weight = :weight WHERE id = :id', ['weight' => $this->weight, 'id' => $this->id]);
                 self::execute('UPDATE Notes SET archived = :archived WHERE id = :id', ['archived' => $this->archived, 'id' => $this->id]);
                 self::execute('UPDATE Notes SET pinned = :pinned WHERE id = :id', ['pinned' => $this->pinned, 'id' => $this->id]);
-                self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->id]);
-            
-            // Mise à jour dans la table 'Text_Notes'
-                //self::execute('UPDATE Text_Notes SET content = :content WHERE id = :id', ['content' => $this->content, 'id' => $this->id]);
-            
+                //self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->id]);
                 return $this;
             } else {
                 return $errors;
             }
         }
+    }
+
+    public function persist_date() : void {
+        self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->id]);
     }
 
     public function validate() : array {
@@ -365,7 +357,7 @@ class Note extends Model { //should be abstract
     }
 
 
-    public static function delete(int $id): void {
+    public final static function delete(int $id): void {
         
         // Supprimer les enregistrements dans la table checklist_note_items liés à la note
         self::execute("DELETE FROM checklist_note_items WHERE checklist_note = :id", ["id" => $id]);
@@ -383,7 +375,6 @@ class Note extends Model { //should be abstract
         self::execute("DELETE FROM notes WHERE id = :id", ["id" => $id]);
     }
     
-
     public static function getContentById(int $noteId): string {
         // À utiliser uniquement sur des textNote ! Appeler cette méthode uniquement après vérification avec isCheckListNote()
         $query = self::execute("SELECT content FROM text_notes WHERE id = :noteId", ["noteId" => $noteId]);
@@ -398,18 +389,56 @@ class Note extends Model { //should be abstract
 
     public static function getItemListById(int $noteId): array {
         // À utiliser uniquement sur des textNote ! Appeler cette méthode uniquement après vérification avec isCheckListNote()
-        $data = self::execute("SELECT id, content, checked FROM checklist_note_items WHERE checklist_note = :noteId", ["noteId" => $noteId])->fetchAll();
+        $data = self::execute("SELECT id, content, checked FROM checklist_note_items WHERE checklist_note = :noteId ORDER BY checked, id", ["noteId" => $noteId])->fetchAll();
     
         $content = [];
     
         foreach ($data as $row) {
             $content[] = new ChecklistItem(
                 $row['id'],
+                $noteId,
                 $row['content'],
                 $row['checked']
             );
         }
-    
         return $content;
+    }
+
+    public static function elapsedDate($timestampString): string {
+        $timestamp = strtotime($timestampString);
+        $currentTimestamp = time();
+        $elapsedSeconds = $currentTimestamp - $timestamp;
+
+        if ($elapsedSeconds < 60) {
+            return "just now";
+        } elseif ($elapsedSeconds < 3600) {
+            $minutes = floor($elapsedSeconds / 60);
+            if ($minutes == 1) {
+                return "one minute ago";
+            } else {
+                return "$minutes minutes ago";
+            }
+        } elseif ($elapsedSeconds < 86400) {
+            $hours = floor($elapsedSeconds / 3600);
+            if ($hours == 1) {
+                return "one hour ago";
+            } else {
+                return "$hours hours ago";
+            }
+        } elseif ($elapsedSeconds < 2592000) { // 30 days
+            $days = floor($elapsedSeconds / 86400);
+            if ($days == 1) {
+                return "one day ago";
+            } else {
+                return "$days days ago";
+            }
+        } else {
+            $months = floor($elapsedSeconds / 2592000); // 30 days
+            if ($months == 1) {
+                return "one month ago";
+            } else {
+                return "$months months ago";
+            }
+        }
     }
 }

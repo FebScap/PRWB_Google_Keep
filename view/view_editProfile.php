@@ -20,16 +20,17 @@
                         <div class="input-group flex-nowrap mt-2 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-person"></i></button>
                             <input id="fullname" name="fullname" type="text" class="form-control" value="<?= $fullname ?>" placeholder="Fullname" aria-describedby="basic-addon1">
-                            <?php if (count($errorsFullname) != 0): ?>
-                                <div class='errorsFullname'>
-                                    <ul>
-                                        <?php foreach ($errorsFullname as $error): ?>
-                                            <li><?= $error ?></li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                </div>
-                            <?php endif; ?>
                         </div>
+
+                        <?php if (count($errorsFullname) != 0): ?>
+                            <div class='errorsFullname'>
+                                <ul>
+                                    <?php foreach ($errorsFullname as $error): ?>
+                                        <li class="pt-1"><?= $error ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
 
                         <button class="btn btn-primary btn-lg btn-block mt-3 w-100" type="submit">Save</button>
 
