@@ -8,10 +8,12 @@
         
     </head>
     <body data-bs-theme="dark">
-        <form>
+        <form class="m-3">
             <fieldset disabled>
-                <p class="font-italic">Created <?= $textnote->getCreatedAt() ?></p>
-                <p class="font-italic">Edited <?= $textnote->getEditedAt() ?></p>
+                <p class="font-italic">Created <?= Note::elapsedDate($textnote->getCreatedAt()) ?></p>
+                <?php if (!is_null($textnote->getEditedAt())) : ?>
+                    <p class="font-italic">Edited <?= Note::elapsedDate($textnote->getEditedAt()) ?></p>
+                <?php endif ?>
                 <div class="mb-3">
                 <label for="disabledTextInput" class="form-label">Title</label>
                 <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled title" value="<?= $textnote->getTitle() ?>">

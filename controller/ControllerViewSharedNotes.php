@@ -12,15 +12,13 @@ class ControllerViewSharedNotes extends Controller {
     //profil de l'utilisateur connecté ou donné
     public function sharedby() : void {
         $user = $this->get_user_or_redirect()->getId();
-        //$user = 1;
 
-        //$notes = Note::getAllArchivedNotesByUser($user);
         $notesEdit = Note::getAllSharedNotesEditorByUserId($user);
         $notesRead = Note::getAllSharedNotesReaderByUserId($user);
         $sharedBy = Note::getAllSharedBy($user);
         $nameSharedBy = [];
         foreach ($sharedBy as $id) {
-            $nameSharedBy[] = User::getByID($id)->full_name;
+            $nameSharedBy[] = User::getByID($id)->getFullName();
         }
 
         if (isset($_GET["param1"]) && $_GET["param1"] !== "") {

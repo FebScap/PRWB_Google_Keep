@@ -6,7 +6,6 @@ require_once 'model/Note.php';
 
 class ControllerDeleteNote extends Controller {
     public function index() : void {
-        //$noteid  $_GET["param1"]
         //verif si note existe et isnumeric et si a le droit de supp
 
         $user = $this->get_user_or_redirect();

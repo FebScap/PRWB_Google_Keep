@@ -14,7 +14,9 @@
                 <h1 class="fs-4 d-flex me-3">My notes</h1>
             </div>
             <!-- CARDS -->
-            <h2 class="h2 fs-6 mt-4 ms-2">Pinned</h2>
+            <?php if (sizeof($pinnedNotes) > 0): ?>
+                <h2 class="h2 fs-6 mt-4 ms-2">Pinned</h2>
+            <?php endif; ?>
             <div class="d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($pinnedNotes); $i++): ?>
                     <a class="link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $pinnedNotes[$i]->getId() ?>">
@@ -86,21 +88,33 @@
                     </a>
                 <?php endfor; ?>
             </div>
-            <h2 class="h2 fs-6 mt-1 ms-2">Other</h2>
+            <?php if (sizeof($notPinnedNotes) > 0): ?>
+                <h2 class="h2 fs-6 mt-1 ms-2">Other</h2>
+            <?php endif; ?>
             <div class="d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($notPinnedNotes); $i++): ?>
                     <a class="link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $notPinnedNotes[$i]->getId() ?>">
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100">
                                     <!-- TITRE -->
-                                    <li class="list-group-item"><?= $notPinnedNotes[$i]->title ?></li>
+                                    <li class="list-group-item"><?= $notPinnedNotes[$i]->getTitle() ?></li>
 
                                     <li class="list-group-item list-group-item-secondary h-100 truncate-after">
                                         <!-- CONTENU TEXT NOTE -->
                                         <?php if(!$notPinnedNotes[$i]->isCheckListNote($notPinnedNotes[$i]->getId())): ?>
                                         <?= $notPinnedNotes[$i]->getContentById($notPinnedNotes[$i]->getId()) ?>
                                         <!-- CONTENU CHECKLIST NOTE -->
-                                        <?php else: ?> gestion des checklistnotes à faire ici
+                                        <?php else: ?>
+                                            <?php foreach($notPinnedNotes[$i]->getItemListById($notPinnedNotes[$i]->getId()) as $item): ?>
+                                                <div>
+                                                    <?php if($item->getChecked() == 1): ?>
+                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox" checked>
+                                                    <?php else: ?>
+                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox">
+                                                    <?php endif ?>
+                                                    <label class="form-check-label"><?= $item->getContent() ?></label>
+                                                </div>
+                                            <?php endforeach; ?>
                                         <?php endif; ?>
                                     </li>
                                     

@@ -4,14 +4,24 @@ require_once "framework/Model.php";
 
 class User extends Model {
 
-    public function __construct(public string $mail, public string $hashed_password, public string $full_name, public ?string $role = "user", public ?int $id = null)
-    {}
+    public function __construct(public string $mail, public string $hashed_password, public string $full_name, public ?string $role = "user", public ?int $id = 0) {
+        
+    }
     
     public static function getAllUsers() : array {
         $data = self::execute("SELECT * FROM Users", [])->fetchAll();
         $users = [];
         foreach ($data as $row) {
-            $users[] = new User($row["mail"], $row["hashed_password"], $row["full_name"], $row["role"]);
+            $users[] = new User($row["mail"], $row["hashed_password"], $row["full_name"], $row["role"], $row["id"]);
+        }
+        return $users;
+    }
+
+    public static function getAllUsersExeptOne(int $userId) : array {
+        $data = self::execute("SELECT * FROM Users WHERE id != :id ORDER BY full_name", ["id" => $userId])->fetchAll();
+        $users = [];
+        foreach ($data as $row) {
+            $users[] = new User($row["mail"], $row["hashed_password"], $row["full_name"], $row["role"], $row["id"]);
         }
         return $users;
     }
@@ -35,18 +45,6 @@ class User extends Model {
             return new User($data["mail"], $data["hashed_password"], $data["full_name"], $data["role"]);
         }
     }
-
-    /*public function getNotes() : array {
-        return Note::getNotes($this); //Implémenter getNotes dans Note.php
-    }
-
-    public function deleteNote(Note $note) : Note|false {
-        return $note->delete($this); // Implémenter deleteNote dans Note.php
-    }
-
-    public function createNote(Note $note) : Note|array {
-        return $note->persist($this);
-    }*/
 
     public function getMail() {
         return $this->mail;
@@ -161,7 +159,7 @@ class User extends Model {
     public function persist() : User {
         if (self::getByMail($this->mail))
             self::execute("UPDATE Users SET hashed_password=:hashed_password, full_name=:full_name WHERE mail=:mail", 
-                            ["mail"=>$this->mail, "hashed_password"=>$this->hashed_password, "full_name"=>$this->full_name]); //Voir si mail ok ou ID auto incr pour le where
+                            ["mail"=>$this->mail, "hashed_password"=>$this->hashed_password, "full_name"=>$this->full_name]);
         else
             self::execute("INSERT INTO Users(mail, hashed_password, full_name) VALUES (:mail, :hashed_password, :full_name)", 
                             ["mail"=>$this->mail, "hashed_password"=>$this->hashed_password, "full_name"=>$this->full_name]); 
@@ -205,8 +203,5 @@ class User extends Model {
     
         return $query->rowCount() > 0;
     }
-    
-    
-    
 }
 ?>
