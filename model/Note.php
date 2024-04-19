@@ -3,10 +3,11 @@
 require_once "framework/Model.php";
 require_once "model/ChecklistItem.php";
 
-class Note extends Model { //should be abstract
+ class Note extends Model {
     
-    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public int $pinned, public int $archived, public int $weight)
-    {}
+    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public int $pinned, public int $archived, public int $weight) {
+
+    }
 
     // Méthodes GET
     public function getId(): int {
@@ -145,7 +146,6 @@ class Note extends Model { //should be abstract
         return $notes;
     }
     
-
     public static function getAllUnpinnedNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 0 and archived = 0 ORDER BY weight DESC", ["userId" => $userId])->fetchAll();
         $notes = [];
@@ -163,8 +163,6 @@ class Note extends Model { //should be abstract
         }
         return $notes;
     }
-
-
 
     public static function getAllArchivedNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId AND archived = 1", ["userId" => $userId])->fetchAll();
@@ -338,15 +336,16 @@ class Note extends Model { //should be abstract
                 self::execute('UPDATE Notes SET weight = :weight WHERE id = :id', ['weight' => $this->weight, 'id' => $this->id]);
                 self::execute('UPDATE Notes SET archived = :archived WHERE id = :id', ['archived' => $this->archived, 'id' => $this->id]);
                 self::execute('UPDATE Notes SET pinned = :pinned WHERE id = :id', ['pinned' => $this->pinned, 'id' => $this->id]);
-                self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->id]);
-            
-            
-            
+                //self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->id]);
                 return $this;
             } else {
                 return $errors;
             }
         }
+    }
+
+    public function persist_date() : void {
+        self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->id]);
     }
 
     public function validate() : array {
@@ -390,7 +389,7 @@ class Note extends Model { //should be abstract
 
     public static function getItemListById(int $noteId): array {
         // À utiliser uniquement sur des textNote ! Appeler cette méthode uniquement après vérification avec isCheckListNote()
-        $data = self::execute("SELECT id, content, checked FROM checklist_note_items WHERE checklist_note = :noteId ORDER BY checked", ["noteId" => $noteId])->fetchAll();
+        $data = self::execute("SELECT id, content, checked FROM checklist_note_items WHERE checklist_note = :noteId ORDER BY checked, id", ["noteId" => $noteId])->fetchAll();
     
         $content = [];
     
@@ -403,5 +402,43 @@ class Note extends Model { //should be abstract
             );
         }
         return $content;
+    }
+
+    public static function elapsedDate($timestampString): string {
+        $timestamp = strtotime($timestampString);
+        $currentTimestamp = time();
+        $elapsedSeconds = $currentTimestamp - $timestamp;
+
+        if ($elapsedSeconds < 60) {
+            return "just now";
+        } elseif ($elapsedSeconds < 3600) {
+            $minutes = floor($elapsedSeconds / 60);
+            if ($minutes == 1) {
+                return "one minute ago";
+            } else {
+                return "$minutes minutes ago";
+            }
+        } elseif ($elapsedSeconds < 86400) {
+            $hours = floor($elapsedSeconds / 3600);
+            if ($hours == 1) {
+                return "one hour ago";
+            } else {
+                return "$hours hours ago";
+            }
+        } elseif ($elapsedSeconds < 2592000) { // 30 days
+            $days = floor($elapsedSeconds / 86400);
+            if ($days == 1) {
+                return "one day ago";
+            } else {
+                return "$days days ago";
+            }
+        } else {
+            $months = floor($elapsedSeconds / 2592000); // 30 days
+            if ($months == 1) {
+                return "one month ago";
+            } else {
+                return "$months months ago";
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ require_once "model/User.php";
 require_once "model/TextNote.php";
 require_once "model/ChecklistNote.php";
 
-class ControllerOpenNote extends Controller { //Should be abstract
+class ControllerOpenNote extends Controller {
     //accueil du controlleur.
     public function index() : void {
 
@@ -85,6 +85,8 @@ class ControllerOpenNote extends Controller { //Should be abstract
         if (isset($_POST['title'])){
             
             $title = $_POST['title'];
+            $textnote->setTitle($title);
+            $textnote->setContent($_POST['content']);
 
             if (!Note::validateTitle($_POST['title'])){
 
@@ -95,6 +97,7 @@ class ControllerOpenNote extends Controller { //Should be abstract
                 $textnote->setTitle($_POST["title"]);
                 $textnote->setContent($_POST["content"]); //Je ne sais pas pq il me dit que la méthode est undefined alors qu'elle l'est
                 $textnote->persist();
+                $textnote->persist_date();
                 $this->redirect("opennote", "index", $textnote->getId());
             } else {
                 (new View("edittextnote"))->show(["textnote" => $textnote, "errors" => $errors]);
@@ -125,6 +128,7 @@ class ControllerOpenNote extends Controller { //Should be abstract
         if (isset($_POST['title'])){
             
             $title = $_POST['title'];
+            $textnote->setTitle($title);
 
             if (!Note::validateTitle($_POST['title'])){
 
@@ -133,6 +137,15 @@ class ControllerOpenNote extends Controller { //Should be abstract
 
             //Validation Content
             $content = $_POST['content'];
+            $itemList = ChecklistNote::getItemListById($_POST["id"]);
+                $i = 0;
+                foreach ($itemList as $item) {
+                    if ($_POST['content'][$i] != $item->getContent()){
+                        $item->setContent($_POST['content'][$i]);
+                    }
+                    $i++;
+                }
+
             if (count($content) !== count(array_unique($content))) {
                 $errorsContent[] = "All items must be unique.";
             }
@@ -141,6 +154,7 @@ class ControllerOpenNote extends Controller { //Should be abstract
                 $textnote->setTitle($_POST["title"]);
                 $textnote->setContent($_POST["content"]);
                 $textnote->persist();
+                $textnote->persist_date();
                 $itemList = ChecklistNote::getItemListById($_POST["id"]);
                 $i = 0;
                 foreach ($itemList as $item) {

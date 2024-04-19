@@ -13,7 +13,7 @@ class ControllerViewArchives extends Controller {
         $sharedBy = Note::getAllSharedBy($user);
         $nameSharedBy = [];
         foreach ($sharedBy as $id) {
-            $nameSharedBy[] = User::getByID($id)->full_name;
+            $nameSharedBy[] = User::getByID($id)->getFullName();
         }
 
         (new View("viewarchives"))->show(["notes" => $notes,
