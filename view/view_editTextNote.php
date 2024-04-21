@@ -21,7 +21,10 @@
                 errorTitle.innerHTML = "";
                 if (!(/^.{3,25}$/).test(title.value)) {
                     errorTitle.innerHTML += "<p>Title length must be between 3 and 25.</p>";
+                    title.classList.add("is-invalid");
                     ok = false;
+                } else {
+                    title.classList.remove("is-invalid");
                 }
                 return ok;
             }
@@ -33,7 +36,10 @@
 
                 if (!(contentValue.length >= 3 || contentValue === "")) {
                     errorContent.innerHTML += "<p>Content must be empty or contain at least 3 characters.</p>";
+                    title.classList.add("is-invalid");
                     ok = false;
+                } else {
+                    title.classList.remove("is-invalid");
                 }
                 return ok;
             }
