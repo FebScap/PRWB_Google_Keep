@@ -5,7 +5,7 @@
         <?php include('head.html'); ?>
 
         <script>
-            let title, errorTitle, content, errorContent;
+            let title, errorTitle, content, errorContent, saveButton;
 
             document.onreadystatechange = function(){
                 if(document.readyState === 'complete') {
@@ -13,6 +13,7 @@
                     errorTitle = document.getElementById("errorTitle");
                     content = document.getElementById("content");
                     errorContent = document.getElementById("errorContent");
+                    saveButton = document.getElementById("saveButton");
                 }
             };
 
@@ -36,11 +37,17 @@
 
                 if (!(contentValue.length >= 3 || contentValue === "")) {
                     errorContent.innerHTML += "<p>Content must be empty or contain at least 3 characters.</p>";
-                    title.classList.add("is-invalid");
+                    content.classList.add("is-invalid");
                     ok = false;
                 } else {
-                    title.classList.remove("is-invalid");
+                    content.classList.remove("is-invalid");
                 }
+                return ok;
+            }
+
+            function checkAll(){
+                let ok = checkTitle() && CheckContent();
+                saveButton.disabled = !ok; // Désactiver le bouton si ok est faux
                 return ok;
             }
 
@@ -48,10 +55,10 @@
 
     </head>
     <body data-bs-theme="dark">
-            <form class="container-fluid d-flex flex-column" action="OpenNote/saveNote" method="post">
+            <form class="container-fluid d-flex flex-column" action="OpenNote/saveNote" method="post" oninput='return checkAll();'>
                 <div class="container-fluid d-flex justify-content-between">
                     <a class="nav-link me-4 fs-2" href="opennote/index/<?= $textnote->getId() ?>"><i class="bi bi-chevron-left"></i></a>
-                    <button type="submit" class="btn"><i class="bi bi-floppy"></i></button>
+                    <button type="submit" class="btn" id="saveButton"><i class="bi bi-floppy"></i></button>
                 </div>
                 <div class="m-3">
                     <p class="font-italic">Created <?= Note::elapsedDate($textnote->getCreatedAt()) ?></p>

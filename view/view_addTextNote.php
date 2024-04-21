@@ -4,7 +4,7 @@
         <title>My notes - Créer une nouvelle note</title>
         <?php include('head.html'); ?>
         <script>
-            let title, errorTitle, content, errorContent;
+            let title, errorTitle, content, errorContent, saveButton;
 
             document.onreadystatechange = function(){
                 if(document.readyState === 'complete') {
@@ -12,6 +12,7 @@
                     errorTitle = document.getElementById("errorTitle");
                     content = document.getElementById("content");
                     errorContent = document.getElementById("errorContent");
+                    saveButton = document.getElementById("saveButton");
                 }
             };
 
@@ -43,14 +44,20 @@
                 return ok;
             }
 
+            function checkAll(){
+                let ok = checkTitle() && CheckContent();
+                saveButton.disabled = !ok; // Désactiver le bouton si ok est faux
+                return ok;
+            }
+
         </script>
 
     </head>
     <body data-bs-theme="dark">
-        <form class="container-fluid d-flex flex-column" action="addTextNote" method="post">
+        <form class="container-fluid d-flex flex-column" action="addTextNote" method="post" oninput='return checkAll();'>
             <div class="container-fluid d-flex justify-content-between">
                 <a class="nav-link me-4 fs-2" href="viewnotes"><i class="bi bi-chevron-left"></i></a>
-                <button type="submit" class="btn"><i class="bi bi-floppy"></i></button>
+                <button id="saveButton" type="submit" class="btn"><i class="bi bi-floppy"></i></button>
             </div>
             <div class="mt-3">
                 <label for="noteTitle" class="form-label">Title</label>
