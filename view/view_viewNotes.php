@@ -7,7 +7,21 @@
         <script>
         $( function() {
             $( "#pinnedNotes, #otherNotes" ).sortable({
-            connectWith: ".connectedSortable"
+                connectWith: ".connectedSortable",
+                update: function(event, ui) {
+                    var item = ui.item.attr('id');
+                    var allMovedNotes = ui.item.parent().find('.note').map(function() { return this.id; }).get();
+                    $.ajax({
+                        type: "POST",
+                        url: "viewnotes/dragNote",
+                        data: {
+                            item: item,
+                            allMovedNotes: allMovedNotes
+                        },
+                    });
+                    console.log(item);
+                    console.log(allMovedNotes);
+                }
             }).disableSelection();
         } );
         </script>
@@ -23,11 +37,11 @@
             </div>
             <!-- CARDS -->
             <?php if (sizeof($pinnedNotes) > 0): ?>
-                <h2 class="h2 fs-6 mt-4 ms-2">Pinned</h2>
+                <h2 id="pinnedTitle" class="h2 fs-6 mt-4 ms-2">Pinned</h2>
             <?php endif; ?>
             <div id="pinnedNotes" class="connectedSortable d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($pinnedNotes); $i++): ?>
-                    <a class="link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $pinnedNotes[$i]->getId() ?>">
+                    <a id="<?= $pinnedNotes[$i]->getId() ?>" class="note link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $pinnedNotes[$i]->getId() ?>">
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100">
                                     <!-- TITRE -->
@@ -101,7 +115,7 @@
             <?php endif; ?>
             <div id="otherNotes" class="connectedSortable d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($notPinnedNotes); $i++): ?>
-                    <a class="link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $notPinnedNotes[$i]->getId() ?>">
+                    <a class="note link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $notPinnedNotes[$i]->getId() ?>">
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100">
                                     <!-- TITRE -->

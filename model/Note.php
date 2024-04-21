@@ -315,6 +315,23 @@ require_once "model/ChecklistItem.php";
         }
     }
 
+    public static function descreaseAllWeightBy1(int $id, int $start, int $end) : void { //Diminue le poids des notes d'un user à partir de Start jusque End
+        $notes = Note::getAllNotesByUser($id);
+        for ($i = $start + 1; $i <= $end;){
+            $note = $notes[$i];
+            $note->setWeight($note->getWeight() - 1);
+            $note = new Note($note->getId(),
+                                    $note->getTitle(),
+                                    $note->getOwner(),
+                                    $note->getCreatedAt(),
+                                    $note->getEditedAt(),
+                                    $note->getPinned(),
+                                    $note->getArchived(),
+                                    $note->getWeight());
+            $note->persist();
+        }
+    }
+
     public function persist() : Note|array {
         if ($this->id == NULL){
             $errors = $this->validate();
