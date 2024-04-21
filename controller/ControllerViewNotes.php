@@ -71,4 +71,10 @@ class ControllerViewNotes extends Controller {
 
         $this->redirect("viewnotes");
     }
+
+    public function dragNote() : void {
+        print_r($_POST['item']);
+        print_r($_POST['allMovedNotes']);
+        
+    }
 }
