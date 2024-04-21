@@ -321,6 +321,7 @@ require_once "model/ChecklistItem.php";
 
         $oldOther = Note::getAllUnpinnedNotesByUser($id);
         $allOtherWeightInOrder = array();
+        //SI LA NOTE NE CHANGE PAS DE LISTE
         if (count($oldPinned) == count($newPinnedId)) {
             for ($i = 0 ; $i < count($oldPinned) ; $i++) {
                 $allPinnedWeightInOrder[$i] = $oldPinned[$i]->getWeight();
@@ -343,6 +344,10 @@ require_once "model/ChecklistItem.php";
                 $note->setWeight($allOtherWeightInOrder[$i]);
                 $note->persist();
             }
+
+        // SI LA NOTE CHANGE DE LISTE (PIN UNPIN)    
+        } else {
+
         }
         
     }

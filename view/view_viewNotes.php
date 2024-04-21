@@ -9,26 +9,20 @@
             $( "#pinnedNotes, #otherNotes" ).sortable({
                 connectWith: ".connectedSortable",
                 update: function(event, ui) {
-                    var pinnedNotes = ui.item.parent().parent().find('.pinnedNote').map(function() { return this.id; }).get();
-                    var otherNotes = ui.item.parent().parent().find('.otherNote').map(function() { return this.id; }).get();
+                    var pinnedNotes = ui.item.parent().find('.pinnedNote').map(function() { return this.id; }).get();
+                    var otherNotes = ui.item.parent().find('.otherNote').map(function() { return this.id; }).get();
                     $.ajax({
                         type: "POST",
                         url: "viewNotes/dragNote",
                         data: {
                             pinnedNotes: pinnedNotes,
-                            otherNotes: otherNotes
+                            otherNotes: otherNotes,
+                            item: ui.item.attr('id')
                         },
                     });
                     console.log(pinnedNotes);
                     console.log(otherNotes);
-                },
-                success: function(response) {
-                    console.log("Data successfully sent to server.");
-                    // Handle response from server if needed
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error:",  error);
-                    // Handle error if needed
+                    console.log(ui.item.attr('id'))
                 }
             }).disableSelection();
         } );
@@ -86,7 +80,7 @@
                                             </form>
                                         </li>
                                     <?php elseif ($i == sizeof($pinnedNotes)-1): ?>
-                                        <li class="list-group-item d-flex justify-content-start">
+                                        <li class="chevron list-group-item d-flex justify-content-start">
                                             <form action="viewnotes/moveUp" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
                                                     <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
@@ -96,7 +90,7 @@
                                             </form>
                                         </li>
                                     <?php else: ?>
-                                        <li class="list-group-item d-flex justify-content-between">
+                                        <li class="chevron list-group-item d-flex justify-content-between">
                                             <form action="viewnotes/moveUp" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
                                                     <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
@@ -150,7 +144,7 @@
                                     
                                     <!-- Chevrons -->
                                     <?php if ($i == 0): ?>
-                                        <li class="list-group-item d-flex justify-content-end">
+                                        <li class="chevron list-group-item d-flex justify-content-end">
                                             <form action="viewnotes/moveDown" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm"> 
                                                     <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
@@ -160,7 +154,7 @@
                                             </form>
                                         </li>
                                     <?php elseif ($i == sizeof($notPinnedNotes)-1): ?>
-                                        <li class="list-group-item d-flex justify-content-start">
+                                        <li class="chevron list-group-item d-flex justify-content-start">
                                             <form action="viewnotes/moveUp" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
                                                     <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
@@ -170,7 +164,7 @@
                                             </form>
                                         </li>
                                     <?php else: ?>
-                                        <li class="list-group-item d-flex justify-content-between">
+                                        <li class="chevron list-group-item d-flex justify-content-between">
                                             <form action="viewnotes/moveUp" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
                                                     <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
@@ -203,5 +197,13 @@
             </nav>
         </div>
         <?php include('footer.html'); ?>
+        <script>
+            $(document).ready(function() {
+                var elems = document.querySelectorAll(".chevron");
+                [].forEach.call(elems, function(el) {
+                    el.remove();
+                });
+            });
+        </script>
     </body>
 </html> 
