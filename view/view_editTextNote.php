@@ -11,6 +11,10 @@
                     <button type="submit" class="btn"><i class="bi bi-floppy"></i></button>
                 </div>
                 <div class="m-3">
+                    <p class="font-italic">Created <?= Note::elapsedDate($textnote->getCreatedAt()) ?></p>
+                    <?php if (!is_null($textnote->getEditedAt())) : ?>
+                        <p class="font-italic">Edited <?= Note::elapsedDate($textnote->getEditedAt()) ?></p>
+                    <?php endif ?>
                     <label for="noteTitle" class="form-label">Title</label>
                     <input id="title" name="title" type="text" class="form-control" placeholder="Title" aria-describedby="emailHelp" value="<?= $textnote->getTitle() ?>">
                     <?php if (count($errors) != 0): ?>

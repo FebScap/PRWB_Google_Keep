@@ -11,6 +11,10 @@
                 <button type="submit" form="save" class="btn"><i class="bi bi-floppy"></i></button>
             </div>
             <div class="mt-3">
+                <p class="font-italic">Created <?= Note::elapsedDate($textnote->getCreatedAt()) ?></p>
+                <?php if (!is_null($textnote->getEditedAt())) : ?>
+                    <p class="font-italic">Edited <?= Note::elapsedDate($textnote->getEditedAt()) ?></p>
+                <?php endif ?>
                 <label for="noteTitle" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title" name="title" value="<?= $textnote->getTitle() ?>">
                 <?php if (count($errorsTitle) != 0) : ?>
