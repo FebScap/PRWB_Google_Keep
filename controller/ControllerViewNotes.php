@@ -14,7 +14,7 @@ class ControllerViewNotes extends Controller {
         $sharedBy = Note::getAllSharedBy($user);
         $nameSharedBy = [];
         foreach ($sharedBy as $id) {
-            $nameSharedBy[] = User::getByID($id)->full_name;
+            $nameSharedBy[] = User::getByID($id)->getFullName();
         }
         (new View("viewnotes"))->show(["pinnedNotes" => $pinnedNotes,
                                         "notPinnedNotes" => $notPinnedNotes,
@@ -48,9 +48,12 @@ class ControllerViewNotes extends Controller {
         $swap_note = $list[$_POST["pos"]-1];
         $tmp = $current_note->getWeight();
         $current_note->setWeight($swap_note->getWeight());
-        $swap_note->setWeight($tmp);
-        $current_note->persist();
+        $swap_note->setWeight(100);
         $swap_note->persist();
+        $current_note->persist();
+        $swap_note->setWeight($tmp);
+        $swap_note->persist();
+
 
         $this->redirect("viewnotes");
     }
@@ -65,10 +68,16 @@ class ControllerViewNotes extends Controller {
         $swap_note = $list[$_POST["pos"]+1];
         $tmp = $current_note->getWeight();
         $current_note->setWeight($swap_note->getWeight());
-        $swap_note->setWeight($tmp);
+        $swap_note->setWeight(100);
+        $swap_note->persist();
         $current_note->persist();
+        $swap_note->setWeight($tmp);
         $swap_note->persist();
 
         $this->redirect("viewnotes");
+    }
+
+    public function dragNote() : void {
+        Note::changeAllWeightByOrderedIdList($this->get_user_or_false()->getId(), $_POST['pinnedNotes'], $_POST['otherNotes']);
     }
 }

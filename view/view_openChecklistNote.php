@@ -6,9 +6,9 @@
         include 'view_openNote.php';?>
     </head>
     <body class="m-3">
-        <p class="font-italic">Created <?= $textnote->getCreatedAt() ?></p>
+        <p class="font-italic">Created <?= Note::elapsedDate($textnote->getCreatedAt()) ?></p>
         <?php if (!is_null($textnote->getEditedAt())) : ?>
-                <p class="font-italic">Edited <?= $textnote->getEditedAt() ?></p>
+                <p class="font-italic">Edited <?= Note::elapsedDate($textnote->getEditedAt()) ?></p>
         <?php endif ?>
         <div class="form-group">
             <label for="title" class ="fw-bold">Title</label>

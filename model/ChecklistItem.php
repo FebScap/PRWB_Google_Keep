@@ -4,7 +4,7 @@ require_once "framework/Model.php";
 
 class ChecklistItem extends Model {
     
-    public function __construct(private ?int $id, private int $checklist_note, private string $content, private int $checked) {}
+    public function __construct(public ?int $id, public int $checklist_note, public string $content, public int $checked) {}
 
     public function getId(): int {
         return $this->id;
@@ -53,9 +53,13 @@ class ChecklistItem extends Model {
                 'checked' => $this->checked,
                 'id' => $this->id
             ]);
-            self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->checklist_note]);
+            //self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->checklist_note]);
             return $this;
         }
+    }
+
+    public function persist_date(): void {
+        self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->checklist_note]);
     }
     
 

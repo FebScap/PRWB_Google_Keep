@@ -5,7 +5,7 @@ require_once "model/User.php";
 require_once "model/TextNote.php";
 require_once "model/ChecklistNote.php";
 
-class ControllerOpenNote extends Controller { //Should be abstract
+class ControllerOpenNote extends Controller {
     //accueil du controlleur.
     public function index() : void {
 
@@ -79,22 +79,30 @@ class ControllerOpenNote extends Controller { //Should be abstract
 
     public function saveNote() : void {
         
+        $user = $this->get_user_or_redirect();
         $errors = [];
         $textnote = TextNote::getTextNoteById($_POST["id"]);
 
         if (isset($_POST['title'])){
             
             $title = $_POST['title'];
+            $textnote->setTitle($title);
+            $textnote->setContent($_POST['content']);
 
             if (!Note::validateTitle($_POST['title'])){
 
                 $errors = ["Title length must be at least 3 and maximum 25."];
+            }
+
+            if (!Note::isUniqueTitlePerOwner($title, $user->getId())) {
+                $errors = array_merge($errors, ["Title must be unique per User"]);
             }
             
             if (count($errors) == 0) {
                 $textnote->setTitle($_POST["title"]);
                 $textnote->setContent($_POST["content"]); //Je ne sais pas pq il me dit que la méthode est undefined alors qu'elle l'est
                 $textnote->persist();
+                $textnote->persist_date();
                 $this->redirect("opennote", "index", $textnote->getId());
             } else {
                 (new View("edittextnote"))->show(["textnote" => $textnote, "errors" => $errors]);
@@ -117,6 +125,7 @@ class ControllerOpenNote extends Controller { //Should be abstract
 
     public function saveChecklistNote() : void {
         
+        $user = $this->get_user_or_redirect();
         $errorsTitle = [];
         $errorsContent = [];
         $textnote = ChecklistNote::getChecklistNoteById($_POST["id"]);
@@ -125,14 +134,28 @@ class ControllerOpenNote extends Controller { //Should be abstract
         if (isset($_POST['title'])){
             
             $title = $_POST['title'];
+            $textnote->setTitle($title);
 
             if (!Note::validateTitle($_POST['title'])){
 
                 $errorsTitle = ["Title length must be at least 3 and maximum 25."];
             }
 
+            if (!Note::isUniqueTitlePerOwner($title, $user->getId())) {
+                $errorsTitle = array_merge($errorsTitle, ["Title must be unique per User"]);
+            }
+
             //Validation Content
             $content = $_POST['content'];
+            $itemList = ChecklistNote::getItemListById($_POST["id"]);
+                $i = 0;
+                foreach ($itemList as $item) {
+                    if ($_POST['content'][$i] != $item->getContent()){
+                        $item->setContent($_POST['content'][$i]);
+                    }
+                    $i++;
+                }
+
             if (count($content) !== count(array_unique($content))) {
                 $errorsContent[] = "All items must be unique.";
             }
@@ -141,6 +164,7 @@ class ControllerOpenNote extends Controller { //Should be abstract
                 $textnote->setTitle($_POST["title"]);
                 $textnote->setContent($_POST["content"]);
                 $textnote->persist();
+                $textnote->persist_date();
                 $itemList = ChecklistNote::getItemListById($_POST["id"]);
                 $i = 0;
                 foreach ($itemList as $item) {

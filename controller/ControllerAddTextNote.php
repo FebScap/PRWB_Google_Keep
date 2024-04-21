@@ -17,6 +17,9 @@ class ControllerAddTextNote extends Controller{
             $title = $_POST['title'];
             $content = $_POST['content'];
             $errors = $note->validate();
+            if (!Note::isUniqueTitlePerOwner($title, $user->getId())) {
+                $errors = array_merge($errors, ["Title must be unique per User"]);
+            }
             if (count($errors) == 0){
                 TextNote::increaseAllWeightBy1($user->getId());
                 $note->persist();

@@ -4,8 +4,9 @@ require_once "framework/Model.php";
 
 class User extends Model {
 
-    public function __construct(public string $mail, public string $hashed_password, public string $full_name, public ?string $role = "user", public ?int $id = null)
-    {}
+    public function __construct(public string $mail, public string $hashed_password, public string $full_name, public ?string $role = "user", public ?int $id = 0) {
+        
+    }
     
     public static function getAllUsers() : array {
         $data = self::execute("SELECT * FROM Users", [])->fetchAll();
@@ -17,7 +18,7 @@ class User extends Model {
     }
 
     public static function getAllUsersExeptOne(int $userId) : array {
-        $data = self::execute("SELECT * FROM Users WHERE id != :id", ["id" => $userId])->fetchAll();
+        $data = self::execute("SELECT * FROM Users WHERE id != :id ORDER BY full_name", ["id" => $userId])->fetchAll();
         $users = [];
         foreach ($data as $row) {
             $users[] = new User($row["mail"], $row["hashed_password"], $row["full_name"], $row["role"], $row["id"]);
@@ -202,8 +203,5 @@ class User extends Model {
     
         return $query->rowCount() > 0;
     }
-    
-    
-    
 }
 ?>

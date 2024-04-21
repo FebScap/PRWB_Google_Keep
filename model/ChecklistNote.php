@@ -4,7 +4,7 @@ require_once "framework/Model.php";
 
 class ChecklistNote extends Note {
     
-    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public int $pinned, public int $archived, public int $weight, public array $content)
+    public function __construct(public int $id, public string $title, public int $owner, public string $created_at, public ?string $edited_at, public int $pinned, public int $archived, public int $weight, public ?array $content = null)
     {
         $this->content = $content ?? "";
     }
@@ -60,8 +60,8 @@ class ChecklistNote extends Note {
                 
                 self::execute('INSERT INTO Notes(title, owner, edited_at, pinned, archived, weight) VALUES (:title, :owner, null, 0, 0, 1)', ['title' => $this->title, 'owner' => $this->owner]);
                 $note = self::getNoteById(self::lastInsertId());
-                $this->id = $note->id;
-                $this->created_at = $note->created_at;
+                $this->id = $note->getId();
+                $this->created_at = $note->getCreatedAt();
                 self::execute('INSERT INTO checklist_notes (id) VALUES (:id)', ['id' => $this->id]);
                 return $this;
             } else {
@@ -74,7 +74,7 @@ class ChecklistNote extends Note {
             // Mise à jour dans la table 'Notes'
                 self::execute('UPDATE Notes SET weight = :weight WHERE id = :id', ['weight' => $this->weight, 'id' => $this->id]);
                 self::execute('UPDATE Notes SET title = :title WHERE id = :id', ['title' => $this->title, 'id' => $this->id]);
-                self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->id]);
+                //self::execute('UPDATE Notes SET edited_at = NOW() WHERE id = :id', ['id' => $this->id]);
                 return $this;
             } else {
                 return $errors;

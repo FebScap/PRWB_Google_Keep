@@ -3,6 +3,35 @@
     <head>
         <title>OpenNote</title>
         <?php include('head.html'); ?>
+        <script src="jquery-3.6.3.min.js" type="text/javascript"></script>
+        <script>
+        $(document).ready(() => {
+            $("#deleteButton").click(async () => {
+                const noteId = <?= $textnote->getId() ?>;
+                
+                try {
+                    const response = await fetch(`deletenote/delete/${noteId}`, {
+                        method: 'DELETE'
+                    });
+                    if (!response.ok) {
+                        throw new Error('Failed to delete note');
+                    }
+                    const responseData = await response.text();
+                    $("#confirmationModal").modal('show');
+                } catch (error) {
+                    console.error('Error deleting note:', error);
+                }
+            });
+
+            $("#closeButton").click(async () => {
+                window.location.href = "viewArchives";
+            });
+
+            
+
+
+        });
+        </script>
     </head>
     <body data-bs-theme="dark">
         <div class="d-flex bd-highlight mb-3">
@@ -13,10 +42,61 @@
                     <a type="button" href="viewArchives" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
                 </div>
                 <div class="p-2 bd-highlight">
-                    <form action="deletenote/index/<?= $textnote->getId() ?>" method="get"> 
-                        <button type="submit" class="btn btn-dark"><i class="bi bi-trash"></i></button>
-                    </form>
+                    <!--<form action="deletenote/index/<?= $textnote->getId() ?>" method="get">-->
+                        <button type="submit" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
+                    <!--</form>-->
                 </div>
+
+
+                <!-- Delete Modal -->
+                <div class="modal" id="deleteModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Are you sure?</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        Do you really want to delete <?= $textnote->getTitle() ?> and all his dependencies ? 
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="deleteButton">Delete</button>
+                        <button type="button" class="btn btn" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+
+                    </div>
+                </div>
+                </div>
+
+                <!-- Confirmation Modal -->
+
+                <div class="modal" id="confirmationModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Note Deleted</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            The note <?= $textnote->getTitle() ?> and its dependencies have been successfully deleted.
+                        </div>
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn" data-bs-dismiss="modal" id="closeButton">Close</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+
 
                 <div class="p-2 bd-highlight">
                     <form action="opennote/unarchive" method="post"> 
