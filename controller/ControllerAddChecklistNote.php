@@ -21,6 +21,9 @@ class ControllerAddChecklistNote extends Controller{
             $content = $_POST['content'];
             $errorsTitle = $note->validate();
             $errorsContent = ChecklistNote::validateContent($content);
+            if (!Note::isUniqueTitlePerOwner($title, $user->getId())) {
+                $errorsTitle = array_merge($errorsTitle, ["Title must be unique per User"]);
+            }
             if (count($errorsTitle) == 0 && count($errorsContent) == 0){
                 Note::increaseAllWeightBy1($user->getId());
                 $note->persist();

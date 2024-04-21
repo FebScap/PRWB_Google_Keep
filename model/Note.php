@@ -441,4 +441,16 @@ require_once "model/ChecklistItem.php";
             }
         }
     }
+
+    public static function isUniqueTitlePerOwner($title, $idUser): bool {
+        $notes = Note::getAllNotesByUser($idUser);
+
+        foreach ($notes as $note) {
+            if ($note->getTitle() === $title) {
+                return false; // Le titre n'est pas unique
+            }
+        }
+    
+        return true; // Le titre est unique
+    }
 }
