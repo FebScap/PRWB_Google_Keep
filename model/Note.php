@@ -315,22 +315,44 @@ require_once "model/ChecklistItem.php";
         }
     }
 
-    public static function descreaseAllWeightBy1(int $id, int $start, int $end) : void { //Diminue le poids des notes d'un user à partir de Start jusque End
-        $notes = Note::getAllNotesByUser($id);
-        for ($i = $start + 1; $i <= $end;){
-            $note = $notes[$i];
-            $note->setWeight($note->getWeight() - 1);
-            $note = new Note($note->getId(),
-                                    $note->getTitle(),
-                                    $note->getOwner(),
-                                    $note->getCreatedAt(),
-                                    $note->getEditedAt(),
-                                    $note->getPinned(),
-                                    $note->getArchived(),
-                                    $note->getWeight());
-            $note->persist();
+    public static function changeAllWeightByOrderedIdList(int $id, mixed $newPinnedId, mixed $newOtherId) : void {
+        $oldPinned = Note::getAllPinnedNotesByUser($id);
+        $allPinnedWeightInOrder = array();
+
+        $oldOther = Note::getAllUnpinnedNotesByUser($id);
+        $allOtherWeightInOrder = array();
+        //SI LA NOTE NE CHANGE PAS DE LISTE
+        if (count($oldPinned) == count($newPinnedId)) {
+            for ($i = 0 ; $i < count($oldPinned) ; $i++) {
+                $allPinnedWeightInOrder[$i] = $oldPinned[$i]->getWeight();
+                $oldPinned[$i]->setWeight(1000000+$i);
+                $oldPinned[$i]->persist();
+            }
+            for ($i = 0 ; $i < count($newPinnedId) ; $i++) {
+                $note = Note::getNoteById($newPinnedId[$i]);
+                $note->setWeight($allPinnedWeightInOrder[$i]);
+                $note->persist();
+            }
+            
+            for ($i = 0 ; $i < count($oldOther) ; $i++) {
+                $allOtherWeightInOrder[$i] = $oldOther[$i]->getWeight();
+                $oldOther[$i]->setWeight(1000000+$i);
+                $oldOther[$i]->persist();
+            }
+            for ($i = 0 ; $i < count($newOtherId) ; $i++) {
+                $note = Note::getNoteById($newOtherId[$i]);
+                $note->setWeight($allOtherWeightInOrder[$i]);
+                $note->persist();
+            }
+
+        // SI LA NOTE CHANGE DE LISTE (PIN UNPIN)    
+        } else {
+
         }
+        
     }
+
+    
 
     public function persist() : Note|array {
         if ($this->id == NULL){

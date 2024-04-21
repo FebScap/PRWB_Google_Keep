@@ -78,8 +78,6 @@ class ControllerViewNotes extends Controller {
     }
 
     public function dragNote() : void {
-        print_r($_POST['item']);
-        print_r($_POST['allMovedNotes']);
-        
+        Note::changeAllWeightByOrderedIdList($this->get_user_or_false()->getId(), $_POST['pinnedNotes'], $_POST['otherNotes']);
     }
 }
