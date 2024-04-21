@@ -9,18 +9,26 @@
             $( "#pinnedNotes, #otherNotes" ).sortable({
                 connectWith: ".connectedSortable",
                 update: function(event, ui) {
-                    var item = ui.item.attr('id');
-                    var allMovedNotes = ui.item.parent().find('.note').map(function() { return this.id; }).get();
+                    var pinnedNotes = ui.item.parent().parent().find('.pinnedNote').map(function() { return this.id; }).get();
+                    var otherNotes = ui.item.parent().parent().find('.otherNote').map(function() { return this.id; }).get();
                     $.ajax({
                         type: "POST",
-                        url: "viewnotes/dragNote",
+                        url: "viewNotes/dragNote",
                         data: {
-                            item: item,
-                            allMovedNotes: allMovedNotes
+                            pinnedNotes: pinnedNotes,
+                            otherNotes: otherNotes
                         },
                     });
-                    console.log(item);
-                    console.log(allMovedNotes);
+                    console.log(pinnedNotes);
+                    console.log(otherNotes);
+                },
+                success: function(response) {
+                    console.log("Data successfully sent to server.");
+                    // Handle response from server if needed
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:",  error);
+                    // Handle error if needed
                 }
             }).disableSelection();
         } );
@@ -41,11 +49,11 @@
             <?php endif; ?>
             <div id="pinnedNotes" class="connectedSortable d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($pinnedNotes); $i++): ?>
-                    <a id="<?= $pinnedNotes[$i]->getId() ?>" class="note link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $pinnedNotes[$i]->getId() ?>">
+                    <a id="<?= $pinnedNotes[$i]->getId() ?>" class="pinnedNote link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $pinnedNotes[$i]->getId() ?>">
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100">
                                     <!-- TITRE -->
-                                    <li class="list-group-item"><?= $pinnedNotes[$i]->title ?></li>
+                                    <li class="list-group-item"><?= $pinnedNotes[$i]->getId() ?> <?= $pinnedNotes[$i]->title ?></li>
 
                                     <li class="list-group-item list-group-item-secondary h-100 truncate-after">
                                         <!-- CONTENU TEXT NOTE -->
@@ -115,11 +123,11 @@
             <?php endif; ?>
             <div id="otherNotes" class="connectedSortable d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($notPinnedNotes); $i++): ?>
-                    <a class="note link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $notPinnedNotes[$i]->getId() ?>">
+                    <a id="<?= $notPinnedNotes[$i]->getId() ?>" class="otherNote link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $notPinnedNotes[$i]->getId() ?>">
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100">
                                     <!-- TITRE -->
-                                    <li class="list-group-item"><?= $notPinnedNotes[$i]->getTitle() ?></li>
+                                    <li class="list-group-item"><?= $notPinnedNotes[$i]->getId() ?> <?= $notPinnedNotes[$i]->getTitle() ?></li>
 
                                     <li class="list-group-item list-group-item-secondary h-100 truncate-after">
                                         <!-- CONTENU TEXT NOTE -->
