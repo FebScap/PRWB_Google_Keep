@@ -315,6 +315,45 @@ require_once "model/ChecklistItem.php";
         }
     }
 
+    public static function changeAllWeightByOrderedIdList(int $id, mixed $newPinnedId, mixed $newOtherId) : void {
+        $oldPinned = Note::getAllPinnedNotesByUser($id);
+        $allPinnedWeightInOrder = array();
+
+        $oldOther = Note::getAllUnpinnedNotesByUser($id);
+        $allOtherWeightInOrder = array();
+        //SI LA NOTE NE CHANGE PAS DE LISTE
+        if (count($oldPinned) == count($newPinnedId)) {
+            for ($i = 0 ; $i < count($oldPinned) ; $i++) {
+                $allPinnedWeightInOrder[$i] = $oldPinned[$i]->getWeight();
+                $oldPinned[$i]->setWeight(1000000+$i);
+                $oldPinned[$i]->persist();
+            }
+            for ($i = 0 ; $i < count($newPinnedId) ; $i++) {
+                $note = Note::getNoteById($newPinnedId[$i]);
+                $note->setWeight($allPinnedWeightInOrder[$i]);
+                $note->persist();
+            }
+            
+            for ($i = 0 ; $i < count($oldOther) ; $i++) {
+                $allOtherWeightInOrder[$i] = $oldOther[$i]->getWeight();
+                $oldOther[$i]->setWeight(1000000+$i);
+                $oldOther[$i]->persist();
+            }
+            for ($i = 0 ; $i < count($newOtherId) ; $i++) {
+                $note = Note::getNoteById($newOtherId[$i]);
+                $note->setWeight($allOtherWeightInOrder[$i]);
+                $note->persist();
+            }
+
+        // SI LA NOTE CHANGE DE LISTE (PIN UNPIN)    
+        } else {
+
+        }
+        
+    }
+
+    
+
     public function persist() : Note|array {
         if ($this->id == NULL){
             $errors = $this->validate();
@@ -440,5 +479,17 @@ require_once "model/ChecklistItem.php";
                 return "$months months ago";
             }
         }
+    }
+
+    public static function isUniqueTitlePerOwner($title, $idUser): bool {
+        $notes = Note::getAllNotesByUser($idUser);
+
+        foreach ($notes as $note) {
+            if ($note->getTitle() === $title) {
+                return false; // Le titre n'est pas unique
+            }
+        }
+    
+        return true; // Le titre est unique
     }
 }

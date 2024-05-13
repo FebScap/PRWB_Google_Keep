@@ -79,6 +79,7 @@ class ControllerOpenNote extends Controller {
 
     public function saveNote() : void {
         
+        $user = $this->get_user_or_redirect();
         $errors = [];
         $textnote = TextNote::getTextNoteById($_POST["id"]);
 
@@ -91,6 +92,10 @@ class ControllerOpenNote extends Controller {
             if (!Note::validateTitle($_POST['title'])){
 
                 $errors = ["Title length must be at least 3 and maximum 25."];
+            }
+
+            if (!Note::isUniqueTitlePerOwner($title, $user->getId())) {
+                $errors = array_merge($errors, ["Title must be unique per User"]);
             }
             
             if (count($errors) == 0) {
@@ -120,6 +125,7 @@ class ControllerOpenNote extends Controller {
 
     public function saveChecklistNote() : void {
         
+        $user = $this->get_user_or_redirect();
         $errorsTitle = [];
         $errorsContent = [];
         $textnote = ChecklistNote::getChecklistNoteById($_POST["id"]);
@@ -133,6 +139,10 @@ class ControllerOpenNote extends Controller {
             if (!Note::validateTitle($_POST['title'])){
 
                 $errorsTitle = ["Title length must be at least 3 and maximum 25."];
+            }
+
+            if (!Note::isUniqueTitlePerOwner($title, $user->getId())) {
+                $errorsTitle = array_merge($errorsTitle, ["Title must be unique per User"]);
             }
 
             //Validation Content

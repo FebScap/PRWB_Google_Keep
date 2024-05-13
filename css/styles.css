@@ -17,3 +17,7 @@
 .input-field {
    height: 600px
 }
+
+#pinnedNotes, #otherNotes {
+   min-height: 5px;
+}
