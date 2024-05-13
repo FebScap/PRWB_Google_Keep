@@ -32,6 +32,22 @@
                             </div>
                         <?php endif; ?>
 
+
+                        <div class="input-group flex-nowrap mt-2 w-100">
+                            <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-person"></i></button>
+                            <input id="mail" name="mail" type="text" class="form-control" value="<?= $mail ?>" placeholder="Mail" aria-describedby="basic-addon1">
+                        </div>
+
+                        <?php if (count($errorsMail) != 0): ?>
+                            <div class='errorsMail'>
+                                <ul>
+                                    <?php foreach ($errorsMail as $error): ?>
+                                        <li class="pt-1"><?= $error ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
+
                         <button class="btn btn-primary btn-lg btn-block mt-3 w-100" type="submit">Save</button>
 
                         <a class="btn btn-danger btn-lg btn-block mt-2 w-100" href="settings" role="button" type="submit">Cancel</a>
