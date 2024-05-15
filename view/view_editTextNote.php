@@ -79,7 +79,7 @@
                     <?php endif; ?>
                     <label class="form-label mt-3">Text</label>
                     <label class="errors" id="errorContent"></label>
-                    <input id="content" name="content" type="text" placeholder="Write something here" class="w-100 input-field input-group-text bg-dark text-start" value="<?= $textnote->getContent() ?>" oninput='CheckContent();'>
+                    <textarea id="content" name="content" class="form-control w-100 bg-dark text-start" rows="8" oninput="CheckContent();"><?= $textnote->getContent() ?></textarea>
                 </div>
                 <input id="id" name="id" type="hidden" class="form-control" placeholder="Title" aria-describedby="emailHelp" value="<?= $textnote->getId() ?>">
             </form>
