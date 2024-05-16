@@ -19,10 +19,10 @@
                     <div class="container-fluid input-group p-1">
                             <!-- PARTAGE READER -->
                             <?php if ($shares[$i]->isEditor()): ?>
-                                <span class="form-control"><?= User::getByID($shares[$i]->getUser())->full_name ?> <i>(reader)</i></span>
+                                <span class="form-control"><?= User::getByID($shares[$i]->getUser())->full_name ?> <i>(editor)</i></span>
                             <!-- PARTAGE EDITOR -->
                             <?php else: ?>
-                                <span class="form-control"><?= User::getByID($shares[$i]->getUser())->full_name ?> <i>(editor)</i></span>
+                                <span class="form-control"><?= User::getByID($shares[$i]->getUser())->full_name ?> <i>(reader)</i></span>
                             <?php endif; ?>
                             <form class="button" action="viewshares/swapRole/<?= $_GET["param1"] ?>" method="post">
                                 <button class="btn btn-primary rounded-0" type="submit" name="iduser" value="<?= $shares[$i]->getUser() ?>" class="btn btn-dark"><i class="bi bi-arrow-repeat"></i></button>
@@ -48,8 +48,8 @@
                     </select>
                     <select class="form-select" name="permission">
                         <option selected>-Permission-</option>
-                        <option value="1">Reader</option>
-                        <option value="0">Editor</option>
+                        <option value="0">Reader</option>
+                        <option value="1">Editor</option>
                     </select>
                     <button class="btn btn-primary" type="submit" id="button-addon1"><i class="bi bi-plus align-center"></i></button>
                 </div>
