@@ -84,17 +84,15 @@ class ControllerOpenNote extends Controller {
         $textnote = TextNote::getTextNoteById($_POST["id"]);
 
         if (isset($_POST['title'])){
-            
+
             $title = $_POST['title'];
-            $textnote->setTitle($title);
-            $textnote->setContent($_POST['content']);
 
             if (!Note::validateTitle($_POST['title'])){
 
                 $errors = ["Title length must be at least 3 and maximum 25."];
             }
 
-            if (!Note::isUniqueTitlePerOwner($title, $user->getId())) {
+            if ($_POST['title'] != $textnote->getTitle() && !Note::isUniqueTitlePerOwner($title, $user->getId())) {
                 $errors = array_merge($errors, ["Title must be unique per User"]);
             }
             
@@ -105,6 +103,9 @@ class ControllerOpenNote extends Controller {
                 $textnote->persist_date();
                 $this->redirect("opennote", "index", $textnote->getId());
             } else {
+                
+                $textnote->setTitle($title);
+                $textnote->setContent($_POST['content']);
                 (new View("edittextnote"))->show(["textnote" => $textnote, "errors" => $errors]);
             }
         } else {
@@ -134,14 +135,14 @@ class ControllerOpenNote extends Controller {
         if (isset($_POST['title'])){
             
             $title = $_POST['title'];
-            $textnote->setTitle($title);
+            
 
             if (!Note::validateTitle($_POST['title'])){
 
                 $errorsTitle = ["Title length must be at least 3 and maximum 25."];
             }
 
-            if (!Note::isUniqueTitlePerOwner($title, $user->getId())) {
+            if ($_POST['title'] != $textnote->getTitle() && !Note::isUniqueTitlePerOwner($title, $user->getId())) {
                 $errorsTitle = array_merge($errorsTitle, ["Title must be unique per User"]);
             }
 
@@ -176,6 +177,7 @@ class ControllerOpenNote extends Controller {
                 }
                 $this->redirect("opennote", "index", $textnote->getId());
             } else {
+                $textnote->setTitle($title);
                 (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList]);
             }
         } else {

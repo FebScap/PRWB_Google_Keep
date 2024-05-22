@@ -110,9 +110,9 @@
                 </div>
                 <div class="p-2 bd-highlight">
                     <?php if (Note::isCheckListNote($textnote->getId())) : ?>
-                        <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="get">
+                        <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="post">
                     <?php else : ?>
-                        <form action="opennote/editnote/<?= $textnote->getId() ?>" method="get"> 
+                        <form action="opennote/editnote/<?= $textnote->getId() ?>" method="post"> 
                     <?php endif; ?>
                     <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pencil"></i></button>
                     </form>
@@ -153,9 +153,9 @@
                 </div>
                 <div class="p-2 bd-highlight">
                     <?php if (Note::isCheckListNote($textnote->getId())) : ?>
-                        <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="get">
+                        <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="post">
                     <?php else : ?>
-                        <form action="opennote/editnote/<?= $textnote->getId() ?>" method="get"> 
+                        <form action="opennote/editnote/<?= $textnote->getId() ?>" method="post"> 
                     <?php endif; ?>
                     <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pencil"></i></button>
                     </form>
