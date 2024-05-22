@@ -77,7 +77,58 @@ class ControllerViewNotes extends Controller {
         $this->redirect("viewnotes");
     }
 
+
+
     public function dragNote() : void {
-        Note::changeAllWeightByOrderedIdList($this->get_user_or_false()->getId(), $_POST['pinnedNotes'], $_POST['otherNotes']);
+        $pinnedOrUnpinned = $_POST["hasChanged"];
+
+        $note = Note::getNoteById($_POST['itemId']);
+        $noteWeight = $note->getWeight();
+        $replacedNote = Note::getNoteById($_POST['replacedItemId']);
+        $replacedWeight = $replacedNote->getWeight();
+
+        if ($noteWeight > $replacedWeight) {
+            $notes = Note::getAllNotesByUser($this->get_user_or_false()->getId());
+            $note->setWeight(10000);
+            $note->persist();
+            
+            $actualWeight = $noteWeight;
+            foreach ($notes as $current) {
+                if ($current->getWeight() < $noteWeight && $current->getWeight() >= $replacedWeight) {   
+                    $current->setWeight($actualWeight--);
+                    $current->persist();
+                }
+            }
+            $note->setWeight($replacedWeight);
+            $note->persist();
+        } else {
+            $notes = Note::getAllNotesByUserInverted($this->get_user_or_false()->getId());
+            $replacedWeight--;
+            $note->setWeight(10000);
+            $note->persist();
+            
+            $actualWeight = $noteWeight;
+            foreach ($notes as $current) {
+                if ($current->getWeight() > $noteWeight && $current->getWeight() <= $replacedWeight) {   
+                    $current->setWeight($actualWeight++);
+                    $current->persist();
+                }
+            }
+            $note->setWeight($replacedWeight);
+            $note->persist();
+        }
+        
+        if ($pinnedOrUnpinned) {
+            if ($note->getPinned() == 1) {
+                $note->setPinned(0);
+            } else {
+                $note->setPinned(1);
+            }
+            $note->persist();
+        }
+        
     }
+
+
+
 }

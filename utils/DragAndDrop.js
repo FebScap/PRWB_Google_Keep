@@ -1,5 +1,4 @@
 $( function() {
-    console.log('test');
     var prevParent;
     var item = null;
     var replacedItem = null;
@@ -19,9 +18,16 @@ $( function() {
                     type: "POST",
                     url: "viewNotes/dragNote",
                     data: {
-                        item: item,
-                        replacedItem: replacedItem,
-                        pinnedOrUnpinned: pinnedOrUnpinned
+                        itemId: item,
+                        replacedItemId: replacedItem,
+                        hasChanged: pinnedOrUnpinned
+                    },
+                    success: function () {
+                        console.log('succesfully sended ')
+                    },
+                    error: function (xhr, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
                     }
                 });
             }
