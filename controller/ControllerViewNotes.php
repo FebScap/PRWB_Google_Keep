@@ -78,35 +78,57 @@ class ControllerViewNotes extends Controller {
     }
 
 
-
     public function dragNote() : void {
         $pinnedOrUnpinned = $_POST["hasChanged"];
 
         $note = Note::getNoteById($_POST['itemId']);
         $noteWeight = $note->getWeight();
-        $replacedNote = Note::getNoteById($_POST['replacedItemId']);
-        $replacedWeight = $replacedNote->getWeight();
 
-        if ($noteWeight > $replacedWeight) {
-            $notes = Note::getAllNotesByUser($this->get_user_or_false()->getId());
-            $note->setWeight(10000);
-            $note->persist();
-            
-            $actualWeight = $noteWeight;
-            foreach ($notes as $current) {
-                if ($current->getWeight() < $noteWeight && $current->getWeight() >= $replacedWeight) {   
-                    $current->setWeight($actualWeight--);
-                    $current->persist();
+        if ($_POST['replacedItemId'] != -1) {
+            $replacedNote = Note::getNoteById($_POST['replacedItemId']);
+            $replacedWeight = $replacedNote->getWeight();
+
+            //LE POID DE LA NOTE EST PLUS GRAND QUE CELLE QU'ELLE REMPLACE
+            if ($noteWeight > $replacedWeight) {
+                $notes = Note::getAllNotesByUser($this->get_user_or_false()->getId());
+                $note->setWeight(99999);
+                $note->persist();
+                
+                $actualWeight = $noteWeight;
+                foreach ($notes as $current) {
+                    if ($current->getWeight() < $noteWeight && $current->getWeight() >= $replacedWeight) {   
+                        $current->setWeight($actualWeight--);
+                        $current->persist();
+                    }
                 }
+                $note->setWeight($replacedWeight);
+                $note->persist();
+
+            //LE POID DE LA NOTE EST PLUS PETIT QUE CELLE QU'ELLE REMPLACE
+            } else {
+                $notes = Note::getAllNotesByUserInverted($this->get_user_or_false()->getId());
+                $replacedWeight--;
+                $note->setWeight(99999);
+                $note->persist();
+                
+                $actualWeight = $noteWeight;
+                foreach ($notes as $current) {
+                    if ($current->getWeight() > $noteWeight && $current->getWeight() <= $replacedWeight) {   
+                        $current->setWeight($actualWeight++);
+                        $current->persist();
+                    }
+                }
+                $note->setWeight($replacedWeight);
+                $note->persist();
             }
-            $note->setWeight($replacedWeight);
-            $note->persist();
+            // LA NOTE A ETE PLACEE A L'EXTREME GAUCHE D'UNE DES LISTE
         } else {
+            $noteWeight = $note->getWeight();
             $notes = Note::getAllNotesByUserInverted($this->get_user_or_false()->getId());
-            $replacedWeight--;
-            $note->setWeight(10000);
-            $note->persist();
-            
+           
+            $replacedWeight = $notes[sizeof($notes) - 1]->getWeight();     
+            $note->setWeight($replacedWeight +1000);    
+            $note->persist();       
             $actualWeight = $noteWeight;
             foreach ($notes as $current) {
                 if ($current->getWeight() > $noteWeight && $current->getWeight() <= $replacedWeight) {   
@@ -115,10 +137,11 @@ class ControllerViewNotes extends Controller {
                 }
             }
             $note->setWeight($replacedWeight);
-            $note->persist();
+            $note->persist();   
         }
         
         if ($pinnedOrUnpinned) {
+            echo $pinnedOrUnpinned; // Rentre quand meme dans la condition lorsque c'est False ?????
             if ($note->getPinned() == 1) {
                 $note->setPinned(0);
             } else {
@@ -128,7 +151,4 @@ class ControllerViewNotes extends Controller {
         }
         
     }
-
-
-
 }

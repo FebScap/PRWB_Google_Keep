@@ -163,9 +163,45 @@ require_once "model/ChecklistItem.php";
         }
         return $notes;
     }
+
+    public static function getAllPinnedNotesByUserInverted(int $userId) : array {
+        $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 1 and archived = 0 ORDER BY weight", ["userId" => $userId])->fetchAll();
+        $notes = [];
+        foreach ($data as $row) {
+            $notes[] = new Note(
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
+            );
+        }
+        return $notes;
+    }
     
     public static function getAllUnpinnedNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 0 and archived = 0 ORDER BY weight DESC", ["userId" => $userId])->fetchAll();
+        $notes = [];
+        foreach ($data as $row) {
+            $notes[] = new Note(
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
+            );
+        }
+        return $notes;
+    }
+
+    public static function getAllUnpinnedNotesByUserInverted(int $userId) : array {
+        $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 0 and archived = 0 ORDER BY weight", ["userId" => $userId])->fetchAll();
         $notes = [];
         foreach ($data as $row) {
             $notes[] = new Note(

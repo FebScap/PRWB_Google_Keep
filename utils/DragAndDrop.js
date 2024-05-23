@@ -14,6 +14,7 @@ $( function() {
         stop: function(event, ui) {
             var pinnedOrUnpinned = prevParent !== ui.item.parent()[0].id;
             if (item != null) {
+                if (replacedItem === undefined) replacedItem = -1;
                 $.ajax({
                     type: "POST",
                     url: "viewNotes/dragNote",
