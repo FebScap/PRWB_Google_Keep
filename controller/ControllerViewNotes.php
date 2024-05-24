@@ -140,8 +140,7 @@ class ControllerViewNotes extends Controller {
             $note->persist();   
         }
         
-        if ($pinnedOrUnpinned) {
-            echo $pinnedOrUnpinned; // Rentre quand meme dans la condition lorsque c'est False ?????
+        if ($pinnedOrUnpinned === "true") {
             if ($note->getPinned() == 1) {
                 $note->setPinned(0);
             } else {
