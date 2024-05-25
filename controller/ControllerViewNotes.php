@@ -127,7 +127,7 @@ class ControllerViewNotes extends Controller {
             $notes = Note::getAllNotesByUserInverted($this->get_user_or_false()->getId());
            
             $replacedWeight = $notes[sizeof($notes) - 1]->getWeight();     
-            $note->setWeight($replacedWeight +1000);    
+            $note->setWeight(99999);    
             $note->persist();       
             $actualWeight = $noteWeight;
             foreach ($notes as $current) {

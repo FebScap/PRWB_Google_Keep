@@ -194,10 +194,18 @@ class ControllerOpenNote extends Controller {
 
     public function addItem() : void {
         $textnote = ChecklistNote::getChecklistNoteById($_POST["id"]);
+        $errorsTitle = [];
+        $errorsContent = [];
         $itemList = ChecklistNote::getItemListById($_POST['id']);
-        $emptyItem = new ChecklistItem(0, $_POST["id"], "New Item (Rename&Save before adding another one)", 0);
-        $emptyItem->persist();
-        array_push($itemList, $emptyItem);
-        $this->redirect("opennote", "editchecklistnote", $_POST["id"]);
+
+        if (empty($_POST['itemtitle'])) {
+            $errorsContent[] = "Item name shouldn't be empty.";
+            (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList]);
+        } else {
+            $emptyItem = new ChecklistItem(0, $_POST["id"], $_POST['itemtitle'], 0);
+            $emptyItem->persist();
+            array_push($itemList, $emptyItem);
+            $this->redirect("opennote", "editchecklistnote", $_POST["id"]);
+        }
     }
 }
