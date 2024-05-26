@@ -37,18 +37,15 @@ class ChecklistNote extends Note {
     }
 
     public static function validateContent(array $contentArray): array {
-        $errors = [];
-    
-        // Compter les occurrences de chaque élément
-        $occurrences = array_count_values($contentArray);
-    
-        // Vérifier l'unicité des éléments (à l'exception des chaînes vides)
-        foreach ($occurrences as $content => $count) {
-            if ($content !== "" && $count > 1) {
-                $errors[] = "Each non-empty item in the checklist must be unique.";
-                break;
+        $errors = array();
+
+        for ($i = 0 ; $i < count($contentArray) ; $i++) {
+            foreach ($contentArray as $actual) {
+                if ($actual != '' && $actual === $contentArray[$i]) {
+                    $errors[$i] = "Must be unique";
+                }
             }
-        }
+        } 
     
         return $errors;
     }
