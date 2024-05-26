@@ -40,8 +40,8 @@ class ChecklistNote extends Note {
         $errors = array();
 
         for ($i = 0 ; $i < count($contentArray) ; $i++) {
-            foreach ($contentArray as $actual) {
-                if ($actual != '' && $actual === $contentArray[$i]) {
+            for ($j = 0 ; $j < count($contentArray) ; $j++) {
+                if ($contentArray[$j] != '' && $contentArray[$j] === $contentArray[$i] && $j != $i) {
                     $errors[$i] = "Must be unique";
                 }
             }

@@ -70,7 +70,19 @@
                     <?php for ($i=0; $i<6; $i++) {
                         echo"
                         <li class='mb-2'>
-                            <input type='text' class='form-control' id='checklist' name='content[$i]' value='" . $content[$i] . "'>
+                            <input type='text' class='form-control";
+                        
+                        if (count($errorsContent) != 0 ) {
+                            if (array_key_exists($i, $errorsContent)) {
+                                echo " is-invalid";
+                            } else if ($content[$i] != '') {
+                                echo " is-valid";
+                            }
+                        } else if ($content[$i] != '') {
+                            echo " is-valid";
+                        }
+
+                        echo"' id='checklist' name='content[$i]' value='" . $content[$i] . "'>
                         </li>";
                         if (count($errorsContent) != 0 ) {
                             if (array_key_exists($i, $errorsContent)) {
