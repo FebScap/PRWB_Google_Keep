@@ -63,7 +63,7 @@
                 <?php if (!is_null($textnote->getEditedAt())) : ?>
                     <p class="font-italic">Edited <?= Note::elapsedDate($textnote->getEditedAt()) ?></p>
                 <?php endif ?>
-                <label for="noteTitle" class="form-label">Title</label>
+                <label for="noteTitle" class="form-label h2 fs-5 mt-4 ms-2">Title</label>
                 <input type="text" class="form-control" id="title" name="title" value="<?= $textnote->getTitle() ?>" oninput="checkTitle();">
                 <label class="errors" id="errorTitle"></label>
                 <?php if (count($errorsTitle) != 0) : ?>
@@ -73,32 +73,36 @@
                         <?php endforeach; ?></label>
                 <?php endif ?>
             </div>
-            <div class="mt-3">
-                <label class="form-label">Items</label>
-                <ul>
+            <div>
+                <h2 class="h2 fs-5 ms-2">Items</h2>
+
                     <?php for ($i=0; $i<count($itemList); $i++) {
                         echo"
-                        <li class='mb-2'>
-                        <div class='container-fluid input-group flex-nowrap p-0'>
-                            <input type='text' class='form-control' id='checklist' name='content[$i]' value='" . $itemList[$i]->getContent() . "'>
-                            <form method='post' action='OpenNote/deleteItem' id='formdelete'>
-                                <button type='submit' form='formdelete' name='itemid' value='" . $itemList[$i]->getId() . "' class='btn btn-danger'><i class='bi bi-dash-square-fill'></i></button>
+                        <div class='input-group flex-nowrap mt-2'>
+                            <button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-square'></i></button>
+                            <input id='checklist' name='content[$i]' type='text' class='form-control' value='" . $itemList[$i]->getContent() . "' placeholder='Nouvel item' aria-describedby='basic-addon1'>
+                            <form class='m-0 p-0 btn btn-danger text-white' method='post' action='OpenNote/deleteItem' id='formdelete'>
+                                <button class='btn btn-danger text-white' type='submit' form='formdelete' name='itemid' value='" . $itemList[$i]->getId() . "'><i class='bi bi-dash-lg' form='formdelete'></i></button>
                             </form>
-                        </div>
-                        </li>";
+                        </div>";
                     }
-                    ?>
-                    <?php if (count($errorsContent) != 0) : ?>
-                        <label for="noteTitle" class="form-label">
-                            <?php foreach ($errorsContent as $error): ?>
-                                <li><?= $error ?></li>
-                            <?php endforeach; ?>
-                        </label>
-                    <?php endif ?>
-                </ul>
-                <form method='post' action='OpenNote/addItem' id='formadd'>
-                    <button type='submit' form='formadd' name='id' value='<?= $textnote->getId() ?>' class='btn btn-primary'><i class="bi bi-plus-square"></i></button>
+                    ?>  
+
+                <h2 class="h2 fs-5 mt-4 ms-2">New Item</h2>
+                <form class='input-group flex-nowrap mt-2' method='post' action='OpenNote/addItem' id='formadd'>
+                    <input id='additem' name='itemtitle' form='formadd' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'>  
+                    <button class='btn btn-primary text-white' type='submit' form='formadd' name='id' value='<?= $textnote->getId() ?>'><i class="bi bi-plus-lg"></i></button>
                 </form>
+
+                <?php if (count($errorsContent) != 0) : ?>
+                        <label for="noteTitle" class="form-label">
+                            <ul class="mt-1">
+                                <?php foreach ($errorsContent as $error): ?>
+                                    <li><?= $error ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </label>
+                <?php endif ?>
             </div>
             <input id="id" name="id" type="hidden" class="form-control" placeholder="Title" form="save" value="<?= $textnote->getId() ?>">
         </form>

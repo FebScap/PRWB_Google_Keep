@@ -128,8 +128,44 @@ require_once "model/ChecklistItem.php";
         return $notes;
     }
 
+    public static function getAllNotesByUserInverted(int $userId) : array {
+        $data = self::execute("SELECT * FROM notes WHERE owner = :userId ORDER BY weight", ["userId" => $userId])->fetchAll();
+        $notes = [];
+        foreach ($data as $row) {
+            $notes[] = new Note(
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
+            );
+        }
+        return $notes;
+    }
+
     public static function getAllPinnedNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 1 and archived = 0 ORDER BY weight DESC", ["userId" => $userId])->fetchAll();
+        $notes = [];
+        foreach ($data as $row) {
+            $notes[] = new Note(
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
+            );
+        }
+        return $notes;
+    }
+
+    public static function getAllPinnedNotesByUserInverted(int $userId) : array {
+        $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 1 and archived = 0 ORDER BY weight", ["userId" => $userId])->fetchAll();
         $notes = [];
         foreach ($data as $row) {
             $notes[] = new Note(
@@ -148,6 +184,24 @@ require_once "model/ChecklistItem.php";
     
     public static function getAllUnpinnedNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 0 and archived = 0 ORDER BY weight DESC", ["userId" => $userId])->fetchAll();
+        $notes = [];
+        foreach ($data as $row) {
+            $notes[] = new Note(
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
+            );
+        }
+        return $notes;
+    }
+
+    public static function getAllUnpinnedNotesByUserInverted(int $userId) : array {
+        $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 0 and archived = 0 ORDER BY weight", ["userId" => $userId])->fetchAll();
         $notes = [];
         foreach ($data as $row) {
             $notes[] = new Note(
@@ -314,45 +368,7 @@ require_once "model/ChecklistItem.php";
             $note->persist();
         }
     }
-
-    public static function changeAllWeightByOrderedIdList(int $id, mixed $newPinnedId, mixed $newOtherId) : void {
-        $oldPinned = Note::getAllPinnedNotesByUser($id);
-        $allPinnedWeightInOrder = array();
-
-        $oldOther = Note::getAllUnpinnedNotesByUser($id);
-        $allOtherWeightInOrder = array();
-        //SI LA NOTE NE CHANGE PAS DE LISTE
-        if (count($oldPinned) == count($newPinnedId)) {
-            for ($i = 0 ; $i < count($oldPinned) ; $i++) {
-                $allPinnedWeightInOrder[$i] = $oldPinned[$i]->getWeight();
-                $oldPinned[$i]->setWeight(1000000+$i);
-                $oldPinned[$i]->persist();
-            }
-            for ($i = 0 ; $i < count($newPinnedId) ; $i++) {
-                $note = Note::getNoteById($newPinnedId[$i]);
-                $note->setWeight($allPinnedWeightInOrder[$i]);
-                $note->persist();
-            }
-            
-            for ($i = 0 ; $i < count($oldOther) ; $i++) {
-                $allOtherWeightInOrder[$i] = $oldOther[$i]->getWeight();
-                $oldOther[$i]->setWeight(1000000+$i);
-                $oldOther[$i]->persist();
-            }
-            for ($i = 0 ; $i < count($newOtherId) ; $i++) {
-                $note = Note::getNoteById($newOtherId[$i]);
-                $note->setWeight($allOtherWeightInOrder[$i]);
-                $note->persist();
-            }
-
-        // SI LA NOTE CHANGE DE LISTE (PIN UNPIN)    
-        } else {
-
-        }
-        
-    }
-
-    
+ 
 
     public function persist() : Note|array {
         if ($this->id == NULL){

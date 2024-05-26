@@ -3,30 +3,7 @@
     <head>
         <title>My notes</title>
         <?php include('head.html'); ?>
-        <!-- Fonction de Drag and Drop -->
-        <script>
-        $( function() {
-            $( "#pinnedNotes, #otherNotes" ).sortable({
-                connectWith: ".connectedSortable",
-                update: function(event, ui) {
-                    var pinnedNotes = ui.item.parent().find('.pinnedNote').map(function() { return this.id; }).get();
-                    var otherNotes = ui.item.parent().find('.otherNote').map(function() { return this.id; }).get();
-                    $.ajax({
-                        type: "POST",
-                        url: "viewNotes/dragNote",
-                        data: {
-                            pinnedNotes: pinnedNotes,
-                            otherNotes: otherNotes,
-                            item: ui.item.attr('id')
-                        },
-                    });
-                    console.log(pinnedNotes);
-                    console.log(otherNotes);
-                    console.log(ui.item.attr('id'))
-                }
-            }).disableSelection();
-        } );
-        </script>
+        <script src="utils/DragAndDrop.js"></script>
     </head>
     <body data-bs-theme="dark">
         <div class="container-fluid d-flex flex-column">
@@ -47,7 +24,7 @@
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100">
                                     <!-- TITRE -->
-                                    <li class="list-group-item"><?= $pinnedNotes[$i]->getId() ?> <?= $pinnedNotes[$i]->title ?></li>
+                                    <li class="list-group-item"><?= $pinnedNotes[$i]->title ?></li>
 
                                     <li class="list-group-item list-group-item-secondary h-100 truncate-after">
                                         <!-- CONTENU TEXT NOTE -->
@@ -121,7 +98,7 @@
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100">
                                     <!-- TITRE -->
-                                    <li class="list-group-item"><?= $notPinnedNotes[$i]->getId() ?> <?= $notPinnedNotes[$i]->getTitle() ?></li>
+                                    <li class="list-group-item"><?= $notPinnedNotes[$i]->getTitle() ?></li>
 
                                     <li class="list-group-item list-group-item-secondary h-100 truncate-after">
                                         <!-- CONTENU TEXT NOTE -->
@@ -197,13 +174,5 @@
             </nav>
         </div>
         <?php include('footer.html'); ?>
-        <script>
-            $(document).ready(function() {
-                var elems = document.querySelectorAll(".chevron");
-                [].forEach.call(elems, function(el) {
-                    el.remove();
-                });
-            });
-        </script>
     </body>
 </html> 
