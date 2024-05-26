@@ -24,10 +24,10 @@
                             <?php else: ?>
                                 <span class="form-control"><?= User::getByID($shares[$i]->getUser())->full_name ?> <i>(reader)</i></span>
                             <?php endif; ?>
-                            <form class="button" action="viewshares/swapRole/<?= $_GET["param1"] ?>" method="post">
+                            <form class="button" action="viewshares/swapRole/<?= $noteId ?>" method="post">
                                 <button class="btn btn-primary rounded-0" type="submit" name="iduser" value="<?= $shares[$i]->getUser() ?>" class="btn btn-dark"><i class="bi bi-arrow-repeat"></i></button>
                             </form>
-                            <form class="button" action="viewshares/delete/<?= $_GET["param1"] ?>" method="post">
+                            <form class="button" action="viewshares/delete/<?= $noteId ?>" method="post">
                                 <button class="btn btn-danger rounded-0 rounded-end" type="submit" name="iduser" value="<?= $shares[$i]->getUser() ?>" class="btn btn-dark"><i class="bi bi-dash"></i></button>
                             </form>
                         
@@ -36,12 +36,12 @@
             <?php endif; ?>
 
             <!-- NOUVEAU PARTAGE -->
-            <form class="container-fluid p-1" action="viewshares/add/<?= $_GET["param1"] ?>" method="post">
+            <form class="container-fluid p-1" action="viewshares/add/<?= $noteId ?>" method="post">
                 <div class="container-fluid input-group flex-nowrap p-0">
                     <select class="form-select" name="user">
                         <option selected>-User-</option>
                         <?php for ($i = 0; $i < sizeof($users); $i++): ?>
-                            <?php if (!Shares::isSharedBy($_GET["param1"], $users[$i]->getId())): ?>
+                            <?php if (!Shares::isSharedBy($noteId, $users[$i]->getId())): ?>
                                 <option value="<?= $users[$i]->getId() ?>"><?= $users[$i]->full_name ?></option>
                             <?php endif; ?>
                         <?php endfor; ?>
