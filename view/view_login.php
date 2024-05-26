@@ -18,12 +18,12 @@
                     <form action="main/login" method="post">
 
                         <div class="input-group flex-nowrap mt-4 w-100">
-                            <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-person"></i></button>
+                            <button class="btn btn-outline-secondary text-white" type="button" disabled><i class="bi bi-person"></i></button>
                             <input id="mail" name="mail" type="email" class="form-control" value="<?= $mail ?>" placeholder="exemple@domaine.ect" aria-describedby="basic-addon1">
                         </div>
 
                         <div class="input-group flex-nowrap mt-4 w-100">
-                            <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-key"></i></button>
+                            <button class="btn btn-outline-secondary text-white" type="button" disabled><i class="bi bi-key"></i></button>
                             <input id="password" name="password" type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
                         </div>
 
