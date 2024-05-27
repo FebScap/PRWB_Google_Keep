@@ -3,7 +3,7 @@
     <head>
         <title>My notes</title>
         <?php include('head.html'); ?>
-        <script src="utils/DragAndDrop.js"></script>
+        <script src="js/DragAndDrop.js"></script>
     </head>
     <body data-bs-theme="dark">
         <div class="container-fluid d-flex flex-column">
