@@ -70,6 +70,10 @@ class User extends Model {
         return $this->id;
     }
 
+    public function setId(int $id) {
+        $this->id = $id;
+    }
+
     public function getPassword() {
         return $this->hashed_password;
     }
@@ -162,7 +166,8 @@ class User extends Model {
                             ["mail"=>$this->mail, "hashed_password"=>$this->hashed_password, "full_name"=>$this->full_name, "id"=>$this->id]);
         else
             self::execute("INSERT INTO Users(mail, hashed_password, full_name) VALUES (:mail, :hashed_password, :full_name)", 
-                            ["mail"=>$this->mail, "hashed_password"=>$this->hashed_password, "full_name"=>$this->full_name]); 
+                            ["mail"=>$this->mail, "hashed_password"=>$this->hashed_password, "full_name"=>$this->full_name]);
+            $this->setId(self::lastInsertId()); 
         return $this;
     }
 
