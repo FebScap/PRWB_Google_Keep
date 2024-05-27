@@ -132,53 +132,57 @@ class ControllerOpenNote extends Controller {
         $textnote = ChecklistNote::getChecklistNoteById($_POST["id"]);
         $itemList = ChecklistNote::getItemListById($_POST['id']);
 
+
         if (isset($_POST['title'])){
-            
-            $title = $_POST['title'];
-            
+            if (isset($_POST['content'])) {
+                $title = $_POST['title'];
+                
 
-            if (!Note::validateTitle($_POST['title'])){
+                if (!Note::validateTitle($_POST['title'])){
 
-                $errorsTitle = ["Title length must be at least 3 and maximum 25."];
-            }
-
-            if ($_POST['title'] != $textnote->getTitle() && !Note::isUniqueTitlePerOwner($title, $user->getId())) {
-                $errorsTitle = array_merge($errorsTitle, ["Title must be unique per User"]);
-            }
-
-            //Validation Content
-            $content = $_POST['content'];
-            $itemList = ChecklistNote::getItemListById($_POST["id"]);
-                $i = 0;
-                foreach ($itemList as $item) {
-                    if ($_POST['content'][$i] != $item->getContent()){
-                        $item->setContent($_POST['content'][$i]);
-                    }
-                    $i++;
+                    $errorsTitle = ["Title length must be at least 3 and maximum 25."];
                 }
 
-            if (count($content) !== count(array_unique($content))) {
-                $errorsContent[] = "All items must be unique.";
-            }
-            
-            if (count($errorsTitle) == 0 && count($errorsContent) == 0) {
-                $textnote->setTitle($_POST["title"]);
-                $textnote->setContent($_POST["content"]);
-                $textnote->persist();
-                $textnote->persist_date();
+                if ($_POST['title'] != $textnote->getTitle() && !Note::isUniqueTitlePerOwner($title, $user->getId())) {
+                    $errorsTitle = array_merge($errorsTitle, ["Title must be unique per User"]);
+                }
+
+                //Validation Content               
+                $content = $_POST['content'];
                 $itemList = ChecklistNote::getItemListById($_POST["id"]);
-                $i = 0;
-                foreach ($itemList as $item) {
-                    if ($_POST['content'][$i] != $item->getContent()){
-                        $item->setContent($_POST['content'][$i]);
-                        $item->persist();
+                    $i = 0;
+                    foreach ($itemList as $item) {
+                        if ($_POST['content'][$i] != $item->getContent()){
+                            $item->setContent($_POST['content'][$i]);
+                        }
+                        $i++;
                     }
-                    $i++;
+
+                if (count($content) !== count(array_unique($content))) {
+                    $errorsContent[] = "All items must be unique.";
                 }
-                $this->redirect("opennote", "index", $textnote->getId());
+                
+                if (count($errorsTitle) == 0 && count($errorsContent) == 0) {
+                    $textnote->setTitle($_POST["title"]);
+                    $textnote->setContent($_POST["content"]);
+                    $textnote->persist();
+                    $textnote->persist_date();
+                    $itemList = ChecklistNote::getItemListById($_POST["id"]);
+                    $i = 0;
+                    foreach ($itemList as $item) {
+                        if ($_POST['content'][$i] != $item->getContent()){
+                            $item->setContent($_POST['content'][$i]);
+                            $item->persist();
+                        }
+                        $i++;
+                    }
+                    $this->redirect("opennote", "index", $textnote->getId());
+                } else {
+                    $textnote->setTitle($title);
+                    (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList]);
+                }
             } else {
-                $textnote->setTitle($title);
-                (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList]);
+                $this->redirect("opennote", "index", $textnote->getId());
             }
         } else {
             (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList]);
