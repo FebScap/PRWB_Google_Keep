@@ -90,7 +90,11 @@
 
                 <h2 class="h2 fs-5 mt-4 ms-2">New Item</h2>
                 <form class='input-group flex-nowrap mt-2' method='post' action='OpenNote/addItem' id='formadd'>
-                    <input id='additem' name='itemtitle' form='formadd' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'>  
+                    <?php if (isset($itemtitle)) : ?>
+                        <input id='additem' name='itemtitle' value="<?= $itemtitle ?>" form='formadd' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'>  
+                    <?php else : ?>
+                        <input id='additem' name='itemtitle' form='formadd' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'>  
+                    <?php endif ?>
                     <button class='btn btn-primary text-white' type='submit' form='formadd' name='id' value='<?= $textnote->getId() ?>'><i class="bi bi-plus-lg"></i></button>
                 </form>
 

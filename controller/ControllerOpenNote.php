@@ -197,10 +197,17 @@ class ControllerOpenNote extends Controller {
         $errorsTitle = [];
         $errorsContent = [];
         $itemList = ChecklistNote::getItemListById($_POST['id']);
+        $itemListTitle = [];
+        foreach ($itemList as $i) {
+            array_push($itemListTitle, $i->getContent());
+        }
 
         if (empty($_POST['itemtitle'])) {
             $errorsContent[] = "Item name shouldn't be empty.";
             (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList]);
+        } else if (in_array($_POST['itemtitle'], $itemListTitle)) {
+            $errorsContent[] = "Must be unique.";
+            (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList, "itemtitle"=>$_POST['itemtitle']]);
         } else {
             $emptyItem = new ChecklistItem(0, $_POST["id"], $_POST['itemtitle'], 0);
             $emptyItem->persist();
