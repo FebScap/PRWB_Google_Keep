@@ -15,7 +15,16 @@ class ControllerViewShares extends Controller {
             if ($user->isOwner($noteId)) {
                 $users = User::getAllUsersExeptOne($user->id);
                 $shares = Shares::getAllSharesByNoteId($noteId);
-            (new View("viewshares"))->show(["user"=>$user, "users"=>$users, "shares"=>$shares, "noteId"=>$noteId]);
+                $sharesUsers = [];
+                foreach ($shares as $usershare) {
+                    array_push($sharesUsers, User::getById($usershare->getUser())->full_name);
+                }
+                $isSharesByUsers = [];
+                foreach($users as $u) {
+                    array_push($isSharesByUsers, !Shares::isSharedBy($noteId, $u->getId()));
+                }
+
+            (new View("viewshares"))->show(["user"=>$user, "users"=>$users, "shares"=>$shares, "sharesUsers"=>$sharesUsers, "isSharesByUsers"=>$isSharesByUsers, "noteId"=>$noteId]);
             } else {
                 (new View("error"))->show(["error"=>$error = "You may not acces to this note."]);
             }

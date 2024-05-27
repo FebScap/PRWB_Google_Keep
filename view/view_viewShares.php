@@ -19,10 +19,10 @@
                     <div class="container-fluid input-group p-1">
                             <!-- PARTAGE READER -->
                             <?php if ($shares[$i]->isEditor()): ?>
-                                <span class="form-control"><?= User::getByID($shares[$i]->getUser())->full_name ?> <i>(editor)</i></span>
+                                <span class="form-control"><?= $sharesUsers[$i] ?> <i>(editor)</i></span>
                             <!-- PARTAGE EDITOR -->
                             <?php else: ?>
-                                <span class="form-control"><?= User::getByID($shares[$i]->getUser())->full_name ?> <i>(reader)</i></span>
+                                <span class="form-control"><?= $sharesUsers[$i] ?> <i>(reader)</i></span>
                             <?php endif; ?>
                             <form class="button" action="viewshares/swapRole/<?= $noteId ?>" method="post">
                                 <button class="btn btn-primary rounded-0" type="submit" name="iduser" value="<?= $shares[$i]->getUser() ?>" class="btn btn-dark"><i class="bi bi-arrow-repeat"></i></button>
@@ -41,7 +41,7 @@
                     <select class="form-select" name="user">
                         <option selected>-User-</option>
                         <?php for ($i = 0; $i < sizeof($users); $i++): ?>
-                            <?php if (!Shares::isSharedBy($noteId, $users[$i]->getId())): ?>
+                            <?php if ($isSharesByUsers[$i]): ?>
                                 <option value="<?= $users[$i]->getId() ?>"><?= $users[$i]->full_name ?></option>
                             <?php endif; ?>
                         <?php endfor; ?>
