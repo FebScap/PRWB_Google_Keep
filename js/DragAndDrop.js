@@ -38,10 +38,3 @@ $( function() {
         }
     }).disableSelection();
 } );
-
-$(document).ready(function() {
-    var elems = document.querySelectorAll(".chevron");
-    [].forEach.call(elems, function(el) {
-        el.remove();
-    });
-});
