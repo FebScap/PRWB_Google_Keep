@@ -10,12 +10,47 @@ document.onreadystatechange = function() {
         
         saveButton = document.getElementById("saveButton");
         backButton = document.getElementById("backButton");
+        addButton = document.getElementById('addbutton');
 
         createFormAdd();
         
         initialContent = getContentValues();
         
 
+        // FONCTIONNALITE ADDITEM
+        addButton.addEventListener("click", () => {
+            let itemToAdd = document.getElementById('addinput');
+            if ((/^.{1,60}$/).test(itemToAdd.value)) {
+                const contentElements = document.querySelectorAll('[name^="content"]');
+                let dontExist = true;
+              
+                contentElements.forEach(element => {
+                    if (element.value == itemToAdd.value && element.id != 'addinput') {
+                        dontExist = false;
+                    }
+                });
+
+                if (dontExist) {
+                    $.ajax({
+                        type: "POST",
+                        url: "OpenNote/addItemRaw",
+                        data: {
+                            noteId: document.body.id,
+                            value: itemToAdd.value
+                        },
+                        success: function (data) {
+                            let itemDiv = document.getElementById('itemDiv');
+                            itemDiv.insertAdjacentHTML("beforeend", "<div class='input-group flex-nowrap mt-2'><button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-square'></i></button><input id='checklist' oninput='checkAll();' form='save' name='content[" + data + "]' type='text' class='form-control' value='" + itemToAdd.value + "' placeholder='Nouvel item' aria-describedby='basic-addon1'><button class='btn btn-danger text-white' type='submit' form='formdelete' name='itemid' value='new'><i class='bi bi-dash-lg' form='formdelete'></i></button></div>");
+                            itemToAdd.classList.remove("is-valid");
+                            itemToAdd.value = '';
+                            console.log(data);
+                        }
+                    });
+                }
+            }
+        });
+
+        // BOUTON RETOUR VERIFICATION SI LE FICHIER EST MODIF
         backButton.addEventListener("click", (event) => {
             if (hasChanges()) {
                 event.preventDefault();
@@ -31,7 +66,7 @@ document.onreadystatechange = function() {
 
 function createFormAdd() {
     newItemDiv = document.getElementById("newItemDiv");
-    newItemDiv.innerHTML += "<div class='input-group flex-nowrap mt-2'><input id='addinput' oninput='checkAll();' name='contentitemtitle' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'><button id='addbutton' class='btn btn-primary text-white' type='submit' name='id' value='<?= $textnote->getId() ?>'><i class='bi bi-plus-lg'></i></button></div>";
+    newItemDiv.innerHTML += "<div class='input-group flex-nowrap mt-2'><input id='addinput' oninput='checkAll();' name='content[itemtitle]' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'><button id='addbutton' class='btn btn-primary text-white' type='submit' name='id' value='<?= $textnote->getId() ?>'><i class='bi bi-plus-lg'></i></button></div>";
     newItemDiv.innerHTML += "<span></span>"
     addButton = document.getElementById("addbutton");
 }
@@ -78,7 +113,7 @@ function checkContent() {
         const element = contentElements[i];
         
         //Suppression des anciennes erreurs
-        if (element.parentElement.nextElementSibling.tagName == 'LI') {
+        if (element.parentElement.nextElementSibling != null && element.parentElement.nextElementSibling.tagName == 'LI') {
             element.parentElement.nextElementSibling.remove();
         }
 

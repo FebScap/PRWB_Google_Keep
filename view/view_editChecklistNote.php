@@ -6,7 +6,7 @@
     <script src="js/EditCheckListNote.js"></script>
     <script src="js/RemoveNotJS.js"></script>
 </head>
-<body data-bs-theme="dark">
+<body id="<?= $textnote->getId() ?>" data-bs-theme="dark">
     <form method="post" action="OpenNote/saveChecklistNote" id="save" oninput='return checkAll();'></form>
         <div class="container-fluid d-flex flex-column"> 
         <div class="container-fluid d-flex justify-content-between">
@@ -31,22 +31,23 @@
         <div>
             <h2 class="h2 fs-5 ms-2">Items</h2>
             <form class='notJS' method='post' action='OpenNote/deleteItem' id='formdelete'></form>
+                <div id='itemDiv'>
+                    <?php for ($i=0; $i<count($itemList); $i++) {
+                        echo"<div class='input-group flex-nowrap mt-2'>";
 
-                <?php for ($i=0; $i<count($itemList); $i++) {
-                    echo"<div class='input-group flex-nowrap mt-2'>";
-
-                    if ( $itemList[$i]->getChecked() == 1) {
-                        echo"<button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-check-square'></i></button>";
-                    } else {
-                        echo"<button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-square'></i></button>";
+                        if ( $itemList[$i]->getChecked() == 1) {
+                            echo"<button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-check-square'></i></button>";
+                        } else {
+                            echo"<button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-square'></i></button>";
+                        }
+                            echo"
+                                <input id='checklist' oninput='checkAll();' form='save' name='content[$i]' type='text' class='form-control' value='" . $itemList[$i]->getContent() . "' placeholder='Nouvel item' aria-describedby='basic-addon1'>
+                                <button class='btn btn-danger text-white' type='submit' form='formdelete' name='itemid' value='" . $itemList[$i]->getId() . "'><i class='bi bi-dash-lg' form='formdelete'></i></button>
+                                </div>
+                            ";
                     }
-                        echo"
-                            <input id='checklist' oninput='checkAll();' form='save' name='content[$i]' type='text' class='form-control' value='" . $itemList[$i]->getContent() . "' placeholder='Nouvel item' aria-describedby='basic-addon1'>
-                            <button class='btn btn-danger text-white' type='submit' form='formdelete' name='itemid' value='" . $itemList[$i]->getId() . "'><i class='bi bi-dash-lg' form='formdelete'></i></button>
-                            </div>
-                        ";
-                }
-                ?>  
+                    ?>  
+                </div>
 
                 <h2 class="h2 fs-5 mt-4 ms-2">New Item</h2>
                 <div id="newItemDiv">

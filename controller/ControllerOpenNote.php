@@ -219,4 +219,11 @@ class ControllerOpenNote extends Controller {
             $this->redirect("opennote", "editchecklistnote", $_POST["id"]);
         }
     }
+
+    public function addItemRaw() : void {
+        $textnote = ChecklistNote::getChecklistNoteById($_POST["noteId"]);
+        $item = new ChecklistItem(0, $textnote->getId(), $_POST['value'], 0);
+        $item->persist();
+        echo $item->getId();
+    }
 }
