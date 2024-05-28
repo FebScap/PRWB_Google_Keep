@@ -19,7 +19,7 @@
                 <p class="font-italic">Edited <?= Note::elapsedDate($textnote->getEditedAt()) ?></p>
             <?php endif ?>
             <label for="noteTitle" class="form-label h2 fs-5 mt-4 ms-2">Title</label>
-            <input type="text" class="form-control" id="title" form="save" name="title" value="<?= $textnote->getTitle() ?>" oninput="checkTitle();">
+            <input type="text" class="form-control" id="title" form="save" name="title" value="<?= $textnote->getTitle() ?>" oninput="checkAll();">
             <label class="errors" id="errorTitle"></label>
             <?php if (count($errorsTitle) != 0) : ?>
                 <label for="noteTitle" class="form-label">
@@ -30,37 +30,38 @@
         </div>
         <div>
             <h2 class="h2 fs-5 ms-2">Items</h2>
+            <form class='notJS' method='post' action='OpenNote/deleteItem' id='formdelete'></form>
 
-                    <?php for ($i=0; $i<count($itemList); $i++) {
-                        echo"<div class='input-group flex-nowrap mt-2'>";
+                <?php for ($i=0; $i<count($itemList); $i++) {
+                    echo"<div class='input-group flex-nowrap mt-2'>";
 
-                        if ( $itemList[$i]->getChecked() == 1) {
-                            echo"<button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-check-square'></i></button>";
-                        } else {
-                            echo"<button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-square'></i></button>";
-                        }
-                            echo"
-                                <input id='checklist'  form='save' name='content[$i]' type='text' class='form-control' value='" . $itemList[$i]->getContent() . "' placeholder='Nouvel item' aria-describedby='basic-addon1'>
-                                <form class='m-0 p-0 btn btn-danger text-white' method='post' action='OpenNote/deleteItem' id='formdelete'>
-                                    <button class='btn btn-danger text-white' type='submit' form='formdelete' name='itemid' value='" . $itemList[$i]->getId() . "'><i class='bi bi-dash-lg' form='formdelete'></i></button>
-                                </form>
-                                </div>
-                            ";
+                    if ( $itemList[$i]->getChecked() == 1) {
+                        echo"<button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-check-square'></i></button>";
+                    } else {
+                        echo"<button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-square'></i></button>";
                     }
-                    ?>  
+                        echo"
+                            <input id='checklist' oninput='checkAll();' form='save' name='content[$i]' type='text' class='form-control' value='" . $itemList[$i]->getContent() . "' placeholder='Nouvel item' aria-describedby='basic-addon1'>
+                            <button class='btn btn-danger text-white' type='submit' form='formdelete' name='itemid' value='" . $itemList[$i]->getId() . "'><i class='bi bi-dash-lg' form='formdelete'></i></button>
+                            </div>
+                        ";
+                }
+                ?>  
 
                 <h2 class="h2 fs-5 mt-4 ms-2">New Item</h2>
-                <form class='input-group flex-nowrap mt-2' method='post' action='OpenNote/addItem' id='formadd'>
-                    <?php if (isset($itemtitle)) : ?>
-                        <input id='additem' name='itemtitle' value="<?= $itemtitle ?>" form='formadd' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'>  
-                    <?php else : ?>
-                        <input id='additem' name='itemtitle' form='formadd' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'>  
-                    <?php endif ?>
-                    <button class='btn btn-primary text-white' type='submit' form='formadd' name='id' value='<?= $textnote->getId() ?>'><i class="bi bi-plus-lg"></i></button>
-                </form>
+                <div id="newItemDiv">
+                    <form class='notJS input-group flex-nowrap mt-2' method='post' action='OpenNote/addItem' id='formadd'>
+                        <?php if (isset($itemtitle)) : ?>
+                            <input id='additem' name='itemtitle' value="<?= $itemtitle ?>" form='formadd' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'>  
+                        <?php else : ?>
+                            <input id='additem' name='itemtitle' form='formadd' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'>  
+                        <?php endif ?>
+                        <button id="addbutton" class='btn btn-primary text-white' type='submit' form='formadd' name='id' value='<?= $textnote->getId() ?>'><i class="bi bi-plus-lg"></i></button>
+                    </form>
+                </div>
 
             <?php if (count($errorsContent) != 0) : ?>
-                <label for="noteTitle" class="form-label">
+                <label for="noteTitle" class="form-label notJS">
                     <ul class="mt-1">
                         <?php foreach ($errorsContent as $error): ?>
                             <li><?= $error ?></li>
