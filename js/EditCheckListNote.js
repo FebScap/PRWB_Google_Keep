@@ -15,7 +15,37 @@ document.onreadystatechange = function() {
         createFormAdd();
         
         initialContent = getContentValues();
+
         
+        // FONCTIONNALITE DELETEITEM
+        let itemDiv = document.getElementById('itemDiv');
+        itemDiv.addEventListener("click", (event) => {
+            let isDeleted = false;
+            let button;
+            if (event.target.nodeName === 'BUTTON') {
+                button = event.target;
+                event.target.parentElement.remove();
+                isDeleted = true;
+            } else if (event.target.parentElement.nodeName === 'BUTTON') {
+                button = event.target.parentElement;
+                event.target.parentElement.parentElement.remove();
+                isDeleted = true;
+            }
+
+            if (isDeleted) {
+                $.ajax({
+                    type: "POST",
+                    url: "OpenNote/deleteItemRaw",
+                    data: {
+                        itemid: button.value
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+            }
+        });       
+      
 
         // FONCTIONNALITE ADDITEM
         addButton.addEventListener("click", () => {
@@ -39,8 +69,7 @@ document.onreadystatechange = function() {
                             value: itemToAdd.value
                         },
                         success: function (data) {
-                            let itemDiv = document.getElementById('itemDiv');
-                            itemDiv.insertAdjacentHTML("beforeend", "<div class='input-group flex-nowrap mt-2'><button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-square'></i></button><input id='checklist' oninput='checkAll();' form='save' name='content[" + data + "]' type='text' class='form-control' value='" + itemToAdd.value + "' placeholder='Nouvel item' aria-describedby='basic-addon1'><button class='btn btn-danger text-white' type='submit' form='formdelete' name='itemid' value='new'><i class='bi bi-dash-lg' form='formdelete'></i></button></div>");
+                            itemDiv.insertAdjacentHTML("beforeend", "<div class='input-group flex-nowrap mt-2'><button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-square'></i></button><input id='checklist' oninput='checkAll();' form='save' name='content[" + data + "]' type='text' class='form-control' value='" + itemToAdd.value + "' placeholder='Nouvel item' aria-describedby='basic-addon1'><button class='btn btn-danger text-white buttondelete' type='submit' form='formdelete' name='itemid' value='" + data + "'><i class='bi bi-dash-lg' form='formdelete'></i></button></div>");
                             itemToAdd.classList.remove("is-valid");
                             itemToAdd.value = '';
                             console.log(data);

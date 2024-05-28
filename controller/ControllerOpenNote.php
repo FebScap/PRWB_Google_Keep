@@ -196,6 +196,13 @@ class ControllerOpenNote extends Controller {
         $this->redirect("opennote", "editchecklistNote", $id);
     }
 
+    public function deleteItemRaw() : void {
+        $item = ChecklistItem::getItemById($_POST['itemid']);
+        $id = $item->getchecklist_note();
+        $item->delete();
+        echo $item->getId() . " deteted";
+    }
+
     public function addItem() : void {
         $textnote = ChecklistNote::getChecklistNoteById($_POST["id"]);
         $errorsTitle = [];
