@@ -32,6 +32,14 @@
 
         });
         </script>
+        <script>
+            $(document).ready(function() {
+                var elems = document.querySelectorAll(".noJS");
+                [].forEach.call(elems, function(el) {
+                    el.remove();
+                });
+            });
+        </script>
     </head>
     <body data-bs-theme="dark">
         <div class="d-flex bd-highlight mb-3">
@@ -42,9 +50,10 @@
                     <a type="button" href="viewArchives" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
                 </div>
                 <div class="p-2 bd-highlight">
-                    <!--<form action="deletenote/index/<?= $textnote->getId() ?>" method="get">-->
+                    <form action="deletenote/index/<?= $textnote->getId() ?>" method="get" class="noJS">
                         <button type="submit" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
-                    <!--</form>-->
+                    </form>
+                    <button type="submit" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
                 </div>
 
 
