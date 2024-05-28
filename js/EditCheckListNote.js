@@ -14,6 +14,7 @@ document.onreadystatechange = function() {
         createFormAdd();
         
         initialContent = getContentValues();
+        
 
         backButton.addEventListener("click", (event) => {
             if (hasChanges()) {
@@ -30,7 +31,8 @@ document.onreadystatechange = function() {
 
 function createFormAdd() {
     newItemDiv = document.getElementById("newItemDiv");
-    newItemDiv.innerHTML += "<div class='input-group flex-nowrap mt-2'><input id='additem' name='itemtitle' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'><button id='addbutton' class='btn btn-primary text-white' type='submit' name='id' value='<?= $textnote->getId() ?>'><i class='bi bi-plus-lg'></i></button></div>";
+    newItemDiv.innerHTML += "<div class='input-group flex-nowrap mt-2'><input id='addinput' oninput='checkAll();' name='contentitemtitle' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'><button id='addbutton' class='btn btn-primary text-white' type='submit' name='id' value='<?= $textnote->getId() ?>'><i class='bi bi-plus-lg'></i></button></div>";
+    newItemDiv.innerHTML += "<span></span>"
     addButton = document.getElementById("addbutton");
 }
 
@@ -57,9 +59,11 @@ function checkTitle() {
     errorTitle.innerHTML = "";
     if (!(/^.{3,25}$/).test(title.value)) {
         errorTitle.innerHTML += "<p>Title length must be between 3 and 25.</p>";
+        title.classList.remove("is-valid");
         title.classList.add("is-invalid");
         ok = false;
     } else {
+        title.classList.add("is-valid");
         title.classList.remove("is-invalid");
     }
     return ok;
@@ -87,17 +91,23 @@ function checkContent() {
         }
 
         if (!(/^.{1,60}$/).test(element.value)) {
-            element.parentElement.insertAdjacentHTML("afterend", "<li class='ms-2 text-danger error'>Item length must be between 1 and 60.</li>");
-            element.classList.add("is-invalid");
-            ok = false;
+            if (!element.id == 'addinput') {
+                element.parentElement.insertAdjacentHTML("afterend", "<li class='ms-2 text-danger error'>Item length must be between 1 and 60.</li>");
+                element.classList.remove("is-valid");
+                element.classList.add("is-invalid");
+                ok = false;
+            }
         } else if (!isUnique) {
             element.parentElement.insertAdjacentHTML("afterend", "<li class='ms-2 text-danger error'>Item must be unique.</li>");
+            element.classList.remove("is-valid");
             element.classList.add("is-invalid");
             ok = false;
         } else {
             element.classList.remove("is-invalid");
+            if (initialContent[i] != element.value) {
+                element.classList.add("is-valid");
+            }
         }
-
     }
     return ok;
 }
