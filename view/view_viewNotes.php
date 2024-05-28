@@ -4,6 +4,7 @@
         <title>My notes</title>
         <?php include('head.html'); ?>
         <script src="js/DragAndDrop.js"></script>
+        <script src="js/RemoveNotJS.js"></script>
     </head>
     <body data-bs-theme="dark">
         <div class="container-fluid d-flex flex-column">
@@ -47,7 +48,7 @@
                                     
                                     <!-- Chevrons -->
                                     <?php if ($i == 0): ?>
-                                        <li class="chevron list-group-item d-flex justify-content-end">
+                                        <li class="chevron notJS list-group-item d-flex justify-content-end">
                                             <form action="viewnotes/moveDown" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm"> 
                                                     <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
@@ -57,7 +58,7 @@
                                             </form>
                                         </li>
                                     <?php elseif ($i == sizeof($pinnedNotes)-1): ?>
-                                        <li class="chevron list-group-item d-flex justify-content-start">
+                                        <li class="chevron notJS list-group-item d-flex justify-content-start">
                                             <form action="viewnotes/moveUp" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
                                                     <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
@@ -67,7 +68,7 @@
                                             </form>
                                         </li>
                                     <?php else: ?>
-                                        <li class="chevron list-group-item d-flex justify-content-between">
+                                        <li class="chevron notJS list-group-item d-flex justify-content-between">
                                             <form action="viewnotes/moveUp" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
                                                     <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
@@ -121,7 +122,7 @@
                                     
                                     <!-- Chevrons -->
                                     <?php if ($i == 0): ?>
-                                        <li class="chevron list-group-item d-flex justify-content-end">
+                                        <li class="chevron notJS list-group-item d-flex justify-content-end">
                                             <form action="viewnotes/moveDown" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm"> 
                                                     <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
@@ -131,7 +132,7 @@
                                             </form>
                                         </li>
                                     <?php elseif ($i == sizeof($notPinnedNotes)-1): ?>
-                                        <li class="chevron list-group-item d-flex justify-content-start">
+                                        <li class="chevron notJS list-group-item d-flex justify-content-start">
                                             <form action="viewnotes/moveUp" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
                                                     <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
@@ -141,7 +142,7 @@
                                             </form>
                                         </li>
                                     <?php else: ?>
-                                        <li class="chevron list-group-item d-flex justify-content-between">
+                                        <li class="chevron notJS list-group-item d-flex justify-content-between">
                                             <form action="viewnotes/moveUp" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
                                                     <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
