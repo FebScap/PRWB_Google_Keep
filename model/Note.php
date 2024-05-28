@@ -423,6 +423,9 @@ require_once "model/ChecklistItem.php";
         // Supprimer les enregistrements dans la table note_shares liés à la note
         self::execute("DELETE FROM note_shares WHERE note = :id", ["id" => $id]);
 
+        //Supprimer les enregistrements dans la table note_labels liés à la note
+        self::execute("DELETE FROM note_labels WHERE note = :id", ["id" => $id]);
+
         // Supprimer la note de la table text_notes
         self::execute("DELETE FROM text_notes WHERE id = :id", ["id" => $id]);
     
