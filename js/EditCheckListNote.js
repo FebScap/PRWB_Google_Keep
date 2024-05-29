@@ -42,7 +42,7 @@ document.onreadystatechange = function() {
                     },
                     success: function (data) {
                         initialContent = initialContent.filter(e => e !== button.parentElement.children[1].value);
-                        console.log(data);
+                        console.log("Removed " + data + " to database with title : '" + button.parentElement.children[1].value + "'");
                     }
                 });
             }

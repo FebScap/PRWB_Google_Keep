@@ -200,7 +200,7 @@ class ControllerOpenNote extends Controller {
         $item = ChecklistItem::getItemById($_POST['itemid']);
         $id = $item->getchecklist_note();
         $item->delete();
-        echo $item->getId() . " deteted";
+        echo $item->getId();
     }
 
     public function addItem() : void {
