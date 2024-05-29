@@ -1,6 +1,7 @@
 <?php
 
 require_once "framework/Model.php";
+//require_once "config/dev.ini";
 
 class User extends Model {
 
@@ -91,7 +92,7 @@ class User extends Model {
         if (!strlen($this->mail) > 0) {
             $errors[] = "Mail is required.";
         } 
-        if (!(strlen($this->mail) >= 3)) {
+        if (!(strlen($this->mail) >= Configuration::get("mail_min_length"))) {
             $errors[] = "Mail length must be at least 3.";
         } 
         if (!(preg_match("/^[a-zA-Z0-9][a-zA-Z0-9]*@[a-zA-Z0-9]+\.[a-zA-Z0-9.]+$/", $this->mail))) {
@@ -102,7 +103,7 @@ class User extends Model {
 
     public function validateFullname() : array {
         $errors = [];
-        if (strlen($this->full_name) < 3) {
+        if (strlen($this->full_name) < Configuration::get("fullname_min_length")) {
             $errors[] = "Fullname length must be at least 3.";
         } 
         return $errors;
@@ -110,7 +111,7 @@ class User extends Model {
 
     private static function validatePassword(string $password) : array {
         $errors = [];
-        if (strlen($password) < 8) {
+        if (strlen($password) < Configuration::get("password_min_length")) {
             $errors[] = "Password length must be at least 8.";
         } if (!((preg_match("/[A-Z]/", $password)) && preg_match("/\d/", $password) && preg_match("/['\";:,.\/?!\\-]/", $password))) {
             $errors[] = "Password must contain one uppercase letter, one number and one punctuation mark.";
@@ -149,14 +150,14 @@ class User extends Model {
     }
 
     public static function isValidFullname(string $fullname) : bool {
-        return strlen($fullname) >=3 ;
+        return strlen($fullname) >= Configuration::get("fullname_min_length") ;
     }
 
     public static function isValidMail(string $mail): bool {
         // Vérifie si la longueur est d'au moins 3 caractères,
         // contient un @, contient au moins un point,
         // et commence par une lettre ou un chiffre.
-        return strlen($mail) >= 3 && strpos($mail, '@') !== false && strpos($mail, '.') !== false && ctype_alnum($mail[0]);
+        return strlen($mail) >= Configuration::get("mail_min_length") && strpos($mail, '@') !== false && strpos($mail, '.') !== false && ctype_alnum($mail[0]);
     }
     
 
@@ -172,7 +173,7 @@ class User extends Model {
     }
 
     public function changePassword(string $password) : void {
-        $this->setPassword($password);
+        $this->setPassword(Tools::my_hash($password));
         $this->persist();
     }
 
