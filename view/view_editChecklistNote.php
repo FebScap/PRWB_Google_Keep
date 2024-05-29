@@ -33,7 +33,7 @@
             <form class='notJS' method='post' action='OpenNote/deleteItem' id='formdelete'></form>
                 <div id='itemDiv'>
                     <?php for ($i=0; $i<count($itemList); $i++) {
-                        echo"<div class='input-group flex-nowrap mt-2'>";
+                        echo"<div><div class='input-group flex-nowrap mt-2'>";
 
                         if ( $itemList[$i]->getChecked() == 1) {
                             echo"<button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-check-square'></i></button>";
@@ -43,7 +43,7 @@
                             echo"
                                 <input id='checklist' oninput='checkAll();' form='save' name='content[$i]' type='text' class='form-control' value='" . $itemList[$i]->getContent() . "' placeholder='Nouvel item' aria-describedby='basic-addon1'>
                                 <button class='btn btn-danger text-white buttondelete' type='submit' form='formdelete' name='itemid' value='" . $itemList[$i]->getId() . "'><i class='bi bi-dash-lg' form='formdelete'></i></button>
-                                </div>
+                                </div></div>
                             ";
                     }
                     ?>  
