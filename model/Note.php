@@ -350,7 +350,7 @@ require_once "model/ChecklistItem.php";
     }
     
     public static function validateTitle(string $title) : bool {
-        return (strlen($title) >= 3 && strlen($title) <= 25);
+        return (strlen($title) >= Configuration::get("title_min_length") && strlen($title) <= Configuration::get("title_max_length"));
     }
 
     public static function increaseAllWeightBy1(int $id) : void { //Augmente le poids de toutes les nutes d'un user afin d'inserer une nouvelle note au poids de 1
@@ -405,7 +405,7 @@ require_once "model/ChecklistItem.php";
 
     public function validate() : array {
         $errors = [];
-        if (!(strlen($this->title) >= 3 && strlen($this->title) <= 25)) {
+        if (!(strlen($this->title) >= Configuration::get("title_min_length") && strlen($this->title) <= Configuration::get("title_max_length"))) {
             $errors[] = "Title length must be between 3 and 25.";
         }
         return $errors;
