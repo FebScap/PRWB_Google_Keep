@@ -64,6 +64,17 @@ class ControllerOpenNote extends Controller {
         }        
     }
 
+    public function editLabels() : void {
+        $user = $this->get_user_or_redirect()->getId();
+        $errors = [];
+        if (isset($_GET["param1"]) && is_numeric($_GET["param1"] ) && $this->get_user_or_false()->isAllowedToEdit($_GET["param1"])) {
+            $textnote = TextNote::getTextNoteById($_GET["param1"]); 
+            (new View("viewLabels"))->show(["textnote" => $textnote, "errors" => $errors]);
+        } else {
+            (new View("error"))->show(["error" => $error = "Oops, looks like you may not edit this note"]);
+        }        
+    }
+
     public function checkUncheck () : void {
         $note = ChecklistNote::getChecklistNoteById($_POST["idnote"]);
         $items = Note::getItemListById($_POST["idnote"]);
