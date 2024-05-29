@@ -25,7 +25,6 @@
                     ok = false;
                 } else {
                     title.removeClass("is-invalid");
-                    checkTitleUnicity();
                 }
                 return ok;
             }
@@ -61,8 +60,13 @@
 
             async function checkAll() {
                 let titleValid = checkTitle();
+                if (!titleValid) {
+                    saveButton.prop('disabled', true);
+                    return false;
+                }
+                let titleUnique = await checkTitleUnicity();
                 let contentValid = checkContent();
-                let ok = titleValid && contentValid;
+                let ok = titleValid && titleUnique && contentValid;
                 saveButton.prop('disabled', !ok);
                 return ok;
             }
@@ -80,22 +84,21 @@
                 <input id="title" name="title" type="text" class="form-control" placeholder="Title" value="<?= $title ?>">
                 <label class="errors" id="errorTitle"></label>
                 <?php if (count($errors) != 0): ?>
-                        <div class='errors'>
-                            <ul>
-                                <?php foreach ($errors as $error): ?>
-                                    <li><?= $error ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
+                    <div class='errors'>
+                        <ul>
+                            <?php foreach ($errors as $error): ?>
+                                <li><?= $error ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 <?php endif; ?>
             </div>
             <div class="mt-3">
                 <label for="noteContent" class="form-label">Text</label>
                 <label class="errors" id="errorContent"></label>
-                <input id="content" name="content" type="text" style="height:600px" placeholder="Write something here" class="form-control" id="noteContent" value="<?= $content ?>">
+                <input id="content" name="content" type="text" style="height:600px" placeholder="Write something here" class="form-control" value="<?= $content ?>">
             </div>
         </form>
         <?php include('footer.html'); ?>
     </body>
 </html>
-
