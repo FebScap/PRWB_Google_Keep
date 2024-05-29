@@ -173,7 +173,7 @@ class User extends Model {
     }
 
     public function changePassword(string $password) : void {
-        $this->setPassword(Tools::my_hash($password));
+        $this->setPassword($password);
         $this->persist();
     }
 

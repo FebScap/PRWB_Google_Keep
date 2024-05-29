@@ -29,4 +29,12 @@ class ControllerAddTextNote extends Controller{
         }
         (new View("addTextNote"))->show(["title" => $title, "content" => $content, "errors" => $errors]);
     }
+
+    public function check_title_unicity_service() : void {
+        $res = "false";
+        if(isset($_GET["param1"]) && $_GET["param1"] !== ""){
+            $res = Note::isUniqueTitlePerOwner($_GET["param1"], $this->get_user_or_redirect()->getId());
+        } 
+        echo json_encode($res);
+    }
 }
