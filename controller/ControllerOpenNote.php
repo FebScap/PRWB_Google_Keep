@@ -196,6 +196,13 @@ class ControllerOpenNote extends Controller {
         $this->redirect("opennote", "editchecklistNote", $id);
     }
 
+    public function deleteItemRaw() : void {
+        $item = ChecklistItem::getItemById($_POST['itemid']);
+        $id = $item->getchecklist_note();
+        $item->delete();
+        echo $item->getId();
+    }
+
     public function addItem() : void {
         $textnote = ChecklistNote::getChecklistNoteById($_POST["id"]);
         $errorsTitle = [];
@@ -218,5 +225,12 @@ class ControllerOpenNote extends Controller {
             array_push($itemList, $emptyItem);
             $this->redirect("opennote", "editchecklistnote", $_POST["id"]);
         }
+    }
+
+    public function addItemRaw() : void {
+        $textnote = ChecklistNote::getChecklistNoteById($_POST["noteId"]);
+        $item = new ChecklistItem(0, $textnote->getId(), $_POST['value'], 0);
+        $item->persist();
+        echo $item->getId();
     }
 }
