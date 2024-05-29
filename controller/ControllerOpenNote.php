@@ -4,6 +4,7 @@ require_once "model/Note.php";
 require_once "model/User.php";
 require_once "model/TextNote.php";
 require_once "model/ChecklistNote.php";
+require_once "model/Label.php";
 
 class ControllerOpenNote extends Controller {
     //accueil du controlleur.
@@ -69,7 +70,8 @@ class ControllerOpenNote extends Controller {
         $errors = [];
         if (isset($_GET["param1"]) && is_numeric($_GET["param1"] ) && $this->get_user_or_false()->isAllowedToEdit($_GET["param1"])) {
             $textnote = TextNote::getTextNoteById($_GET["param1"]); 
-            (new View("viewLabels"))->show(["textnote" => $textnote, "errors" => $errors]);
+            $labelList = Label::getAllExisingLabelsByUserId($user);
+            (new View("viewLabels"))->show(["textnote" => $textnote, "errors" => $errors, "labelList" => $labelList]);
         } else {
             (new View("error"))->show(["error" => $error = "Oops, looks like you may not edit this note"]);
         }        
