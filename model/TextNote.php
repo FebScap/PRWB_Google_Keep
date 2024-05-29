@@ -51,7 +51,7 @@ class TextNote extends Note {
 
     public function validate() : array {
         $errors = [];
-        if (!(strlen($this->title) >= 3 && strlen($this->title) <= 25)) {
+        if (!(strlen($this->title) >= Configuration::get("title_min_length") && strlen($this->title) <= Configuration::get("title_max_length"))) {
             $errors[] = "Title length must be between 3 and 25.";
         }
         return $errors;

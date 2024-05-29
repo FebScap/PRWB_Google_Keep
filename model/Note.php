@@ -128,8 +128,44 @@ require_once "model/ChecklistItem.php";
         return $notes;
     }
 
+    public static function getAllNotesByUserInverted(int $userId) : array {
+        $data = self::execute("SELECT * FROM notes WHERE owner = :userId ORDER BY weight", ["userId" => $userId])->fetchAll();
+        $notes = [];
+        foreach ($data as $row) {
+            $notes[] = new Note(
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
+            );
+        }
+        return $notes;
+    }
+
     public static function getAllPinnedNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 1 and archived = 0 ORDER BY weight DESC", ["userId" => $userId])->fetchAll();
+        $notes = [];
+        foreach ($data as $row) {
+            $notes[] = new Note(
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
+            );
+        }
+        return $notes;
+    }
+
+    public static function getAllPinnedNotesByUserInverted(int $userId) : array {
+        $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 1 and archived = 0 ORDER BY weight", ["userId" => $userId])->fetchAll();
         $notes = [];
         foreach ($data as $row) {
             $notes[] = new Note(
@@ -148,6 +184,24 @@ require_once "model/ChecklistItem.php";
     
     public static function getAllUnpinnedNotesByUser(int $userId) : array {
         $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 0 and archived = 0 ORDER BY weight DESC", ["userId" => $userId])->fetchAll();
+        $notes = [];
+        foreach ($data as $row) {
+            $notes[] = new Note(
+                $row["id"],
+                $row["title"],
+                $row["owner"],
+                $row["created_at"],
+                $row["edited_at"],
+                $row["pinned"],
+                $row["archived"],
+                $row["weight"]
+            );
+        }
+        return $notes;
+    }
+
+    public static function getAllUnpinnedNotesByUserInverted(int $userId) : array {
+        $data = self::execute("SELECT * FROM notes WHERE owner = :userId and pinned = 0 and archived = 0 ORDER BY weight", ["userId" => $userId])->fetchAll();
         $notes = [];
         foreach ($data as $row) {
             $notes[] = new Note(
@@ -296,7 +350,7 @@ require_once "model/ChecklistItem.php";
     }
     
     public static function validateTitle(string $title) : bool {
-        return (strlen($title) >= 3 && strlen($title) <= 25);
+        return (strlen($title) >= Configuration::get("title_min_length") && strlen($title) <= Configuration::get("title_max_length"));
     }
 
     public static function increaseAllWeightBy1(int $id) : void { //Augmente le poids de toutes les nutes d'un user afin d'inserer une nouvelle note au poids de 1
@@ -314,45 +368,7 @@ require_once "model/ChecklistItem.php";
             $note->persist();
         }
     }
-
-    public static function changeAllWeightByOrderedIdList(int $id, mixed $newPinnedId, mixed $newOtherId) : void {
-        $oldPinned = Note::getAllPinnedNotesByUser($id);
-        $allPinnedWeightInOrder = array();
-
-        $oldOther = Note::getAllUnpinnedNotesByUser($id);
-        $allOtherWeightInOrder = array();
-        //SI LA NOTE NE CHANGE PAS DE LISTE
-        if (count($oldPinned) == count($newPinnedId)) {
-            for ($i = 0 ; $i < count($oldPinned) ; $i++) {
-                $allPinnedWeightInOrder[$i] = $oldPinned[$i]->getWeight();
-                $oldPinned[$i]->setWeight(1000000+$i);
-                $oldPinned[$i]->persist();
-            }
-            for ($i = 0 ; $i < count($newPinnedId) ; $i++) {
-                $note = Note::getNoteById($newPinnedId[$i]);
-                $note->setWeight($allPinnedWeightInOrder[$i]);
-                $note->persist();
-            }
-            
-            for ($i = 0 ; $i < count($oldOther) ; $i++) {
-                $allOtherWeightInOrder[$i] = $oldOther[$i]->getWeight();
-                $oldOther[$i]->setWeight(1000000+$i);
-                $oldOther[$i]->persist();
-            }
-            for ($i = 0 ; $i < count($newOtherId) ; $i++) {
-                $note = Note::getNoteById($newOtherId[$i]);
-                $note->setWeight($allOtherWeightInOrder[$i]);
-                $note->persist();
-            }
-
-        // SI LA NOTE CHANGE DE LISTE (PIN UNPIN)    
-        } else {
-
-        }
-        
-    }
-
-    
+ 
 
     public function persist() : Note|array {
         if ($this->id == NULL){
@@ -389,7 +405,7 @@ require_once "model/ChecklistItem.php";
 
     public function validate() : array {
         $errors = [];
-        if (!(strlen($this->title) >= 3 && strlen($this->title) <= 25)) {
+        if (!(strlen($this->title) >= Configuration::get("title_min_length") && strlen($this->title) <= Configuration::get("title_max_length"))) {
             $errors[] = "Title length must be between 3 and 25.";
         }
         return $errors;
@@ -406,6 +422,9 @@ require_once "model/ChecklistItem.php";
         
         // Supprimer les enregistrements dans la table note_shares liés à la note
         self::execute("DELETE FROM note_shares WHERE note = :id", ["id" => $id]);
+
+        //Supprimer les enregistrements dans la table note_labels liés à la note
+        self::execute("DELETE FROM note_labels WHERE note = :id", ["id" => $id]);
 
         // Supprimer la note de la table text_notes
         self::execute("DELETE FROM text_notes WHERE id = :id", ["id" => $id]);

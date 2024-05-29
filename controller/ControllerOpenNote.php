@@ -84,17 +84,15 @@ class ControllerOpenNote extends Controller {
         $textnote = TextNote::getTextNoteById($_POST["id"]);
 
         if (isset($_POST['title'])){
-            
+
             $title = $_POST['title'];
-            $textnote->setTitle($title);
-            $textnote->setContent($_POST['content']);
 
             if (!Note::validateTitle($_POST['title'])){
 
                 $errors = ["Title length must be at least 3 and maximum 25."];
             }
 
-            if (!Note::isUniqueTitlePerOwner($title, $user->getId())) {
+            if ($_POST['title'] != $textnote->getTitle() && !Note::isUniqueTitlePerOwner($title, $user->getId())) {
                 $errors = array_merge($errors, ["Title must be unique per User"]);
             }
             
@@ -105,6 +103,9 @@ class ControllerOpenNote extends Controller {
                 $textnote->persist_date();
                 $this->redirect("opennote", "index", $textnote->getId());
             } else {
+                
+                $textnote->setTitle($title);
+                $textnote->setContent($_POST['content']);
                 (new View("edittextnote"))->show(["textnote" => $textnote, "errors" => $errors]);
             }
         } else {
@@ -131,52 +132,57 @@ class ControllerOpenNote extends Controller {
         $textnote = ChecklistNote::getChecklistNoteById($_POST["id"]);
         $itemList = ChecklistNote::getItemListById($_POST['id']);
 
+
         if (isset($_POST['title'])){
-            
-            $title = $_POST['title'];
-            $textnote->setTitle($title);
+            if (isset($_POST['content'])) {
+                $title = $_POST['title'];
+                
 
-            if (!Note::validateTitle($_POST['title'])){
+                if (!Note::validateTitle($_POST['title'])){
 
-                $errorsTitle = ["Title length must be at least 3 and maximum 25."];
-            }
-
-            if (!Note::isUniqueTitlePerOwner($title, $user->getId())) {
-                $errorsTitle = array_merge($errorsTitle, ["Title must be unique per User"]);
-            }
-
-            //Validation Content
-            $content = $_POST['content'];
-            $itemList = ChecklistNote::getItemListById($_POST["id"]);
-                $i = 0;
-                foreach ($itemList as $item) {
-                    if ($_POST['content'][$i] != $item->getContent()){
-                        $item->setContent($_POST['content'][$i]);
-                    }
-                    $i++;
+                    $errorsTitle = ["Title length must be at least 3 and maximum 25."];
                 }
 
-            if (count($content) !== count(array_unique($content))) {
-                $errorsContent[] = "All items must be unique.";
-            }
-            
-            if (count($errorsTitle) == 0 && count($errorsContent) == 0) {
-                $textnote->setTitle($_POST["title"]);
-                $textnote->setContent($_POST["content"]);
-                $textnote->persist();
-                $textnote->persist_date();
+                if ($_POST['title'] != $textnote->getTitle() && !Note::isUniqueTitlePerOwner($title, $user->getId())) {
+                    $errorsTitle = array_merge($errorsTitle, ["Title must be unique per User"]);
+                }
+
+                //Validation Content               
+                $content = $_POST['content'];
                 $itemList = ChecklistNote::getItemListById($_POST["id"]);
-                $i = 0;
-                foreach ($itemList as $item) {
-                    if ($_POST['content'][$i] != $item->getContent()){
-                        $item->setContent($_POST['content'][$i]);
-                        $item->persist();
+                    $i = 0;
+                    foreach ($itemList as $item) {
+                        if ($_POST['content'][$i] != $item->getContent()){
+                            $item->setContent($_POST['content'][$i]);
+                        }
+                        $i++;
                     }
-                    $i++;
+
+                if (count($content) !== count(array_unique($content))) {
+                    $errorsContent[] = "All items must be unique.";
                 }
-                $this->redirect("opennote", "index", $textnote->getId());
+                
+                if (count($errorsTitle) == 0 && count($errorsContent) == 0) {
+                    $textnote->setTitle($_POST["title"]);
+                    $textnote->setContent($_POST["content"]);
+                    $textnote->persist();
+                    $textnote->persist_date();
+                    $itemList = ChecklistNote::getItemListById($_POST["id"]);
+                    $i = 0;
+                    foreach ($itemList as $item) {
+                        if ($_POST['content'][$i] != $item->getContent()){
+                            $item->setContent($_POST['content'][$i]);
+                            $item->persist();
+                        }
+                        $i++;
+                    }
+                    $this->redirect("opennote", "index", $textnote->getId());
+                } else {
+                    $textnote->setTitle($title);
+                    (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList]);
+                }
             } else {
-                (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList]);
+                $this->redirect("opennote", "index", $textnote->getId());
             }
         } else {
             (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList]);
@@ -190,12 +196,41 @@ class ControllerOpenNote extends Controller {
         $this->redirect("opennote", "editchecklistNote", $id);
     }
 
+    public function deleteItemRaw() : void {
+        $item = ChecklistItem::getItemById($_POST['itemid']);
+        $id = $item->getchecklist_note();
+        $item->delete();
+        echo $item->getId();
+    }
+
     public function addItem() : void {
         $textnote = ChecklistNote::getChecklistNoteById($_POST["id"]);
+        $errorsTitle = [];
+        $errorsContent = [];
         $itemList = ChecklistNote::getItemListById($_POST['id']);
-        $emptyItem = new ChecklistItem(0, $_POST["id"], "New Item (Rename&Save before adding another one)", 0);
-        $emptyItem->persist();
-        array_push($itemList, $emptyItem);
-        $this->redirect("opennote", "editchecklistnote", $_POST["id"]);
+        $itemListTitle = [];
+        foreach ($itemList as $i) {
+            array_push($itemListTitle, $i->getContent());
+        }
+
+        if (empty($_POST['itemtitle'])) {
+            $errorsContent[] = "Item name shouldn't be empty.";
+            (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList]);
+        } else if (in_array($_POST['itemtitle'], $itemListTitle)) {
+            $errorsContent[] = "Must be unique.";
+            (new View("editchecklistnote"))->show(["textnote" => $textnote, "errorsTitle" => $errorsTitle, "errorsContent" => $errorsContent, "itemList" => $itemList, "itemtitle"=>$_POST['itemtitle']]);
+        } else {
+            $emptyItem = new ChecklistItem(0, $_POST["id"], $_POST['itemtitle'], 0);
+            $emptyItem->persist();
+            array_push($itemList, $emptyItem);
+            $this->redirect("opennote", "editchecklistnote", $_POST["id"]);
+        }
+    }
+
+    public function addItemRaw() : void {
+        $textnote = ChecklistNote::getChecklistNoteById($_POST["noteId"]);
+        $item = new ChecklistItem(0, $textnote->getId(), $_POST['value'], 0);
+        $item->persist();
+        echo $item->getId();
     }
 }

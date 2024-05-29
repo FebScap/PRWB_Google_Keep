@@ -3,30 +3,8 @@
     <head>
         <title>My notes</title>
         <?php include('head.html'); ?>
-        <!-- Fonction de Drag and Drop -->
-        <script>
-        $( function() {
-            $( "#pinnedNotes, #otherNotes" ).sortable({
-                connectWith: ".connectedSortable",
-                update: function(event, ui) {
-                    var pinnedNotes = ui.item.parent().find('.pinnedNote').map(function() { return this.id; }).get();
-                    var otherNotes = ui.item.parent().find('.otherNote').map(function() { return this.id; }).get();
-                    $.ajax({
-                        type: "POST",
-                        url: "viewNotes/dragNote",
-                        data: {
-                            pinnedNotes: pinnedNotes,
-                            otherNotes: otherNotes,
-                            item: ui.item.attr('id')
-                        },
-                    });
-                    console.log(pinnedNotes);
-                    console.log(otherNotes);
-                    console.log(ui.item.attr('id'))
-                }
-            }).disableSelection();
-        } );
-        </script>
+        <script src="js/DragAndDrop.js"></script>
+        <script src="js/RemoveNotJS.js"></script>
     </head>
     <body data-bs-theme="dark">
         <div class="container-fluid d-flex flex-column">
@@ -47,7 +25,7 @@
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100">
                                     <!-- TITRE -->
-                                    <li class="list-group-item"><?= $pinnedNotes[$i]->getId() ?> <?= $pinnedNotes[$i]->title ?></li>
+                                    <li class="list-group-item"><?= $pinnedNotes[$i]->title ?></li>
 
                                     <li class="list-group-item list-group-item-secondary h-100 truncate-after">
                                         <!-- CONTENU TEXT NOTE -->
@@ -70,7 +48,7 @@
                                     
                                     <!-- Chevrons -->
                                     <?php if ($i == 0): ?>
-                                        <li class="chevron list-group-item d-flex justify-content-end">
+                                        <li class="chevron notJS list-group-item d-flex justify-content-end">
                                             <form action="viewnotes/moveDown" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm"> 
                                                     <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
@@ -80,7 +58,7 @@
                                             </form>
                                         </li>
                                     <?php elseif ($i == sizeof($pinnedNotes)-1): ?>
-                                        <li class="chevron list-group-item d-flex justify-content-start">
+                                        <li class="chevron notJS list-group-item d-flex justify-content-start">
                                             <form action="viewnotes/moveUp" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
                                                     <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
@@ -90,7 +68,7 @@
                                             </form>
                                         </li>
                                     <?php else: ?>
-                                        <li class="chevron list-group-item d-flex justify-content-between">
+                                        <li class="chevron notJS list-group-item d-flex justify-content-between">
                                             <form action="viewnotes/moveUp" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
                                                     <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
@@ -121,7 +99,7 @@
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100">
                                     <!-- TITRE -->
-                                    <li class="list-group-item"><?= $notPinnedNotes[$i]->getId() ?> <?= $notPinnedNotes[$i]->getTitle() ?></li>
+                                    <li class="list-group-item"><?= $notPinnedNotes[$i]->getTitle() ?></li>
 
                                     <li class="list-group-item list-group-item-secondary h-100 truncate-after">
                                         <!-- CONTENU TEXT NOTE -->
@@ -144,7 +122,7 @@
                                     
                                     <!-- Chevrons -->
                                     <?php if ($i == 0): ?>
-                                        <li class="chevron list-group-item d-flex justify-content-end">
+                                        <li class="chevron notJS list-group-item d-flex justify-content-end">
                                             <form action="viewnotes/moveDown" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm"> 
                                                     <i class="bi bi-chevron-double-right text-primary-emphasis"></i>
@@ -154,7 +132,7 @@
                                             </form>
                                         </li>
                                     <?php elseif ($i == sizeof($notPinnedNotes)-1): ?>
-                                        <li class="chevron list-group-item d-flex justify-content-start">
+                                        <li class="chevron notJS list-group-item d-flex justify-content-start">
                                             <form action="viewnotes/moveUp" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
                                                     <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
@@ -164,7 +142,7 @@
                                             </form>
                                         </li>
                                     <?php else: ?>
-                                        <li class="chevron list-group-item d-flex justify-content-between">
+                                        <li class="chevron notJS list-group-item d-flex justify-content-between">
                                             <form action="viewnotes/moveUp" method="post">
                                                 <button type="submit" class="btn btn-dark btn btn-primary btn-sm">
                                                     <i class="bi bi-chevron-double-left text-primary-emphasis"></i>
@@ -197,13 +175,5 @@
             </nav>
         </div>
         <?php include('footer.html'); ?>
-        <script>
-            $(document).ready(function() {
-                var elems = document.querySelectorAll(".chevron");
-                [].forEach.call(elems, function(el) {
-                    el.remove();
-                });
-            });
-        </script>
     </body>
 </html> 

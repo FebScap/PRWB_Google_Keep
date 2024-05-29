@@ -16,25 +16,19 @@
         </div>
         <div class="fw-bold" >Items</div>
         <div class="main">
-        <ul class="list-group">
-              <?php foreach($items as $item): ?>
-                <li class="list-group-item">
-                  <div>
-                    <form action="opennote/checkUncheck" method="post">
-                      <?php if ($item->getChecked() == 1) : ?>
-                        <button class="btn btn-dark bi bi-check-square" type="submit" name="itemid" value="<?= $item->getId() ?>" <?= $user->isAllowedToEdit($textnote->getId()) ? '' : 'disabled' ?>></button>
-                        <input type="hidden" name="idnote" value="<?= $textnote->getId() ?>">
-                        <label class="form-check-label text-decoration-line-through"><?= $item->getContent() ?></label>
-                      <?php else : ?>
-                        <button class="btn btn-dark bi bi-square" type="submit" name="itemid" value="<?= $item->getId() ?>" <?= $user->isAllowedToEdit($textnote->getId()) ? '' : 'disabled' ?>></button>
-                        <input type="hidden" name="idnote" value="<?= $textnote->getId() ?>">
-                        <label class="form-check-label"><?= $item->getContent() ?></label>
-                      <?php endif ?>
-                    </form>
-                  </div>
-                </li>
-              <?php endforeach; ?>
-        </ul>
+            <?php foreach($items as $item): ?>
+              <form class='input-group input-group-lg w-100 flex-nowrap h-30 mt-2' method='post' action='OpenNote/checkUncheck'>
+                    <?php if ($item->getChecked() == 1) : ?>
+                      <button class="btn btn-primary bi bi-check-square" type="submit" name="itemid" value="<?= $item->getId() ?>" <?= $user->isAllowedToEdit($textnote->getId()) ? '' : 'disabled' ?>></button>
+                      <input type="hidden" name="idnote" value="<?= $textnote->getId() ?>">
+                      <span class="input-group-text w-100 text-decoration-line-through"><?= $item->getContent() ?></span>
+                    <?php else : ?>
+                      <button class="btn btn-primary bi bi-square" type="submit" name="itemid" value="<?= $item->getId() ?>" <?= $user->isAllowedToEdit($textnote->getId()) ? '' : 'disabled' ?>></button>
+                      <input type="hidden" name="idnote" value="<?= $textnote->getId() ?>">
+                      <span class="input-group-text w-100"><?= $item->getContent() ?></span>
+                    <?php endif ?>
+              </form>
+            <?php endforeach; ?>
         <?php include('footer.html'); ?>
     </body>
 </html>

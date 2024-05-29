@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>OpenNote</title>
-        <?php include('head.html'); ?>
-        <script src="jquery-3.6.3.min.js" type="text/javascript"></script>
-        <script>
+<head>
+    <title>OpenNote</title>
+    <?php include('head.html'); ?>
+    <script src="jquery-3.6.3.min.js" type="text/javascript"></script>
+    <style>
+        .withJS { display: none; } /* Caché par défaut, affiché par JavaScript */
+        .noJS { display: block; } /* Visible par défaut, caché par JavaScript */
+    </style>
+    <script>
         $(document).ready(() => {
             $("#deleteButton").click(async () => {
                 const noteId = <?= $textnote->getId() ?>;
@@ -16,87 +20,81 @@
                     if (!response.ok) {
                         throw new Error('Failed to delete note');
                     }
-                    const responseData = await response.text();
+                    $("#deleteModal").modal('hide');
                     $("#confirmationModal").modal('show');
                 } catch (error) {
                     console.error('Error deleting note:', error);
                 }
             });
 
-            $("#closeButton").click(async () => {
+            $("#closeButton").click(() => {
                 window.location.href = "viewArchives";
             });
-
-            
-
-
         });
-        </script>
-    </head>
-    <body data-bs-theme="dark">
-        <div class="d-flex bd-highlight mb-3">
-            
-            
-            <?php if ($textnote->isArchived()) : ?>
-                <div class="me-auto p-2 bd-highlight">
-                    <a type="button" href="viewArchives" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
-                </div>
-                <div class="p-2 bd-highlight">
-                    <!--<form action="deletenote/index/<?= $textnote->getId() ?>" method="get">-->
-                        <button type="submit" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
-                    <!--</form>-->
-                </div>
 
+        // Ensure noJS elements are removed if JavaScript is enabled
+        $(document).ready(function() {
+            $(".noJS").hide();
+            $(".withJS").show();
+        });
+    </script>
+</head>
+<body data-bs-theme="dark">
+    <div class="d-flex bd-highlight mb-3">
+        <?php if ($textnote->isArchived()) : ?>
+            <div class="me-auto p-2 bd-highlight">
+                <a type="button" href="viewArchives" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
+            </div>
+            <div class="p-2 bd-highlight">
+                <button type="button" class="btn btn-dark withJS" data-bs-toggle="modal" data-bs-target="#deleteModal" id="withJS"><i class="bi bi-trash"></i></button>
+                <form action="deletenote/index/<?= $textnote->getId() ?>" method="get" class="noJS">
+                    <button type="submit" class="btn btn-dark" id="noJS"><i class="bi bi-trash"></i></button>
+                </form>
+            </div>
 
-                <!-- Delete Modal -->
-                <div class="modal" id="deleteModal">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Are you sure?</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        Do you really want to delete <?= $textnote->getTitle() ?> and all his dependencies ? 
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="deleteButton">Delete</button>
-                        <button type="button" class="btn btn" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-
-                    </div>
-                </div>
-                </div>
-
-                <!-- Confirmation Modal -->
-
-                <div class="modal" id="confirmationModal">
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <!-- Modal Header -->
                         <div class="modal-header">
-                            <h4 class="modal-title">Note Deleted</h4>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <h4 class="modal-title" id="deleteModalLabel">Are you sure?</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <!-- Modal body -->
+                        <!-- Modal Body -->
                         <div class="modal-body">
-                            The note <?= $textnote->getTitle() ?> and its dependencies have been successfully deleted.
+                            Do you really want to delete <?= $textnote->getTitle() ?> and all its dependencies?
                         </div>
-                        <!-- Modal footer -->
+                        <!-- Modal Footer -->
                         <div class="modal-footer">
-                            <button type="button" class="btn btn" data-bs-dismiss="modal" id="closeButton">Close</button>
+                            <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Confirmation Modal -->
+            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="confirmationModalLabel">Note Deleted</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <!-- Modal Body -->
+                        <div class="modal-body">
+                            The note <?= $textnote->getTitle() ?> and its dependencies have been successfully deleted.
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="closeButton">Close</button>
+                        </div>
+                    </div>
                 </div>
-
-
+            </div>
+    </div>
 
                 <div class="p-2 bd-highlight">
                     <form action="opennote/unarchive" method="post"> 
@@ -110,9 +108,9 @@
                 </div>
                 <div class="p-2 bd-highlight">
                     <?php if (Note::isCheckListNote($textnote->getId())) : ?>
-                        <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="get">
+                        <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="post">
                     <?php else : ?>
-                        <form action="opennote/editnote/<?= $textnote->getId() ?>" method="get"> 
+                        <form action="opennote/editnote/<?= $textnote->getId() ?>" method="post"> 
                     <?php endif; ?>
                     <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pencil"></i></button>
                     </form>
@@ -153,9 +151,9 @@
                 </div>
                 <div class="p-2 bd-highlight">
                     <?php if (Note::isCheckListNote($textnote->getId())) : ?>
-                        <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="get">
+                        <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="post">
                     <?php else : ?>
-                        <form action="opennote/editnote/<?= $textnote->getId() ?>" method="get"> 
+                        <form action="opennote/editnote/<?= $textnote->getId() ?>" method="post"> 
                     <?php endif; ?>
                     <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pencil"></i></button>
                     </form>

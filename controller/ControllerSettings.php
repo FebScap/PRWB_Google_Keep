@@ -40,22 +40,35 @@ class ControllerSettings extends Controller{
     public function editProfile() : void {
         $user = $this->get_user_or_redirect();
         $fullname = $user->getFullname();
+        $mail = $user->getMail();
         $errorsFullname = [];
+        $errorsMail = [];
 
-        if (isset($_POST['fullname'])){
+        if (isset($_POST['fullname']) && isset($_POST['mail'])){
 
             if (!User::isValidFullname($_POST['fullname'])){
                 $fullname = $_POST['fullname'];
                 $errorsFullname = ["Fullname length must be at least 3."];
             }
+
+            if (!User::isValidMail($_POST['mail'])){
+                $mail = $_POST['mail'];
+                $errorsMail = ["Mail must start with a alphanum char, contains a @ and a dot."];
+            }
+
+            if (count(User::validateUnicity($_POST['mail'])) != 0 && $mail != $_POST['mail']){
+                $mail = $_POST['mail'];
+                $errorsMail = User::validateUnicity($_POST['mail']);
+            }
             
-            if (count($errorsFullname) == 0) {
+            if (count($errorsFullname) == 0 && count($errorsMail) == 0) {
                 $user->setFullName($_POST['fullname']);
+                $user->setMail($_POST['mail']);
                 $user->persist();
                 $this->redirect("settings");
             }
-            (new View("editProfile"))->show(["fullname" => $fullname, "errorsFullname" => $errorsFullname]);
+            (new View("editProfile"))->show(["fullname" => $fullname, "errorsFullname" => $errorsFullname, "mail" => $mail, "errorsMail" => $errorsMail]);
         }
-        (new View("editProfile"))->show(["fullname" => $fullname, "errorsFullname" => $errorsFullname]);
+        (new View("editProfile"))->show(["fullname" => $fullname, "errorsFullname" => $errorsFullname, "mail" => $mail, "errorsMail" => $errorsMail]);
     }
 }
