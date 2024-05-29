@@ -32,16 +32,33 @@
             async function checkTitleUnicity() {
                 let ok = true;
                 errorTitle.html("");
-                const data = await $.getJSON("addtextnote/check_title_unicity_service/" + title.val());
-                if (!data) {
-                    errorTitle.append("<p>Title must be unique per user.</p>");
-                    title.addClass("is-invalid");
+                const titleValue = title.val();
+                
+                try {
+                    const response = await $.ajax({
+                        url: "addtextnote/check_title_unicity_service",
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({ title: titleValue }),
+                        dataType: "json"
+                    });
+
+                    if (!response) {
+                        errorTitle.append("<p>Title must be unique per user.</p>");
+                        title.addClass("is-invalid");
+                        ok = false;
+                    } else {
+                        title.removeClass("is-invalid");
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    // Gérer les erreurs en conséquence
                     ok = false;
-                } else {
-                    title.removeClass("is-invalid");
                 }
+
                 return ok;
             }
+
 
             function checkContent() {
                 let ok = true;
