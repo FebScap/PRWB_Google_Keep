@@ -41,7 +41,7 @@
                             echo"<button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-square'></i></button>";
                         }
                             echo"
-                                <input id='checklist' oninput='checkAll();' form='save' name='content[$i]' type='text' class='form-control' value='" . $itemList[$i]->getContent() . "' placeholder='Item title' aria-describedby='basic-addon1'>
+                                <input id='checklist' oninput='checkAll();' form='save' name='content[$i]' type='text' class='form-control' value='" . $itemList[$i]->getContent() . "' placeholder='Item title' >
                                 <button class='btn btn-danger text-white buttondelete' type='submit' form='formdelete' name='itemid' value='" . $itemList[$i]->getId() . "'><i class='bi bi-dash-lg' form='formdelete'></i></button>
                                 </div></div>
                             ";
@@ -53,9 +53,9 @@
                 <div id="newItemDiv">
                     <form class='notJS input-group flex-nowrap mt-2' method='post' action='OpenNote/addItem' id='formadd'>
                         <?php if (isset($itemtitle)) : ?>
-                            <input id='additem' name='itemtitle' value="<?= $itemtitle ?>" form='formadd' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'>  
+                            <input id='additem' name='itemtitle' value="<?= $itemtitle ?>" form='formadd' type='text' class='form-control' placeholder='New item name' >  
                         <?php else : ?>
-                            <input id='additem' name='itemtitle' form='formadd' type='text' class='form-control' placeholder='New item name' aria-describedby='basic-addon1'>  
+                            <input id='additem' name='itemtitle' form='formadd' type='text' class='form-control' placeholder='New item name' >  
                         <?php endif ?>
                         <button id="addbutton" class='btn btn-primary text-white' type='submit' form='formadd' name='id' value='<?= $textnote->getId() ?>'><i class="bi bi-plus-lg"></i></button>
                     </form>

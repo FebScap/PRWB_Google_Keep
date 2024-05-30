@@ -19,17 +19,17 @@
 
                         <div class="input-group flex-nowrap mt-2 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-key"></i></button>
-                            <input id="old_password" name="old_password" type="password" class="form-control" value="<?= $old_password ?>" placeholder="Old password" aria-describedby="basic-addon1">
+                            <input id="old_password" name="old_password" type="password" class="form-control" value="<?= $old_password ?>" placeholder="Old password" >
                         </div>
 
                         <div class="input-group flex-nowrap mt-2 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-key"></i></button>
-                            <input id="new_password" name="new_password" type="password" class="form-control" value="<?= $new_password ?>" placeholder="New password" aria-describedby="basic-addon1">
+                            <input id="new_password" name="new_password" type="password" class="form-control" value="<?= $new_password ?>" placeholder="New password" >
                         </div>
 
                         <div class="input-group flex-nowrap mt-2 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-key"></i></button>
-                            <input id="new_password_confirm" name="new_password_confirm" type="password" class="form-control" value="<?= $new_password_confirm ?>" placeholder="New password confirm" aria-describedby="basic-addon1">
+                            <input id="new_password_confirm" name="new_password_confirm" type="password" class="form-control" value="<?= $new_password_confirm ?>" placeholder="New password confirm" >
                         </div>
 
 
@@ -50,7 +50,7 @@
                         </div>
                     <?php endif; ?>
 
-                </div>
+                    </div>
                     </div>
                 </div>
             </div>

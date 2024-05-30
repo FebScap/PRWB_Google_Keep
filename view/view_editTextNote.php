@@ -122,7 +122,7 @@
                 <?php endif ?>
                 <label for="noteTitle" class="form-label">Title</label>
                 <label class="errors" id="errorTitle"></label>
-                <input id="title" name="title" type="text" class="form-control" placeholder="Title" aria-describedby="emailHelp" value="<?= $textnote->getTitle() ?>">
+                <input id="title" name="title" type="text" class="form-control" placeholder="Title" value="<?= $textnote->getTitle() ?>">
                 <?php if (count($errors) != 0): ?>
                     <div class='errors'>
                         <ul>
@@ -136,7 +136,7 @@
                 <label class="errors" id="errorContent"></label>
                 <textarea id="content" name="content" class="form-control bg-dark text-start" style="height: 550px" rows="8"><?= $textnote->getContent() ?></textarea>
             </div>
-            <input id="id" name="id" type="hidden" class="form-control" placeholder="Title" aria-describedby="emailHelp" value="<?= $textnote->getId() ?>">
+            <input id="id" name="id" type="hidden" class="form-control" placeholder="Title" value="<?= $textnote->getId() ?>">
         </form>
 
         <!-- Confirmation Modal -->
