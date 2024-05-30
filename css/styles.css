@@ -21,3 +21,11 @@
 #pinnedNotes, #otherNotes {
    min-height: 5px;
 }
+
+.fs-7 {
+   font-size: 0.8rem !important;
+}
+
+.fs-8 {
+   font-size: 0.6rem !important;
+}

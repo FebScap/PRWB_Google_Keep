@@ -107,6 +107,11 @@
                     <a type="button" href="viewSharedNotes/sharedby/<?= $textnote->getOwner() ?>" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
                 </div>
                 <div class="p-2 bd-highlight">
+                    <form action="opennote/editlabels/<?= $textnote->getId() ?>" method="post">
+                            <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-tags"></i></button>
+                    </form>
+                </div>
+                <div class="p-2 bd-highlight">
                     <?php if (Note::isCheckListNote($textnote->getId())) : ?>
                         <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="post">
                     <?php else : ?>
@@ -147,6 +152,11 @@
                 <div class="p-2 bd-highlight">
                     <form action="opennote/archive" method="post">
                         <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-box-arrow-in-down"></i></button>
+                    </form>
+                </div>
+                <div class="p-2 bd-highlight">
+                    <form action="opennote/editlabels/<?= $textnote->getId() ?>" method="post">
+                            <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-tags"></i></button>
                     </form>
                 </div>
                 <div class="p-2 bd-highlight">
