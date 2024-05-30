@@ -70,11 +70,21 @@ class ControllerOpenNote extends Controller {
         $errors = [];
         if (isset($_GET["param1"]) && is_numeric($_GET["param1"] ) && $this->get_user_or_false()->isAllowedToEdit($_GET["param1"])) {
             $note = Note::getNoteById($_GET["param1"]); 
-            $labelList = Label::getAllExisingLabelsByUserId($user);
-            (new View("viewLabels"))->show(["note" => $note, "errors" => $errors, "labelList" => $labelList]);
+            $labelList = Label::getNoteLabelsString($_GET["param1"]);
+            $existingLabels = Label::getAllExisingLabelsByUserId($user);
+            $existingLabelsMinusLabelList = array_diff($existingLabels, $labelList);
+            
+            (new View("viewLabels"))->show(["note" => $note, "errors" => $errors, "labelList" => $labelList, "existingLabels" => $existingLabelsMinusLabelList]);
         } else {
             (new View("error"))->show(["error" => $error = "Oops, looks like you may not edit this note"]);
         }        
+    }
+    public function addLabel() : void {
+
+    }
+
+    public function deleteLabel() : void {
+
     }
 
     public function checkUncheck () : void {

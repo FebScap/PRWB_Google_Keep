@@ -30,10 +30,25 @@ class Label extends Model {
 
         // Crée une liste contenant tout les labels de la note
         foreach ($query as $row) {
-            $label[] = new Label(
+            $labels[] = new Label(
                 $row["note"], 
                 $row["label"]
                 );
+        }
+        return $labels;
+    }
+
+    public static function getNoteLabelsString(int $noteId): ?array {
+        $query = self::execute("SELECT * FROM `note_labels` WHERE note = :noteId", ["noteId" => $noteId]);
+        $labels = [];
+    
+        if (!$query) {
+            return null; // Retourne null si aucun Labels n'est trouvé avec cet ID
+        }
+
+        // Crée une liste contenant tout les labels de la note
+       foreach ($query as $row) {
+            $labels[] = $row["label"];
         }
         return $labels;
     }
@@ -63,7 +78,7 @@ class Label extends Model {
 
         // Crée une liste contenant tout les labels d'un user
         foreach ($query as $row) {
-            $label[] = $row["label"];
+            $labels[] = $row["label"];
         }
         return $labels;
     }
