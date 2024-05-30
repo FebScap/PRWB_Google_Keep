@@ -46,7 +46,6 @@
                     ok = false;
                 } else {
                     title.removeClass("is-invalid");
-                    checkTitleUnicity();
                 }
                 return ok;
             }
