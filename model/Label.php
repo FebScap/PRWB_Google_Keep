@@ -29,24 +29,6 @@ class Label extends Model {
         }
 
         // Crée une liste contenant tout les labels de la note
-        foreach ($query as $row) {
-            $labels[] = new Label(
-                $row["note"], 
-                $row["label"]
-                );
-        }
-        return $labels;
-    }
-
-    public static function getNoteLabelsString(int $noteId): ?array {
-        $query = self::execute("SELECT * FROM `note_labels` WHERE note = :noteId", ["noteId" => $noteId]);
-        $labels = [];
-    
-        if (!$query) {
-            return null; // Retourne null si aucun Labels n'est trouvé avec cet ID
-        }
-
-        // Crée une liste contenant tout les labels de la note
        foreach ($query as $row) {
             $labels[] = $row["label"];
         }
@@ -54,7 +36,7 @@ class Label extends Model {
     }
 
     public static function getLabelByNoteIdAndLabel(int $noteId, string $label): ?Label {
-        $query = self::execute("SELECT * FROM note_labels WHERE id = :noteId AND label = :label", ["noteId" => $noteId, "label" => $label]);
+        $query = self::execute("SELECT * FROM note_labels WHERE note = :noteId AND label = :label", ["noteId" => $noteId, "label" => $label]);
         $data = $query->fetch();
     
         if (!$data) {
@@ -68,8 +50,8 @@ class Label extends Model {
         );
     }
 
-    public static function getAllExisingLabelsByUserId(int $userId): ?array {
-        $query = self::execute("SELECT DISTINCT label FROM `note_labels` JOIN notes on notes.id = note_labels.note WHERE notes.owner = :userId;", ['userId' => $userId]);
+    public static function getAllExisingLabelsByUserIdMinusNoteID(int $userId, int $noteId): ?array {
+        $query = self::execute("SELECT DISTINCT label FROM `note_labels` JOIN notes on notes.id = note_labels.note WHERE notes.owner = :userId", ['userId' => $userId]);
         $labels = [];
         
         if (!$query) {
@@ -80,14 +62,20 @@ class Label extends Model {
         foreach ($query as $row) {
             $labels[] = $row["label"];
         }
-        return $labels;
+
+        //fait la soustraction des labels existants - ceux déjà indiqués sur la note
+        return array_diff($labels, Label::getNoteLabels($noteId));
     }
 
-    public function delete() : void {
-        self::execute("DELETE FROM note_labels WHERE label=:label AND note=:note", ["note"=>$this->id, "label"=>$this->label]);
+    public static function delete(int $noteId, string $label) : void {
+        self::execute("DELETE FROM note_labels WHERE label=:label AND note=:note", ["note"=>$noteId, "label"=>$label]);
     }
 
-    public final static function add(Label $label): void {
-        self::execute('INSERT INTO note_labels(note, label) VALUES (:note, :label)', ['note' => $label->id, 'user' => $label->label]);
+    public static function add(int $noteId, string $label): void {
+        self::execute('INSERT INTO note_labels(note, label) VALUES (:note, :label)', ['note' => $noteId, 'label' => $label]);
+    }
+
+    public static function validateLabel(string $label) : bool {
+        return (strlen($label) >= Configuration::get("label_min_length") && strlen($label) <= Configuration::get("label_max_length"));
     }
 }

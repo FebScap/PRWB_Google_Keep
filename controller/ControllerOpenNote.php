@@ -70,21 +70,45 @@ class ControllerOpenNote extends Controller {
         $errors = [];
         if (isset($_GET["param1"]) && is_numeric($_GET["param1"] ) && $this->get_user_or_false()->isAllowedToEdit($_GET["param1"])) {
             $note = Note::getNoteById($_GET["param1"]); 
-            $labelList = Label::getNoteLabelsString($_GET["param1"]);
-            $existingLabels = Label::getAllExisingLabelsByUserId($user);
-            $existingLabelsMinusLabelList = array_diff($existingLabels, $labelList);
+            $labelList = Label::getNoteLabels($_GET["param1"]);
+            $existingLabels = Label::getAllExisingLabelsByUserIdMinusNoteID($user, $_GET["param1"]);
             
-            (new View("viewLabels"))->show(["note" => $note, "errors" => $errors, "labelList" => $labelList, "existingLabels" => $existingLabelsMinusLabelList]);
+            (new View("viewLabels"))->show(["note" => $note, "errors" => $errors, "labelList" => $labelList, "existingLabels" => $existingLabels]);
         } else {
             (new View("error"))->show(["error" => $error = "Oops, looks like you may not edit this note"]);
         }        
     }
     public function addLabel() : void {
+        $user = $this->get_user_or_redirect()->getId();
+        $errors = [];
+        if (isset($_POST['id']) && is_numeric($_POST['id'] ) && $this->get_user_or_false()->isAllowedToEdit($_POST['id'])) {
+            $note = Note::getNoteById($_POST['id']); 
+            $labelList = Label::getNoteLabels($_POST['id']);
+            $existingLabels = Label::getAllExisingLabelsByUserIdMinusNoteID($user, $_POST['id']);
 
+            // Validation du titre
+            if (!Label::validateLabel($_POST['labeltitle'])) {
+                $errors[] = "Label length must be between " . Configuration::get("label_min_length") . " and " . Configuration::get("label_max_length");
+                (new View("viewLabels"))->show(["note" => $note, "errors" => $errors, "labelList" => $labelList, "existingLabels" => $existingLabels]);
+           
+            // Vérification si le titre nest pas null
+            } else if (in_array($_POST['labeltitle'], $labelList)) {
+                $errors[] = "A note cannot contain the same label twice";
+                (new View("viewLabels"))->show(["note" => $note, "errors" => $errors, "labelList" => $labelList, "existingLabels" => $existingLabels]);
+            } else {
+                Label::add($_POST['id'], $_POST['labeltitle']);
+                $labelList = Label::getNoteLabels($_POST['id']);
+                $existingLabels = Label::getAllExisingLabelsByUserIdMinusNoteID($user, $_POST['id']);
+                (new View("viewLabels"))->show(["note" => $note, "errors" => $errors, "labelList" => $labelList, "existingLabels" => $existingLabels]);
+            }
+        } else {
+            (new View("error"))->show(["error" => $error = "Oops, looks like you may not edit this note"]);
+        }      
     }
 
     public function deleteLabel() : void {
-
+        Label::delete($_POST['noteId'], $_POST['label']);
+        $this->redirect("opennote", "editLabels", $_POST['noteId']);
     }
 
     public function checkUncheck () : void {
