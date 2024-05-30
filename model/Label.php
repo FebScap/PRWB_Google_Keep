@@ -6,20 +6,6 @@ class Label extends Model {
     
     public function __construct(public ?int $id, public string $label) {}
 
-    // Méthodes GET
-    public function getId(): int {
-        return $this->id;
-    }
-
-    public function getLabel(): string {
-        return $this->label;
-    }
-
-     // Méthodes SET
-     public function setLabel(string $label): void {
-        $this->label = $label;
-    }
-
     public static function getNoteLabels(int $noteId): ?array {
         $query = self::execute("SELECT * FROM `note_labels` WHERE note = :noteId", ["noteId" => $noteId]);
         $labels = [];
@@ -33,21 +19,6 @@ class Label extends Model {
             $labels[] = $row["label"];
         }
         return $labels;
-    }
-
-    public static function getLabelByNoteIdAndLabel(int $noteId, string $label): ?Label {
-        $query = self::execute("SELECT * FROM note_labels WHERE note = :noteId AND label = :label", ["noteId" => $noteId, "label" => $label]);
-        $data = $query->fetch();
-    
-        if (!$data) {
-            return null; // Retourne null si aucun Label n'est trouvé avec cet ID
-        }
-    
-        // Crée un nouvel objet Label avec les données récupérées de la base de données
-        return new Label(
-            $data["id"],
-            $data["label"]
-        );
     }
 
     public static function getAllExisingLabelsByUserIdMinusNoteID(int $userId, int $noteId): ?array {
