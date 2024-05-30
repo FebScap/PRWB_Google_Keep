@@ -106,9 +106,19 @@ class ControllerOpenNote extends Controller {
         }      
     }
 
+    public function addLabelNoRedirect() : void {
+        Label::add($_POST['noteId'], $_POST['label']);
+        echo "Added " . $_POST['label'] . " to note " . $_POST['noteId'];
+    }
+
     public function deleteLabel() : void {
         Label::delete($_POST['noteId'], $_POST['label']);
         $this->redirect("opennote", "editLabels", $_POST['noteId']);
+    }
+
+    public function deleteLabelNoRedirect() : void {
+        Label::delete($_POST['noteId'], $_POST['label']);
+        echo "Removed " . $_POST['label'] . " from note " . $_POST['noteId'];
     }
 
     public function checkUncheck () : void {
