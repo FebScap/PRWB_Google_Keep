@@ -209,5 +209,12 @@ class User extends Model {
     
         return $query->rowCount() > 0;
     }
+
+    public static function isUser(int $userId) : bool {
+        $query = self::execute("SELECT COUNT(*) FROM users WHERE id = :userId", ["userId" => $userId]);
+        $data = $query->fetch();
+
+        return $data[0] > 0;
+    }
 }
 ?>
