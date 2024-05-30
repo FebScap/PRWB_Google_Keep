@@ -288,7 +288,7 @@ require_once "model/ChecklistItem.php";
 
     public static function getAllSharedBy(int $userId) : array {
         $data = self::execute(
-            "SELECT DISTINCT owner FROM note_shares JOIN notes on notes.id = note_shares.note WHERE user = :userId", 
+            "SELECT DISTINCT owner FROM note_shares JOIN notes on notes.id = note_shares.note JOIN users ON notes.owner = users.id WHERE user = :userId ORDER BY users.full_name", 
             ["userId" => $userId])->fetchAll();
         $sharedby = [];
     
