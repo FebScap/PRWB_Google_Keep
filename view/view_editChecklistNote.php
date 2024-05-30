@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>My notes - Editer une ChecklistNote</title>
     <?php include('head.html'); ?>
