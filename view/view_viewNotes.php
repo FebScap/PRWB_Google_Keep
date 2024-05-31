@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>My notes</title>
         <?php include('head.html'); ?>
@@ -27,23 +27,30 @@
                                     <!-- TITRE -->
                                     <li class="list-group-item"><?= $pinnedNotes[$i]->title ?></li>
 
-                                    <li class="list-group-item list-group-item-secondary h-100 truncate-after">
-                                        <!-- CONTENU TEXT NOTE -->
-                                        <?php if(!$pinnedNotes[$i]->isCheckListNote($pinnedNotes[$i]->getId())): ?>
-                                        <?= $pinnedNotes[$i]->getContentById($pinnedNotes[$i]->getId()) ?>
-                                        <!-- CONTENU CHECKLIST NOTE -->
-                                        <?php else: ?>
-                                            <?php foreach($pinnedNotes[$i]->getItemListById($pinnedNotes[$i]->getId()) as $item): ?>
-                                                <div>
-                                                    <?php if($item->getChecked() == 1): ?>
-                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox" checked>
-                                                    <?php else: ?>
-                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox">
-                                                    <?php endif ?>
-                                                    <label class="form-check-label"><?= $item->getContent() ?></label>
-                                                </div>
+                                    <li class="list-group-item list-group-item-secondary h-100 d-flex flex-column justify-content-between truncate-after">
+                                        <div class="truncate-after">
+                                            <!-- CONTENU TEXT NOTE -->
+                                            <?php if(!$pinnedNotes[$i]->isCheckListNote($pinnedNotes[$i]->getId())): ?>
+                                            <?= $pinnedNotes[$i]->getContentById($pinnedNotes[$i]->getId()) ?>
+                                            <!-- CONTENU CHECKLIST NOTE -->
+                                            <?php else: ?>
+                                                <?php foreach($pinnedNotes[$i]->getItemListById($pinnedNotes[$i]->getId()) as $item): ?>
+                                                    <div>
+                                                        <?php if($item->getChecked() == 1): ?>
+                                                            <input class="form-check-input me-1" disabled="disabled" type="checkbox" checked>
+                                                        <?php else: ?>
+                                                            <input class="form-check-input me-1" disabled="disabled" type="checkbox">
+                                                        <?php endif ?>
+                                                        <label class="form-check-label"><?= $item->getContent() ?></label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="mt-2 align-bottom">
+                                            <?php foreach (Label::getNoteLabels($pinnedNotes[$i]->getId()) as $label) : ?>
+                                                <span class="badge rounded-pill text-bg-secondary" style="font-size: 0.60rem !important;"><?= $label ?></span>
                                             <?php endforeach; ?>
-                                        <?php endif; ?>
+                                        </div>
                                     </li>
                                     
                                     <!-- Chevrons -->
@@ -101,25 +108,32 @@
                                     <!-- TITRE -->
                                     <li class="list-group-item"><?= $notPinnedNotes[$i]->getTitle() ?></li>
 
-                                    <li class="list-group-item list-group-item-secondary h-100 truncate-after">
-                                        <!-- CONTENU TEXT NOTE -->
-                                        <?php if(!$notPinnedNotes[$i]->isCheckListNote($notPinnedNotes[$i]->getId())): ?>
-                                        <?= $notPinnedNotes[$i]->getContentById($notPinnedNotes[$i]->getId()) ?>
-                                        <!-- CONTENU CHECKLIST NOTE -->
-                                        <?php else: ?>
-                                            <?php foreach($notPinnedNotes[$i]->getItemListById($notPinnedNotes[$i]->getId()) as $item): ?>
-                                                <div>
-                                                    <?php if($item->getChecked() == 1): ?>
-                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox" checked>
-                                                    <?php else: ?>
-                                                        <input class="form-check-input me-1" disabled="disabled" type="checkbox">
-                                                    <?php endif ?>
-                                                    <label class="form-check-label"><?= $item->getContent() ?></label>
-                                                </div>
+                                    <li class="list-group-item list-group-item-secondary h-100 d-flex flex-column justify-content-between truncate-after">
+                                        <div class="truncate-after">
+                                            <!-- CONTENU TEXT NOTE -->
+                                            <?php if(!$notPinnedNotes[$i]->isCheckListNote($notPinnedNotes[$i]->getId())): ?>
+                                            <?= $notPinnedNotes[$i]->getContentById($notPinnedNotes[$i]->getId()) ?>
+                                            <!-- CONTENU CHECKLIST NOTE -->
+                                            <?php else: ?>
+                                                <?php foreach($notPinnedNotes[$i]->getItemListById($notPinnedNotes[$i]->getId()) as $item): ?>
+                                                    <div>
+                                                        <?php if($item->getChecked() == 1): ?>
+                                                            <input class="form-check-input me-1" disabled="disabled" type="checkbox" checked>
+                                                        <?php else: ?>
+                                                            <input class="form-check-input me-1" disabled="disabled" type="checkbox">
+                                                        <?php endif ?>
+                                                        <label class="form-check-label"><?= $item->getContent() ?></label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="mt-2 align-bottom">
+                                            <?php foreach (Label::getNoteLabels($notPinnedNotes[$i]->getId()) as $label) : ?>
+                                                <span class="badge rounded-pill text-bg-secondary" style="font-size: 0.60rem !important;"><?= $label ?></span>
                                             <?php endforeach; ?>
-                                        <?php endif; ?>
+                                        </div>
                                     </li>
-                                    
+
                                     <!-- Chevrons -->
                                     <?php if ($i == 0): ?>
                                         <li class="chevron notJS list-group-item d-flex justify-content-end">

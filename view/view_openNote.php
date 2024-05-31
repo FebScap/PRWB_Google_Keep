@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>OpenNote</title>
     <?php include('head.html'); ?>
@@ -41,9 +41,14 @@
 </head>
 <body data-bs-theme="dark">
     <div class="d-flex bd-highlight mb-3">
+        <!-- NOTE ARCHIVEE -->
         <?php if ($textnote->isArchived()) : ?>
             <div class="me-auto p-2 bd-highlight">
-                <a type="button" href="viewArchives" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
+                <?php if (isset($url)) : ?>
+                    <a type="button" href="openNote/search/<?= $url ?>" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
+                <?php else : ?>
+                    <a type="button" href="viewArchives" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
+                <?php endif ?>
             </div>
             <div class="p-2 bd-highlight">
                 <button type="button" class="btn btn-dark withJS" data-bs-toggle="modal" data-bs-target="#deleteModal" id="withJS"><i class="bi bi-trash"></i></button>
@@ -104,13 +109,34 @@
             
             <?php elseif ($textnote->isEditable() && !$user->isOwner($textnote->getId())) : ?>
                 <div class="me-auto p-2 bd-highlight">
-                    <a type="button" href="viewSharedNotes/sharedby/<?= $textnote->getOwner() ?>" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
+                    <?php if (isset($url)) : ?>
+                        <a type="button" href="openNote/search/<?= $url ?>" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
+                    <?php else : ?>
+                        <a type="button" href="viewSharedNotes/sharedby/<?= $textnote->getOwner() ?>" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
+                    <?php endif ?>
+                </div>
+                <div class="p-2 bd-highlight">
+                    <?php if (isset($url)) : ?>
+                        <form action="opennote/editlabels/<?= $textnote->getId() ?>/<?= $url ?>" method="post">
+                    <?php else : ?>
+                        <form action="opennote/editlabels/<?= $textnote->getId() ?>" method="post">
+                    <?php endif ?>
+                            <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-tags"></i></button>
+                    </form>
                 </div>
                 <div class="p-2 bd-highlight">
                     <?php if (Note::isCheckListNote($textnote->getId())) : ?>
-                        <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="post">
+                        <?php if (isset($url)) : ?>
+                            <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>/<?= $url ?>" method="post">
+                        <?php else : ?>
+                            <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="post">
+                        <?php endif ?>
                     <?php else : ?>
-                        <form action="opennote/editnote/<?= $textnote->getId() ?>" method="post"> 
+                        <?php if (isset($url)) : ?>
+                            <form action="opennote/editnote/<?= $textnote->getId() ?>/<?= $url ?>" method="post"> 
+                        <?php else : ?>
+                            <form action="opennote/editnote/<?= $textnote->getId() ?>" method="post"> 
+                        <?php endif ?>
                     <?php endif; ?>
                     <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pencil"></i></button>
                     </form>
@@ -118,12 +144,20 @@
             
             <?php elseif ($textnote->isShared() && !$user->isOwner($textnote->getId())) : ?>
                 <div class="me-auto p-2 bd-highlight">
-                    <a type="button" href="viewSharedNotes/sharedby/<?= $textnote->getOwner() ?>" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
+                    <?php if (isset($url)) : ?>
+                        <a type="button" href="openNote/search/<?= $url ?>" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
+                    <?php else : ?>
+                        <a type="button" href="viewSharedNotes/sharedby/<?= $textnote->getOwner() ?>" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
+                    <?php endif ?>
                 </div>
 
             <?php else : ?>
                 <div class="me-auto p-2 bd-highlight">
-                    <a type="button" href="viewnotes" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
+                    <?php if (isset($url)) : ?>
+                        <a type="button" href="openNote/search/<?= $url ?>" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
+                    <?php else : ?>
+                        <a type="button" href="viewnotes" class="btn btn-dark"><i class="bi bi-chevron-left"></i></a>
+                    <?php endif ?>
                 </div>
                     <div class="p-2 bd-highlight">
                         <form action="viewshares/index/<?= $textnote->getId() ?>" method="get">
@@ -150,10 +184,23 @@
                     </form>
                 </div>
                 <div class="p-2 bd-highlight">
+                    <form action="opennote/editlabels/<?= $textnote->getId() ?>" method="post">
+                            <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-tags"></i></button>
+                    </form>
+                </div>
+                <div class="p-2 bd-highlight">
                     <?php if (Note::isCheckListNote($textnote->getId())) : ?>
-                        <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="post">
+                        <?php if (isset($url)) : ?>
+                            <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>/<?= $url ?>" method="post">
+                        <?php else : ?>
+                            <form action="opennote/editChecklistNote/<?= $textnote->getId() ?>" method="post">
+                        <?php endif ?>
                     <?php else : ?>
-                        <form action="opennote/editnote/<?= $textnote->getId() ?>" method="post"> 
+                        <?php if (isset($url)) : ?>
+                            <form action="opennote/editnote/<?= $textnote->getId() ?>/<?= $url ?>" method="post"> 
+                        <?php else : ?>
+                            <form action="opennote/editnote/<?= $textnote->getId() ?>" method="post"> 
+                        <?php endif ?>
                     <?php endif; ?>
                     <button type="submit" name="idnote" value="<?= $textnote->getId() ?>" class="btn btn-dark"><i class="bi bi-pencil"></i></button>
                     </form>

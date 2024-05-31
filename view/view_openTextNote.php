@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>My notes - Créer une nouvelle note</title>
         <?php include('head.html');

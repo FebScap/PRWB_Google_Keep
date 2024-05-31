@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>My notes - Login</title>
         <base href="<?= $web_root ?>"/>
@@ -19,12 +19,12 @@
 
                         <div class="input-group flex-nowrap mt-4 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button" disabled><i class="bi bi-person"></i></button>
-                            <input id="mail" name="mail" type="email" class="form-control" value="<?= $mail ?>" placeholder="exemple@domaine.ect" aria-describedby="basic-addon1">
+                            <input id="mail" name="mail" type="email" class="form-control" value="<?= $mail ?>" placeholder="exemple@domaine.ect" >
                         </div>
 
                         <div class="input-group flex-nowrap mt-4 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button" disabled><i class="bi bi-key"></i></button>
-                            <input id="password" name="password" type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
+                            <input id="password" name="password" type="password" class="form-control" placeholder="Password" >
                         </div>
 
                         <button class="btn btn-primary btn-lg btn-block mt-4 mb-4 w-100" type="submit">Login</button>
