@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>My notes - Shared by <?= $from->full_name ?></title>
         <?php include('head.html'); ?>

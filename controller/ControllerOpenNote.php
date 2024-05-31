@@ -290,4 +290,20 @@ class ControllerOpenNote extends Controller {
         $item->persist();
         echo $item->getId();
     }
+
+    public function check_title_unicity_service() : void {
+        $res = "false";
+    
+        // Vérifie si des données POST ont été envoyées
+        $post_data = json_decode(file_get_contents("php://input"), true);
+    
+        // Vérifie si les données POST contiennent un titre
+        if (isset($post_data["title"]) && $post_data["title"] !== "") {
+            // Vérifie l'unicité du titre
+            $res = Note::isUniqueTitlePerOwner($post_data["title"], $this->get_user_or_redirect()->getId());
+        }
+    
+        // Retourne la réponse au format JSON
+        echo json_encode($res);
+    }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>My notes - Editer une note</title>
         <?php include('head.html'); ?>
@@ -9,74 +9,111 @@
 
             document.onreadystatechange = function(){
                 if(document.readyState === 'complete') {
-                    title = document.getElementById("title");
-                    initialTitle = title.value;
-                    errorTitle = document.getElementById("errorTitle");
+                    title = $("#title");
+                    initialTitle = title.val();
+                    errorTitle = $("#errorTitle");
 
-                    content = document.getElementById("content");
-                    initialContent = content.value;
-                    errorContent = document.getElementById("errorContent");
+                    content = $("#content");
+                    initialContent = content.val();
+                    errorContent = $("#errorContent");
 
-                    saveButton = document.getElementById("saveButton");
-                    backButton = document.getElementById("backButton");
+                    saveButton = $("#saveButton");
+                    backButton = $("#backButton");
 
-                    backButton.addEventListener("click", (event) => {
+                    backButton.on("click", function(event) {
                         if (hasChanges()) {
                             event.preventDefault();
                             $('#confirmationModal').modal('show');
                         }
                     });
 
-                    document.getElementById("confirmLeave").addEventListener("click", () => {
-                        window.location.href = backButton.href;
+                    $("#confirmLeave").on("click", function() {
+                        window.location.href = backButton.attr("href");
                     });
                 }
             };
 
             function hasChanges() {
-                return title.value !== initialTitle || content.value !== initialContent;
+                return title.val() !== initialTitle || content.val() !== initialContent;
             }
 
             function checkTitle(){
                 let ok = true;
-                errorTitle.innerHTML = "";
-                if (!(/^.{3,25}$/).test(title.value)) {
-                    errorTitle.innerHTML += "<p>Title length must be between 3 and 25.</p>";
-                    title.classList.add("is-invalid");
+                errorTitle.html("");
+                if (!(/^.{3,25}$/).test(title.val())) {
+                    errorTitle.append("<p>Title length must be between 3 and 25.</p>");
+                    title.addClass("is-invalid");
                     ok = false;
                 } else {
-                    title.classList.remove("is-invalid");
+                    title.removeClass("is-invalid");
                 }
+                return ok;
+            }
+
+            async function checkTitleUnicity() {
+                let ok = true;
+                errorTitle.html("");
+                const titleValue = title.val();
+                
+                try {
+                    const response = await $.ajax({
+                        url: "addtextnote/check_title_unicity_service",
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({ title: titleValue }),
+                        dataType: "json"
+                    });
+
+                    if (!response) {
+                        errorTitle.append("<p>Title must be unique per user.</p>");
+                        title.addClass("is-invalid");
+                        ok = false;
+                    } else {
+                        title.removeClass("is-invalid");
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    // Gérer les erreurs en conséquence
+                    ok = false;
+                }
+
                 return ok;
             }
 
             function CheckContent(){
                 let ok = true;
-                errorContent.innerHTML = "";
-                let contentValue = content.value.trim(); // Supprimer les espaces inutiles
+                errorContent.html("");
+                let contentValue = content.val().trim();
 
                 if (!(contentValue.length >= 3 || contentValue === "")) {
-                    errorContent.innerHTML += "<p>Content must be empty or contain at least 3 characters.</p>";
-                    content.classList.add("is-invalid");
+                    errorContent.append("<p>Content must be empty or contain at least 3 characters.</p>");
+                    content.addClass("is-invalid");
                     ok = false;
                 } else {
-                    content.classList.remove("is-invalid");
+                    content.removeClass("is-invalid");
                 }
                 return ok;
             }
 
-            function checkAll(){
-                let ok = checkTitle() && CheckContent();
-                saveButton.disabled = !ok; // Désactiver le bouton si ok est faux
+            async function checkAll(){
+                let titleValid = checkTitle();
+                if (!titleValid) {
+                    saveButton.prop('disabled', true);
+                    return false;
+                }
+                let titleUnique = await checkTitleUnicity();
+                let contentValid = CheckContent();
+                let ok = titleValid && titleUnique && contentValid;
+                saveButton.prop('disabled', !ok);
                 return ok;
             }
         </script>
     </head>
     <body data-bs-theme="dark">
-        <form class="container-fluid d-flex flex-column" action="OpenNote/saveNote" method="post" oninput='return checkAll();'>
+        <form class="container-fluid d-flex flex-column" action="OpenNote/saveNote" method="post" oninput="checkAll();">
             <div class="container-fluid d-flex justify-content-between">
                 <a id="backButton" class="nav-link me-4 fs-2" href="opennote/index/<?= $textnote->getId() ?>"><i class="bi bi-chevron-left"></i></a>
-                <button type="submit" class="btn" id="saveButton"><i class="bi bi-floppy"></i></button>
+                <button type="submit" class="btn" id="saveButton" disabled><i class="bi bi-floppy"></i></button>
             </div>
             <div class="m-3">
                 <p class="font-italic">Created <?= Note::elapsedDate($textnote->getCreatedAt()) ?></p>
@@ -85,21 +122,21 @@
                 <?php endif ?>
                 <label for="noteTitle" class="form-label">Title</label>
                 <label class="errors" id="errorTitle"></label>
-                <input id="title" name="title" type="text" class="form-control" placeholder="Title" aria-describedby="emailHelp" value="<?= $textnote->getTitle() ?>" oninput='checkTitle();'>
+                <input id="title" name="title" type="text" class="form-control" placeholder="Title" value="<?= $textnote->getTitle() ?>">
                 <?php if (count($errors) != 0): ?>
-                        <div class='errors'>
-                            <ul>
-                                <?php foreach ($errors as $error): ?>
-                                    <li><?= $error ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
+                    <div class='errors'>
+                        <ul>
+                            <?php foreach ($errors as $error): ?>
+                                <li><?= $error ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 <?php endif; ?>
                 <label class="form-label mt-3">Text</label>
                 <label class="errors" id="errorContent"></label>
-                <textarea id="content" name="content" class="form-control bg-dark text-start" style="height: 550px" rows="8" oninput="CheckContent();"><?= $textnote->getContent() ?></textarea>
+                <textarea id="content" name="content" class="form-control bg-dark text-start" style="height: 550px" rows="8"><?= $textnote->getContent() ?></textarea>
             </div>
-            <input id="id" name="id" type="hidden" class="form-control" placeholder="Title" aria-describedby="emailHelp" value="<?= $textnote->getId() ?>">
+            <input id="id" name="id" type="hidden" class="form-control" placeholder="Title" value="<?= $textnote->getId() ?>">
         </form>
 
         <!-- Confirmation Modal -->
