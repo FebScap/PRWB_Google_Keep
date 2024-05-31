@@ -65,6 +65,7 @@ class ControllerSettings extends Controller{
                 $user->setFullName($_POST['fullname']);
                 $user->setMail($_POST['mail']);
                 $user->persist();
+                $this->log_user(User::getByMail($_POST['mail']));
                 $this->redirect("settings");
             }
             (new View("editProfile"))->show(["fullname" => $fullname, "errorsFullname" => $errorsFullname, "mail" => $mail, "errorsMail" => $errorsMail]);
