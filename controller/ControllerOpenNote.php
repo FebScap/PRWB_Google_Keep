@@ -378,8 +378,12 @@ class ControllerOpenNote extends Controller {
             $this->redirect("openNote", "search");
         } else {
             $encoded = base64url::url_safe_encode($labelsChecked);
-            $this->redirect("openNote", "search", $encoded);
+            $this->redirect("openNote", "search",  base64url::url_safe_encode($labelsChecked));
         }
     
+    }
+
+    public function searchEncode(string $s) : string {
+        return base64url::url_safe_encode($s);
     }
 }
