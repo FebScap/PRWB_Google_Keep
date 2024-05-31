@@ -242,7 +242,7 @@ require_once "model/ChecklistItem.php";
         $data = self::execute(
             "SELECT notes.id, notes.title, notes.owner, notes.created_at, notes.edited_at, notes.pinned, notes.archived, notes.weight 
             FROM note_shares JOIN notes on notes.id = note_shares.note 
-            WHERE user = :userId", 
+            WHERE user = :userId ORDER BY notes.weight DESC", 
             ["userId" => $userId])->fetchAll();
         $notes = [];
     
