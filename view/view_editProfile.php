@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>Edit profile</title>
         <?php include('head.html'); ?>
@@ -19,7 +19,7 @@
 
                         <div class="input-group flex-nowrap mt-2 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-person"></i></button>
-                            <input id="fullname" name="fullname" type="text" class="form-control" value="<?= $fullname ?>" placeholder="Fullname" aria-describedby="basic-addon1">
+                            <input id="fullname" name="fullname" type="text" class="form-control" value="<?= $fullname ?>" placeholder="Fullname" >
                         </div>
 
                         <?php if (count($errorsFullname) != 0): ?>
@@ -35,7 +35,7 @@
 
                         <div class="input-group flex-nowrap mt-2 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button"><i class="bi bi-person"></i></button>
-                            <input id="mail" name="mail" type="text" class="form-control" value="<?= $mail ?>" placeholder="Mail" aria-describedby="basic-addon1">
+                            <input id="mail" name="mail" type="text" class="form-control" value="<?= $mail ?>" placeholder="Mail" >
                         </div>
 
                         <?php if (count($errorsMail) != 0): ?>

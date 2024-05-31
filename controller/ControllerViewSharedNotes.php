@@ -21,9 +21,11 @@ class ControllerViewSharedNotes extends Controller {
             $nameSharedBy[] = User::getByID($id)->getFullName();
         }
 
-        if (isset($_GET["param1"]) && $_GET["param1"] !== "") {
+        if (isset($_GET["param1"]) && is_numeric($_GET["param1"]) && User::isUser($_GET["param1"])) {
             $userFrom = User::getById($_GET["param1"]);
 
+        } else {
+            (new View("error"))->show(["error"=>$error = "This user does not exist."]);
         }
         $notesEditSharedBy = [];
         $notesReadSharedBy = [];

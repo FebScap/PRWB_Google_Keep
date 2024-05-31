@@ -11,7 +11,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a href="search" class="nav-link">
+        <a href="openNote/search" class="nav-link">
           <span class="ms-1 text-white">Search</span>
         </a>
       </li>

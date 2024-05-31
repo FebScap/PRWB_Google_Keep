@@ -173,7 +173,7 @@ class User extends Model {
     }
 
     public function changePassword(string $password) : void {
-        $this->setPassword(Tools::my_hash($password));
+        $this->setPassword($password);
         $this->persist();
     }
 
@@ -208,6 +208,13 @@ class User extends Model {
                                         ["noteId" => $noteId, "userId" => $this->getId()]);
     
         return $query->rowCount() > 0;
+    }
+
+    public static function isUser(int $userId) : bool {
+        $query = self::execute("SELECT COUNT(*) FROM users WHERE id = :userId", ["userId" => $userId]);
+        $data = $query->fetch();
+
+        return $data[0] > 0;
     }
 }
 ?>

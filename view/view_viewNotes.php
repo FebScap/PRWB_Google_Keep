@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>My notes</title>
         <?php include('head.html'); ?>
@@ -128,7 +128,7 @@
                                             <?php endif; ?>
                                         </div>
                                         <div class="mt-2 align-bottom">
-                                            <?php foreach (Label::getNoteLabels($pinnedNotes[$i]->getId()) as $label) : ?>
+                                            <?php foreach (Label::getNoteLabels($notPinnedNotes[$i]->getId()) as $label) : ?>
                                                 <span class="badge rounded-pill text-bg-secondary" style="font-size: 0.60rem !important;"><?= $label ?></span>
                                             <?php endforeach; ?>
                                         </div>

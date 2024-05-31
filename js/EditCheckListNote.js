@@ -71,7 +71,7 @@ document.onreadystatechange = function() {
                             value: itemToAdd.value
                         },
                         success: function (data) {
-                            itemDiv.insertAdjacentHTML("beforeend", "<div><div class='input-group flex-nowrap mt-2'><button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-square'></i></button><input id='checklist' oninput='checkAll();' form='save' name='content[" + data + "]' type='text' class='form-control' value='" + itemToAdd.value + "' placeholder='Nouvel item' aria-describedby='basic-addon1'><button class='btn btn-danger text-white buttondelete' type='submit' form='formdelete' name='itemid' value='" + data + "'><i class='bi bi-dash-lg' form='formdelete'></i></button></div></div>");
+                            itemDiv.insertAdjacentHTML("beforeend", "<div><div class='input-group flex-nowrap mt-2'><button class='btn btn-outline-secondary text-white' type='button' disabled><i class='bi bi-square'></i></button><input id='checklist' oninput='checkAll();' form='save' name='content[" + data + "]' type='text' class='form-control' value='" + itemToAdd.value + "' placeholder='Nouvel item' ><button class='btn btn-danger text-white buttondelete' type='submit' form='formdelete' name='itemid' value='" + data + "'><i class='bi bi-dash-lg' form='formdelete'></i></button></div></div>");
                             itemToAdd.classList.remove("is-valid");
                             console.log("Added " + data + " to database with title : '" + itemToAdd.value + "'");
                             initialContent.push(itemToAdd.value);
@@ -98,7 +98,7 @@ document.onreadystatechange = function() {
 
 function createFormAdd() {
     newItemDiv = document.getElementById("newItemDiv");
-    newItemDiv.innerHTML += "<div class='input-group flex-nowrap mt-2'><input id='addinput' oninput='checkAll();' name='content[itemtitle]' type='text' class='form-control' placeholder='Item title' aria-describedby='basic-addon1'><button id='addbutton' class='btn btn-primary text-white' type='submit' name='id' value='<?= $textnote->getId() ?>'><i class='bi bi-plus-lg'></i></button></div>";
+    newItemDiv.innerHTML += "<div class='input-group flex-nowrap mt-2'><input id='addinput' oninput='checkAll();' name='content[itemtitle]' type='text' class='form-control' placeholder='Item title' ><button id='addbutton' class='btn btn-primary text-white' type='submit' name='id' value='<?= $textnote->getId() ?>'><i class='bi bi-plus-lg'></i></button></div>";
     newItemDiv.innerHTML += "<span></span>"
     addButton = document.getElementById("addbutton");
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>My notes - Signup</title>
         <?php include('head.html'); ?>
@@ -19,22 +19,22 @@
 
                         <div class="input-group flex-nowrap mt-2 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button" disabled><i class="bi bi-person"></i></button>
-                            <input id="mail" name="mail" type="email" class="form-control" value="<?= $mail ?>" placeholder="exemple@domaine.ect" aria-describedby="basic-addon1">
+                            <input id="mail" name="mail" type="email" class="form-control" value="<?= $mail ?>" placeholder="exemple@domaine.ect" >
                         </div>
 
                         <div class="input-group flex-nowrap mt-2 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button" disabled><i class="bi bi-person"></i></button>
-                            <input id="fullname" name="fullname" type="text" class="form-control" value="<?= $fullname ?>" placeholder="Full name" aria-describedby="basic-addon1">
+                            <input id="fullname" name="fullname" type="text" class="form-control" value="<?= $fullname ?>" placeholder="Full name" >
                         </div>
 
                         <div class="input-group flex-nowrap mt-2 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button" disabled><i class="bi bi-key"></i></button>
-                            <input id="password" name="password" type="password" class="form-control" value="<?= $password ?>" placeholder="Password" aria-describedby="basic-addon1">
+                            <input id="password" name="password" type="password" class="form-control" value="<?= $password ?>" placeholder="Password" >
                         </div>
 
                         <div class="input-group flex-nowrap mt-2 w-100">
                             <button class="btn btn-outline-secondary text-white" type="button" disabled><i class="bi bi-key"></i></button>
-                            <input id="password_confirm" name="password_confirm" type="password" class="form-control" value="<?= $password_confirm ?>" placeholder="Confirm your password" aria-describedby="basic-addon1">
+                            <input id="password_confirm" name="password_confirm" type="password" class="form-control" value="<?= $password_confirm ?>" placeholder="Confirm your password" >
                         </div>
 
                         <button class="btn btn-primary btn-lg btn-block mt-3 w-100" type="submit">Sign Up</button>
