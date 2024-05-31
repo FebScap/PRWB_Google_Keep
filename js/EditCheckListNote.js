@@ -137,6 +137,10 @@ let title, initialTitle, errorTitle, saveButton, backButton, initialContent, add
             errorTitle.innerHTML = "";
             const titleValue = title.value;
 
+            if (titleValue === initialTitle) {
+                return ok;
+            }
+
             try {
                 const response = await $.ajax({
                     url: "addtextnote/check_title_unicity_service",

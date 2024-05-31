@@ -3,7 +3,6 @@
     <head>
         <title>My notes - Editer une note</title>
         <?php include('head.html'); ?>
-
         <script>
             let title, initialTitle, errorTitle, content, initialContent, errorContent, saveButton, backButton;
 
@@ -56,6 +55,10 @@
                 errorTitle.html("");
                 const titleValue = title.val();
                 
+                if (titleValue === initialTitle) {
+                    return ok;
+                }
+
                 try {
                     const response = await $.ajax({
                         url: "addtextnote/check_title_unicity_service",
@@ -74,7 +77,6 @@
                     }
                 } catch (error) {
                     console.error("Error:", error);
-                    // Gérer les erreurs en conséquence
                     ok = false;
                 }
 
