@@ -10,7 +10,12 @@
     <form method="post" action="OpenNote/saveChecklistNote" id="save" oninput='checkAll();'></form>
         <div class="container-fluid d-flex flex-column"> 
             <div class="container-fluid d-flex justify-content-between">
-                <a id="backButton" class="nav-link me-4 fs-2" href="opennote/index/<?= $textnote->getId() ?>"><i class="bi bi-chevron-left"></i></a>
+                <?php if (isset($url)) : ?>
+                    <a id="backButton" class="nav-link me-4 fs-2" href="opennote/index/<?= $textnote->getId() ?>/<?= $url ?>"><i class="bi bi-chevron-left"></i></a>
+                <?php else : ?>
+                    <a id="backButton" class="nav-link me-4 fs-2" href="opennote/index/<?= $textnote->getId() ?>"><i class="bi bi-chevron-left"></i></a>
+                <?php endif ?>
+                
                 <button id="saveButton" type="submit" form="save" class="btn"><i class="bi bi-floppy"></i></button>
             </div>
             <div class="mt-3">
