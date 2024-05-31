@@ -114,7 +114,7 @@
             <div class="mt-3">
                 <label for="noteContent" class="form-label">Text</label>
                 <label class="errors" id="errorContent"></label>
-                <input id="content" name="content" type="text" style="height:600px" placeholder="Write something here" class="form-control" value="<?= $content ?>">
+                <input id="content" name="content" type="text" style="height:600px" placeholder="Write something here" class="form-control" value="<?= $content ?>" oninput="checkContent();">
             </div>
         </form>
         <?php include('footer.html'); ?>

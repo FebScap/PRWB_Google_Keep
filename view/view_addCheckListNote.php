@@ -139,7 +139,7 @@
                         echo " is-valid";
                     }
 
-                    echo "' id='checklist' name='content[$i]' value='" . $content[$i] . "'>
+                    echo "' id='checklist' oninput='checkContent();' name='content[$i]' value='" . $content[$i] . "'>
                         <label class='errorContent' id='errorContent$i'></label>
                     </li>";
                     if (count($errorsContent) != 0) {

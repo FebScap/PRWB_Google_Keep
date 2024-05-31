@@ -135,7 +135,7 @@
                 <?php endif; ?>
                 <label class="form-label mt-3">Text</label>
                 <label class="errors" id="errorContent"></label>
-                <textarea id="content" name="content" class="form-control bg-dark text-start" style="height: 550px" rows="8"><?= $textnote->getContent() ?></textarea>
+                <textarea id="content" name="content" oninput="checkContent();" class="form-control bg-dark text-start" style="height: 550px" rows="8"><?= $textnote->getContent() ?></textarea>
             </div>
             <input id="id" name="id" type="hidden" class="form-control" placeholder="Title" value="<?= $textnote->getId() ?>">
         </form>

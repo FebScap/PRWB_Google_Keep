@@ -7,7 +7,7 @@
     <script src="js/RemoveNotJS.js"></script>
 </head>
 <body id="<?= $textnote->getId() ?>" data-bs-theme="dark">
-    <form method="post" action="OpenNote/saveChecklistNote" id="save" oninput='return checkAll();'></form>
+    <form method="post" action="OpenNote/saveChecklistNote" id="save" oninput='checkAll();'></form>
         <div class="container-fluid d-flex flex-column"> 
             <div class="container-fluid d-flex justify-content-between">
                 <a id="backButton" class="nav-link me-4 fs-2" href="opennote/index/<?= $textnote->getId() ?>"><i class="bi bi-chevron-left"></i></a>
