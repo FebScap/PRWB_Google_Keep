@@ -46,6 +46,7 @@
                     ok = false;
                 } else {
                     title.removeClass("is-invalid");
+                    title.addClass("is-valid");
                 }
                 return ok;
             }

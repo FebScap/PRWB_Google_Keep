@@ -11,51 +11,83 @@
 
                 if(document.readyState === 'complete') {
 
-                    title = document.getElementById("title");
-
-                    errorTitle = document.getElementById("errorTitle");
-
-                    saveButton = document.getElementById("saveButton");
+                    title = $("#title");
+                    errorTitle = $("#errorTitle");
+                    saveButton = $("#saveButton");
 
                 }
 
             };
 
-            function checkTitle(){
+            function checkTitle() {
                 let ok = true;
-                errorTitle.innerHTML = "";
-                if (!(/^.{3,25}$/).test(title.value)) {
-                    errorTitle.innerHTML += "<p class='pt-1 text-danger'>Title length must be between 3 and 25.</p>";
-                    title.classList.add("is-invalid");
+                errorTitle.html("");
+                if (!(/^.{3,25}$/).test(title.val())) {
+                    errorTitle.append("<p>Title length must be between 3 and 25.</p>");
+                    title.addClass("is-invalid");
                     ok = false;
                 } else {
-                    title.classList.remove("is-invalid");
+                    title.removeClass("is-invalid");
+                    title.addClass("is-valid");
                 }
                 return ok;
             }
 
-            function checkAll(){
+            async function checkTitleUnicity() {
+                let ok = true;
+                errorTitle.html("");
+                const titleValue = title.val();
+                
+                try {
+                    const response = await $.ajax({
+                        url: "addtextnote/check_title_unicity_service",
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({ title: titleValue }),
+                        dataType: "json"
+                    });
 
-                let ok = checkTitle();
-                console.log(ok);
-                saveButton.disabled = !ok; // Désactiver le bouton si ok est faux
+                    if (!response) {
+                        errorTitle.append("<p>Title must be unique per user.</p>");
+                        title.addClass("is-invalid");
+                        ok = false;
+                    } else {
+                        title.removeClass("is-invalid");
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    // Gérer les erreurs en conséquence
+                    ok = false;
+                }
 
                 return ok;
+            }
 
+            async function checkAll() {
+                let titleValid = checkTitle();
+                if (!titleValid) {
+                    saveButton.prop('disabled', true);
+                    return false;
                 }
+                let titleUnique = await checkTitleUnicity();
+                //let contentValid = checkContent();
+                let ok = titleValid && titleUnique;
+                saveButton.prop('disabled', !ok);
+                return ok;
+            }
 
 
         </script>
     </head>
     <body data-bs-theme="dark">
-        <form class="container-fluid d-flex flex-column" method="post" action="addchecklistnote" oninput='return checkAll();'>
+        <form class="container-fluid d-flex flex-column" method="post" action="addchecklistnote" oninput='checkAll();'>
             <div class="container-fluid d-flex justify-content-between">
                 <a class="nav-link me-4 fs-2 mt-2" href="viewnotes"><i class="bi bi-chevron-left"></i></a>
                 <button id="saveButton" type="submit" class="btn mt-2"><i class="bi bi-floppy"></i></button>
             </div>
             <div class="mt-3">
                 <label for="noteTitle" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" value="<?= $title ?>" oninput="checkTitle();">
+                <input type="text" class="form-control" id="title" name="title" value="<?= $title ?>">
                 <label class="errors" id="errorTitle"></label>
                 <?php if (count($errorsTitle) != 0) : ?>
                     <label for="noteTitle" class="form-label">
