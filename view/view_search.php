@@ -40,7 +40,7 @@
                 <?php for ($i = 0; $i < sizeof($userNotes); $i++): ?>
                     <?php $noteLabels = Label::getNoteLabels($userNotes[$i]->getId()); ?>
                     <?php if (empty($labelSearched) || (count(array_intersect($labelSearched, $noteLabels)) === count($labelSearched))): ?>
-                        <a id="<?= $userNotes[$i]->getId() ?>" class="link-underline link-underline-opacity-0 m-1 userCard" style="width: 46%;" href="opennote/index/<?= $userNotes[$i]->getId() ?>">
+                        <a id="<?= $userNotes[$i]->getId() ?>" class="link-underline link-underline-opacity-0 m-1 userCard" style="width: 46%;" href="opennote/index/<?= $userNotes[$i]->getId() ?>/<?php if (isset($url)) { echo $url; } ?>">
                             <div class="card h-100">
                                     <ul class="list-group list-group-flush h-100">
                                         <!-- TITRE -->
@@ -75,7 +75,7 @@
                             </div>
                         </a>
                     <?php else: ?>
-                        <a id="<?= $userNotes[$i]->getId() ?>" class="link-underline link-underline-opacity-0 m-1 userCard collapse" style="width: 46%;" href="opennote/index/<?= $userNotes[$i]->getId() ?>">
+                        <a id="<?= $userNotes[$i]->getId() ?>" class="link-underline link-underline-opacity-0 m-1 userCard collapse" style="width: 46%;" href="opennote/index/<?= $userNotes[$i]->getId() ?>/<?php if (isset($url)) { echo $url; } ?>">
                             <div class="card h-100">
                                     <ul class="list-group list-group-flush h-100">
                                         <!-- TITRE -->
@@ -130,7 +130,7 @@
                 <?php for ($i = 0; $i < sizeof($notesShared); $i++) :
                 $noteLabels = Label::getNoteLabels($notesShared[$i]->getId());
                 if ($notesShared[$i]->getOwner() == $sharedBy[$u] && ((empty($labelSearched)) || count(array_intersect($labelSearched, $noteLabels)) === count($labelSearched))) : ?>
-                    <a id="<?= $notesShared[$i]->getId() ?>" owner="<?= $nameSharedBy[$u] ?>" class="link-underline link-underline-opacity-0 m-1 sharedCards" style="width: 46%;" href="opennote/index/<?= $notesShared[$i]->getId() ?>">
+                    <a id="<?= $notesShared[$i]->getId() ?>" owner="<?= $nameSharedBy[$u] ?>" class="link-underline link-underline-opacity-0 m-1 sharedCards" style="width: 46%;" href="opennote/index/<?= $notesShared[$i]->getId() ?>/<?php if (isset($url)) { echo $url; } ?>">
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100">
                                     <!-- TITRE -->
@@ -165,7 +165,7 @@
                         </div>
                     </a>
                 <?php elseif ($notesShared[$i]->getOwner() == $sharedBy[$u] && !(empty($noteLabels))) : ?>
-                    <a id="<?= $notesShared[$i]->getId() ?>" owner="<?= $nameSharedBy[$u] ?>" class="link-underline link-underline-opacity-0 m-1 sharedCards" style="width: 46%;" href="opennote/index/<?= $notesShared[$i]->getId() ?>">
+                    <a id="<?= $notesShared[$i]->getId() ?>" owner="<?= $nameSharedBy[$u] ?>" class="link-underline link-underline-opacity-0 m-1 sharedCards" style="width: 46%;" href="opennote/index/<?= $notesShared[$i]->getId() ?>/<?php if (isset($url)) { echo $url; } ?>">
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100 colapse">
                                     <!-- TITRE -->

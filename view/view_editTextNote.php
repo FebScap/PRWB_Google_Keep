@@ -113,7 +113,11 @@
     <body data-bs-theme="dark">
         <form class="container-fluid d-flex flex-column" action="OpenNote/saveNote" method="post" oninput="checkAll();">
             <div class="container-fluid d-flex justify-content-between">
-                <a id="backButton" class="nav-link me-4 fs-2" href="opennote/index/<?= $textnote->getId() ?>"><i class="bi bi-chevron-left"></i></a>
+                <?php if (isset($url)) : ?>
+                    <a id="backButton" class="nav-link me-4 fs-2" href="opennote/index/<?= $textnote->getId() ?>/<?= $url ?>"><i class="bi bi-chevron-left"></i></a>
+                <?php else : ?>
+                    <a id="backButton" class="nav-link me-4 fs-2" href="opennote/index/<?= $textnote->getId() ?>"><i class="bi bi-chevron-left"></i></a>
+                <?php endif ?>
                 <button type="submit" class="btn" id="saveButton" disabled><i class="bi bi-floppy"></i></button>
             </div>
             <div class="m-3">
