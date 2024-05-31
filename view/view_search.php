@@ -3,6 +3,7 @@
     <head>
         <title>My notes</title>
         <?php include('head.html'); ?>
+        <script src="js/Search.js"></script>
         <script src="js/RemoveNotJS.js"></script>
     </head>
     <body data-bs-theme="dark">
@@ -16,13 +17,20 @@
             </div>
             <!-- Affichage des tags pour la recherche -->
             <h2 class="h2 fs-6 mt-4 ms-2">Search notes by tags : </h2>
-            <div id="divTagList" class="d-flex flex-row flex-wrap justify-content-start">
-            <?php foreach($labels as $label): ?>
-                <div class="form-check fs-7 ms-3">
-                    <input class="form-check-input" type="checkbox" value="<?= $label ?>" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault"><?= $label ?></label>
+            <form id="formCheckLabel" class="collapse" action="search/checkbox/" method="post"></form>
+            <div id="divTagList" class="d-flex flex-row flex-wrap justify-content-start align-items-center">
+                <button class="btn btn-primary btn-sm ms-3" type="submit" form="formCheckLabel" name="nbLabels" value="<?= count($labels) ?>"><i class="bi bi-search"></i></button>
+                <?php for ($i=0; $i < count($labels); $i++) : ?>
+                <?php $label = $labels[$i]; ?>
+                <div class="form-check fs-7 ms-3 d-flex align-items-center">
+                    <?php if (in_array($label, $labelSearched)) : ?>
+                        <input class="form-check-input" type="checkbox" checked onchange="boxChecked()" form="formCheckLabel" name="label<?= $i ?>" value="<?= $label ?>" id="<?= $label ?>">
+                    <?php else : ?>
+                        <input class="form-check-input" type="checkbox" onchange="boxChecked()" form="formCheckLabel" name="label<?= $i ?>" value="<?= $label ?>" id="<?= $label ?>">
+                    <?php endif ?>
+                    <label class="form-check-label ms-1" for="<?= $label ?>"><?= $label ?></label>
                 </div>
-            <?php endforeach ?>
+                <?php endfor ?>
             </div>
             <!-- CARDS -->
 
@@ -30,6 +38,8 @@
             <h2 class="h2 fs-6 mt-4 ms-2">Your notes :</h2>
             <div id="userNotes" class="d-flex flex-row flex-wrap justify-content-start">
                 <?php for ($i = 0; $i < sizeof($userNotes); $i++): ?>
+                    <?php $noteLabels = Label::getNoteLabels($userNotes[$i]->getId()); ?>
+                    <?php if (empty($labelSearched) || (count(array_intersect($labelSearched, $noteLabels)) === count($labelSearched))): ?>
                         <a id="<?= $userNotes[$i]->getId() ?>" class="link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $userNotes[$i]->getId() ?>">
                             <div class="card h-100">
                                     <ul class="list-group list-group-flush h-100">
@@ -64,15 +74,27 @@
                                     </ul>
                             </div>
                         </a>
+                    <?php endif ?>
                 <?php endfor; ?>
             </div>
 
             <!-- NOTES PARTAGEE -->
-            <?php for ($u = 0; $u < sizeof($sharedBy); $u++) : ?>
+            <?php for ($u = 0; $u < sizeof($sharedBy); $u++) : 
+            $count = 0;
+            for ($i = 0; $i < sizeof($notesShared); $i++) {
+                $noteLabels = Label::getNoteLabels($notesShared[$i]->getId());
+                if ($notesShared[$i]->getOwner() == $sharedBy[$u] && (empty($labelSearched) || (count(array_intersect($labelSearched, $noteLabels)) === count($labelSearched)))) {
+                    $count++;
+                }
+            }    
+            if ($count > 0) :    
+            ?>
+                
             <h2 class="h2 fs-6 mt-4 ms-2">Notes shared by <?= $nameSharedBy[$u] ?> : </h2>
             <div id="sharedBy<?= $nameSharedBy[$u] ?>" class="d-flex flex-row flex-wrap justify-content-start">
-                <?php for ($i = 0; $i < sizeof($notesShared); $i++): ?>
-                <?php if ($notesShared[$i]->getOwner() == $sharedBy[$u] ) : ?>
+                <?php for ($i = 0; $i < sizeof($notesShared); $i++) :
+                $noteLabels = Label::getNoteLabels($notesShared[$i]->getId());
+                if ($notesShared[$i]->getOwner() == $sharedBy[$u] && (empty($labelSearched) || (count(array_intersect($labelSearched, $noteLabels)) === count($labelSearched)))) : ?>
                     <a id="<?= $notesShared[$i]->getId() ?>" class="link-underline link-underline-opacity-0 m-1" style="width: 46%;" href="opennote/index/<?= $notesShared[$i]->getId() ?>">
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100">
@@ -107,10 +129,9 @@
                                 </ul>
                         </div>
                     </a>
-                <?php endif ?>
-                <?php endfor; ?>
+                <?php endif; endfor; ?>
             </div>
-            <?php endfor ?>
+            <?php endif; endfor; ?>
         </div>
         <?php include('footer.html'); ?>
     </body>

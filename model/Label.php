@@ -54,6 +54,22 @@ class Label extends Model {
         return $labels;
     }
 
+    public static function getAllExisingLabels(): ?array {
+        $query = self::execute("SELECT DISTINCT label FROM `note_labels`", []);
+        $labels = [];
+        
+        if (!$query) {
+            return null; // Retourne null si aucun Labels n'est trouvé
+        }
+
+        // Crée une liste contenant tout les labels existants
+        foreach ($query as $row) {
+            $labels[] = $row["label"];
+        }
+
+        return $labels;
+    }
+
     public static function delete(int $noteId, string $label) : void {
         self::execute("DELETE FROM note_labels WHERE label=:label AND note=:note", ["note"=>$noteId, "label"=>$label]);
     }
