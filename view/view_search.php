@@ -17,7 +17,7 @@
             </div>
             <!-- Affichage des tags pour la recherche -->
             <h2 class="h2 fs-6 mt-4 ms-2">Search notes by tags : </h2>
-            <form id="formCheckLabel" class="collapse" action="search/checkbox/" method="post"></form>
+            <form id="formCheckLabel" class="collapse" action="openNote/checkboxSearch/" method="post"></form>
             <div id="divTagList" class="d-flex flex-row flex-wrap justify-content-start align-items-center">
                 <button class="btn btn-primary btn-sm ms-3" type="submit" form="formCheckLabel" name="nbLabels" value="<?= count($labels) ?>"><i class="bi bi-search"></i></button>
                 <?php for ($i=0; $i < count($labels); $i++) : ?>
