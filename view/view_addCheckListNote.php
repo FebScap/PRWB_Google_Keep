@@ -18,7 +18,7 @@
             let ok = true;
             errorTitle.html("");
             if (!(/^.{3,25}$/).test(title.val())) {
-                errorTitle.append("<p>Title length must be between 3 and 25.</p>");
+                errorTitle.append("<p class='text-danger'>Title length must be between 3 and 25.</p>");
                 title.addClass("is-invalid");
                 ok = false;
             } else {
@@ -43,7 +43,7 @@
                 });
 
                 if (!response) {
-                    errorTitle.append("<p>Title must be unique per user.</p>");
+                    errorTitle.append("<p class='text-danger'>Title must be unique per user.</p>");
                     title.addClass("is-invalid");
                     ok = false;
                 } else {
@@ -73,13 +73,13 @@
 
                 if (value !== "" && (value.length < 2 || value.length > 60)) {
                     $(this).addClass("is-invalid");
-                    errorLabel.append("<p>Item length must be between 2 and 60 characters.</p>");
+                    errorLabel.append("<p class='text-danger'>Item length must be between 2 and 60 characters.</p>");
                     ok = false;
                 } else if (value !== "" && itemValues[value]) {
                     $(this).addClass("is-invalid");
-                    errorLabel.append("<p>Item must be unique.</p>");
+                    errorLabel.append("<p class='text-danger'>Item must be unique.</p>");
                     itemValues[value].addClass("is-invalid");
-                    errorContent.eq(itemValues[value].index("input[name^='content']")).append("<p>Item must be unique.</p>");
+                    errorContent.eq(itemValues[value].index("input[name^='content']")).append("<p class='text-danger'>Item must be unique.</p>");
                     ok = false;
                 } else if (value !== "") {
                     itemValues[value] = $(this);

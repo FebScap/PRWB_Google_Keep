@@ -20,7 +20,7 @@
                 let ok = true;
                 errorTitle.html("");
                 if (!(/^.{3,25}$/).test(title.val())) {
-                    errorTitle.append("<p>Title length must be between 3 and 25.</p>");
+                    errorTitle.append("<p class='text-danger'>Title length must be between 3 and 25.</p>");
                     title.addClass("is-invalid");
                     ok = false;
                 } else {
@@ -45,7 +45,7 @@
                     });
 
                     if (!response) {
-                        errorTitle.append("<p>Title must be unique per user.</p>");
+                        errorTitle.append("<p class='text-danger'>Title must be unique per user.</p>");
                         title.addClass("is-invalid");
                         ok = false;
                     } else {
@@ -67,7 +67,7 @@
                 let contentValue = content.val().trim();
 
                 if (!(contentValue.length >= 3 || contentValue === "")) {
-                    errorContent.append("<p>Content must be empty or contain at least 3 characters.</p>");
+                    errorContent.append("<p class='text-danger'>Content must be empty or contain at least 3 characters.</p>");
                     content.addClass("is-invalid");
                     ok = false;
                 } else {
