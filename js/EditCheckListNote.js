@@ -12,6 +12,7 @@ let title, initialTitle, errorTitle, saveButton, backButton, initialContent, add
 
                 createFormAdd();
                 
+                saveContent = getContentValues();
                 initialContent = getContentValues();
                 initialContent.pop();
 
@@ -106,7 +107,7 @@ let title, initialTitle, errorTitle, saveButton, backButton, initialContent, add
 
         function hasChanges() {
             const currentContent = getContentValues();
-            return title.value !== initialTitle || !arraysEqual(initialContent, currentContent);
+            return title.value !== initialTitle || !arraysEqual(saveContent, currentContent);
         }
 
         function arraysEqual(arr1, arr2) {
