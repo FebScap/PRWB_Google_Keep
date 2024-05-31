@@ -29,6 +29,7 @@ class ControllerOpenNote extends Controller {
     public function archive() : void {
         $note = Note::getNoteById($_POST["idnote"]);
         $note->setArchived(1);
+        $note->setPinned(0);
         $note->persist();
         $this->redirect("opennote", "index", $note->getId());
     }
