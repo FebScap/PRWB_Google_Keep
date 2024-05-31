@@ -129,8 +129,7 @@
             <div id="<?= $nameSharedBy[$u] ?>" class="d-flex flex-row flex-wrap justify-content-start sharedDiv">
                 <?php for ($i = 0; $i < sizeof($notesShared); $i++) :
                 $noteLabels = Label::getNoteLabels($notesShared[$i]->getId());
-                if ($notesShared[$i]->getOwner() == $sharedBy[$u]) :
-                if ((empty($labelSearched)) || count(array_intersect($labelSearched, $noteLabels)) === count($labelSearched)) : ?>
+                if ($notesShared[$i]->getOwner() == $sharedBy[$u] && ((empty($labelSearched)) || count(array_intersect($labelSearched, $noteLabels)) === count($labelSearched))) : ?>
                     <a id="<?= $notesShared[$i]->getId() ?>" owner="<?= $nameSharedBy[$u] ?>" class="link-underline link-underline-opacity-0 m-1 sharedCards" style="width: 46%;" href="opennote/index/<?= $notesShared[$i]->getId() ?>">
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100">
@@ -165,7 +164,7 @@
                                 </ul>
                         </div>
                     </a>
-                <?php else : ?>
+                <?php elseif ($notesShared[$i]->getOwner() == $sharedBy[$u] && !(empty($noteLabels))) : ?>
                     <a id="<?= $notesShared[$i]->getId() ?>" owner="<?= $nameSharedBy[$u] ?>" class="link-underline link-underline-opacity-0 m-1 sharedCards" style="width: 46%;" href="opennote/index/<?= $notesShared[$i]->getId() ?>">
                         <div class="card h-100">
                                 <ul class="list-group list-group-flush h-100 colapse">
@@ -200,7 +199,7 @@
                                 </ul>
                         </div>
                     </a>
-                <?php endif; endif; endfor; ?>
+                <?php endif; endfor; ?>
             </div>
             <?php endif; endfor; ?>
         </div>
