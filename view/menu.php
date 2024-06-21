@@ -32,6 +32,11 @@
           <span class="ms-1 text-white">Settings</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a href="session1" class="nav-link">
+          <span class="ms-1 text-white">Session 1</span>
+        </a>
+      </li>
     </ul>
   </div>
 </div>

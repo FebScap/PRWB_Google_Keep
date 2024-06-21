@@ -218,3 +218,7 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2024-04-09 11:27:59
+
+INSERT INTO users (id, mail, hashed_password, full_name, role)
+   VALUES (9999, 'admin@epfc.eu', '56ce92d1de4f05017cf03d6cd514d6d1', 'Admin', 'admin');
+
