@@ -1,6 +1,14 @@
 # Projet PRWB 2324 - Groupe a05 - Google Keep
 
  * Projet WEB réalisé en PHP/html/CSS(Bootstrap)
+ * Le but du projet est de développer une application de gestion de notes inspirée de l'application Google Keep.
+
+## Aperçu des vues principales
+
+![Capture d'écran 2024-10-19 115008](https://github.com/user-attachments/assets/3d1ccaef-f679-478d-85a6-379c4ddcbe1f)
+
+![search_1](https://github.com/user-attachments/assets/b34b6808-ee60-43ab-9eb4-28501591b1dc)
+
 
 ## Notes de version itération 3 
 
